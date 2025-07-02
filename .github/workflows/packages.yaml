@@ -17,4 +17,4 @@ jobs:
       - name: Generate NuGet packages
         run: dotnet pack -p:PackageVersion=${{ github.ref_name }}
       - name: Publish NuGet packages
-        run: dotnet nuget push "**/*.nupkg" -s https://nuget.phrkdll.de/v3/index.json -k ${{ secrets.BAGET_API_TOKEN }} --skip-duplicate --no-symbols
+        run: dotnet nuget push "**/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_TOKEN }} --skip-duplicate --no-symbols
