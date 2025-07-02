@@ -5,6 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <Authors>phrkdll</Authors>
+    <PackageProjectUrl>https://github.com/phrkdll/weavly</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/phrkdll/weavly</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
+  </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.EndsWith('.Cli'))">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>

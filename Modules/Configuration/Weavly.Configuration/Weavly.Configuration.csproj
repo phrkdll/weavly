@@ -1,11 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Authors>phrkdll</Authors>
-    <PackageProjectUrl>https://github.com/phrkdll/weavly</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/phrkdll/weavly?tab=MIT-1-ov-file#readme</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/phrkdll/weavly</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
     <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
