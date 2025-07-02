@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Auth/">
+    <Project Path="Modules/Auth/Weavly.Auth.Shared/Weavly.Auth.Shared.csproj" />
+    <Project Path="Modules/Auth/Weavly.Auth/Weavly.Auth.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Configuration/">
+    <Project Path="Modules/Configuration/Weavly.Configuration.Shared/Weavly.Configuration.Shared.csproj" />
+    <Project Path="Modules/Configuration/Weavly.Configuration/Weavly.Configuration.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Core/">
+    <Project Path="Modules/Core/Weavly.Core.Persistence/Weavly.Core.Persistence.csproj" />
+    <Project Path="Modules/Core/Weavly.Core.Shared/Weavly.Core.Shared.csproj" />
+    <Project Path="Modules/Core/Weavly.Core/Weavly.Core.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Mail/">
+    <Project Path="Modules/Mail/Weavly.Mail.Shared/Weavly.Mail.Shared.csproj" />
+    <Project Path="Modules/Mail/Weavly.Mail/Weavly.Mail.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Messages/">
+    <Project Path="Modules/Messages/Weavly.Messages.Shared/Weavly.Messages.Shared.csproj" />
+    <Project Path="Modules/Messages/Weavly.Messages/Weavly.Messages.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="Directory.Packages.props" />
+    <File Path="docker-compose.yaml" />
+  </Folder>
+  <Project Path="Weavly.Cli/Weavly.Cli.csproj" />
+  <Project Path="Weavly.Api/Weavly.Api.csproj" />
+</Solution>

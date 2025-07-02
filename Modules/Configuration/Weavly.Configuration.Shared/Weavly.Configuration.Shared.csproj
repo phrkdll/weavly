@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Weavly.Configuration.Shared</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
+  </ItemGroup>
+</Project>

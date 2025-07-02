@@ -1,0 +1,33 @@
+﻿services:
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+      - "127.0.0.1:25:25"
+      - "127.0.0.1:143:143"
+    volumes:
+      - smtp4dev_data:/smtp4dev
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: weavly
+      PGDATA: /data/postgres
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    restart: unless-stopped
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  smtp4dev_data:
+  ollama_data:

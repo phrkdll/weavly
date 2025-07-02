@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\Configuration\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
+    <ProjectReference Include="..\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
+    <ProjectReference Include="..\..\Mail\Weavly.Mail.Shared\Weavly.Mail.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Discord" />
+    <PackageReference Include="AspNet.Security.OAuth.GitHub" />
+    <PackageReference Include="GoogleAuthenticator" />
+  </ItemGroup>
+</Project>
