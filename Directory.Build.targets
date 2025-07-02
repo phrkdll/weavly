@@ -1,7 +1,6 @@
 <Project>
   <Target Name="CustomClean" AfterTargets="Clean">
     <RemoveDir Directories="$(ProjectDir)data" />
-    <RemoveDir Directories="$(ProjectDir)nupkg" />
   </Target>
   <Target Name="FullClean">
     <RemoveDir Directories="$(ProjectDir)bin" />
