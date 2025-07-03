@@ -26,10 +26,10 @@ clean: # Perform "dotnet clean ."
 	
 tool: uninstall clean .packcli install # Repack and reinstall Weavly.Cli
 .packcli:
-	@dotnet pack ./Weavly.Cli
+	@dotnet pack ./Weavly.Cli/
 pack: # Perform "dotnet pack ."
 	@dotnet pack .
 install: # Install Weavly.Cli as a global tool
-	@dotnet tool install -g --add-source ./Weavly.Cli/nupkg Weavly.Cli
+	@dotnet tool install -g --add-source ./Weavly.Cli/nupkg/ Weavly.Cli
 uninstall: # Uninstall Weavly.Cli
 	-@dotnet tool uninstall -g Weavly.Cli ||:

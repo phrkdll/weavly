@@ -4,7 +4,8 @@ using Weavly.Cli.Utils;
 
 namespace Weavly.Cli.Commands;
 
-public abstract class InterruptibleAsyncCommand : AsyncCommand
+public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
+    where T : CommandSettings
 {
     protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
@@ -20,11 +21,11 @@ public abstract class InterruptibleAsyncCommand : AsyncCommand
         };
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context)
+    public override async Task<int> ExecuteAsync(CommandContext context, T settings)
     {
         try
         {
-            await HandleAsync(context);
+            await HandleAsync(context, settings);
 
             return 0;
         }
@@ -43,7 +44,7 @@ public abstract class InterruptibleAsyncCommand : AsyncCommand
         }
     }
 
-    public abstract Task HandleAsync(CommandContext commandContext);
+    public abstract Task HandleAsync(CommandContext commandContext, T settings);
 
     public ProcessRunner Runner => ProcessRunner.Instance(TokenSource);
 }
