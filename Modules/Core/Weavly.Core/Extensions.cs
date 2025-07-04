@@ -1,12 +1,13 @@
+using System.Reflection;
 using FastEndpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Scalar.AspNetCore;
 using Weavly.Core.Implementation;
 using Weavly.Core.Persistence;
 using Weavly.Core.Shared.Contracts;
-using Scalar.AspNetCore;
 
 namespace Weavly.Core;
 
@@ -78,7 +79,7 @@ public static class Extensions
         var moduleOptions = ContextOptions.RetrieveModuleOptions(builder.Configuration, typeof(TModule).Name);
         var provider =
             moduleOptions.DatabaseType
-            ?? throw new NullReferenceException($"No database type was specified for {typeof(TModule).Name}");
+            ?? throw new ArgumentNullException($"No database type was specified for {typeof(TModule).Name}");
 
         var type = typeof(EntityFrameworkServiceCollectionExtensions);
         var method = type.GetMethods()

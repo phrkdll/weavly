@@ -13,6 +13,9 @@
     <Project Path="Modules/Core/Weavly.Core.Shared/Weavly.Core.Shared.csproj" />
     <Project Path="Modules/Core/Weavly.Core/Weavly.Core.csproj" />
   </Folder>
+  <Folder Name="/Modules/Logging/">
+    <Project Path="Modules/Logging/Weavly.Logging.Serilog/Weavly.Logging.Serilog.csproj" />
+  </Folder>
   <Folder Name="/Modules/Mail/">
     <Project Path="Modules/Mail/Weavly.Mail.Shared/Weavly.Mail.Shared.csproj" />
     <Project Path="Modules/Mail/Weavly.Mail/Weavly.Mail.csproj" />

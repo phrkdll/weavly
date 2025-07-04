@@ -10,7 +10,7 @@ public abstract class WeavlyModule : IWeavlyModule
 
     public virtual void Use(WebApplication app)
     {
-        app.Logger.LogInformation("Registered {ModuleName}", GetType().Namespace);
+        app.Logger.LogInformation("Registered module {ModuleName}", GetType().Namespace);
     }
 
     public virtual Task InitializeAsync()

@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Auth.Contracts;
 using Weavly.Auth.Implementation;
 using Weavly.Auth.Models;
 using Weavly.Auth.Persistence;
+using Weavly.Auth.Persistence.Interceptors;
 using Weavly.Auth.Shared.Features.CreateAppRole;
 using Weavly.Auth.Shared.Features.CreateAppUser;
 using Weavly.Auth.Shared.Identifiers;
@@ -59,6 +61,8 @@ public sealed class AuthModule : WeavlyModule
 
         builder.Services.AddSingleton<IUserContextFactory<AppUserId>, AppUserContextFactory>();
 
+        builder.Services.AddScoped<ISaveChangesInterceptor, UserMetaEntityInterceptor>();
+
         builder.AddWeavlyModuleDbContext<AuthModule, AuthDbContext>();
 
         base.Configure(builder);
@@ -66,8 +70,8 @@ public sealed class AuthModule : WeavlyModule
 
     private static void SetOAuthOptions(string provider, OAuthOptions options, WebApplicationBuilder builder)
     {
-        options.ClientId = builder.Configuration[$"Authentication:{provider}:ClientId"] ?? string.Empty;
-        options.ClientSecret = builder.Configuration[$"Authentication:{provider}:ClientSecret"] ?? string.Empty;
+        options.ClientId = builder.Configuration[$"AuthModule:{provider}:ClientId"] ?? "unknown";
+        options.ClientSecret = builder.Configuration[$"AuthModule:{provider}:ClientSecret"] ?? "unknown";
         options.CallbackPath = $"/signin/{provider.ToLowerInvariant()}";
     }
 

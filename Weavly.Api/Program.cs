@@ -1,28 +1,22 @@
 using Weavly.Auth;
-using Weavly.Auth.Shared.Identifiers;
 using Weavly.Configuration;
 using Weavly.Core;
+using Weavly.Logging.Serilog;
 using Weavly.Mail;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
+using Weavly.Messages;
 
 DotNetEnv.Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog(
-    (_, configuration) =>
-    {
-        configuration.WriteTo.Console(theme: AnsiConsoleTheme.Literate, applyThemeToRedirectedOutput: true);
-    }
-);
-
 builder
     .AddWeavly()
-    .AddModule<CoreModule<AppUserId>>()
-    .AddModule<ConfigurationModule>()
     .AddModule<AuthModule>()
+    .AddModule<CoreModule>()
+    .AddModule<ConfigurationModule>()
     .AddModule<MailModule>()
+    .AddModule<MessagesModule>()
+    .AddModule<LoggingModule>()
     .Build();
 
 builder.Services.AddCors();
@@ -36,7 +30,5 @@ app.UseCors(cors =>
 });
 
 app.UseWeavlyModules();
-
-app.UseSerilogRequestLogging();
 
 await app.RunAsync();

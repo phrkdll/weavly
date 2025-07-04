@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Weavly.Auth.Shared.Identifiers;
-using Weavly.Core.Persistence.Interceptors;
 
 namespace Weavly.Core.Persistence;
 
@@ -9,7 +8,8 @@ public static class ContextOptions
 {
     public static DbContextOptions CreateContextOptions(IServiceProvider serviceProvider, string moduleName)
     {
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        var scopedProvider = serviceProvider.CreateScope().ServiceProvider;
+        var configuration = scopedProvider.GetRequiredService<IConfiguration>();
 
         var options = RetrieveModuleOptions(configuration, moduleName);
 
@@ -27,9 +27,7 @@ public static class ContextOptions
         }
 
         builder.UseStronglyTypeConverters();
-
-        var interceptor = serviceProvider.GetRequiredService<MetaEntityInterceptor<AppUserId>>();
-        builder.AddInterceptors(interceptor);
+        builder.AddInterceptors(scopedProvider.GetServices<ISaveChangesInterceptor>());
 
         return builder.Options;
     }
@@ -56,9 +54,7 @@ public static class ContextOptions
 
     private static void PreparePostgres(ModuleOptions options, DbContextOptionsBuilder builder)
     {
-        builder.UseNpgsql(
-            options.ConnectionString ?? "Server=localhost;Port=5432;Database=Weavly;User Id=postgres;Password=postgres;"
-        );
+        builder.UseNpgsql(options.ConnectionString);
     }
 
     private static void PrepareSqlite(ModuleOptions options, string moduleName, DbContextOptionsBuilder builder)

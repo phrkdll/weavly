@@ -1,5 +1,5 @@
-using Weavly.Core.Implementation;
 using Shouldly;
+using Weavly.Core.Implementation;
 
 namespace Weavly.Core.Tests.Implementation;
 
