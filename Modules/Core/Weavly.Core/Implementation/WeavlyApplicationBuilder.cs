@@ -13,6 +13,7 @@ internal sealed class WeavlyApplicationBuilder(WebApplicationBuilder builder) : 
     public IEnumerable<IWeavlyModule> Modules => _modules;
 
     public IWeavlyApplicationBuilder AddModule<T>()
+        where T : IWeavlyModule
     {
         if (Activator.CreateInstance<T>() is IWeavlyModule module)
         {

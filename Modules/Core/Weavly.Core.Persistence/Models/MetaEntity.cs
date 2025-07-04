@@ -1,6 +1,6 @@
 ﻿namespace Weavly.Core.Persistence.Models;
 
-public class MetaEntity<TEntityId, TUserId> : Entity<TEntityId>, IMetaEntity<TUserId>
+public class MetaEntity<TEntityId, TUserId> : Entity<TEntityId>, ITimestampMetaEntity, IUserMetaEntity<TUserId>
     where TEntityId : struct
     where TUserId : struct
 {

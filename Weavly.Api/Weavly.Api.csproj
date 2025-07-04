@@ -5,14 +5,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetEnv" />
-    <PackageReference Include="Serilog.AspNetCore" />
-    <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules\Auth\Weavly.Auth\Weavly.Auth.csproj" />
     <ProjectReference Include="..\Modules\Configuration\Weavly.Configuration\Weavly.Configuration.csproj" />
     <ProjectReference Include="..\Modules\Core\Weavly.Core\Weavly.Core.csproj" />
     <ProjectReference Include="..\Modules\Mail\Weavly.Mail\Weavly.Mail.csproj" />
+    <ProjectReference Include="..\Modules\Messages\Weavly.Messages\Weavly.Messages.csproj" />
+    <ProjectReference Include="..\Modules\Logging\Weavly.Logging.Serilog\Weavly.Logging.Ser.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.dockerignore">

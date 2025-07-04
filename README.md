@@ -4,7 +4,7 @@
 _Modular API starter kit for modern applications._
 
 ## 🚨 Caution
-*The project is still at a very early stage. Do not use in production.*
+*The project is still at a very early stage. Some things may even be broken. Do not use in production!*
 
 ## 🚀 What is Weavly?
 
@@ -13,16 +13,12 @@ It helps you to quickly **assemble**, **connect**, and **scale** your backend sy
 
 Whether you’re building **microservices** or a **modular monolith** – Weavly’s plug-and-play modules have you covered.
 
----
-
 ## ✨ Key Features
 - 🧩 Modular architecture (Core, Auth, Mail, Config, etc.)
 - ⚡ Event-driven module communication
 - 🚀 Fast project bootstrap
 - 🛠️ Easy microservice & monolith integration
 - 🔄 Flexible and scalable
-
----
 
 ## 📦 Available Modules
 - Weavly.Core
@@ -32,10 +28,8 @@ Whether you’re building **microservices** or a **modular monolith** – Weavly
 
 *(More to come…)*
 
----
-
 ## 🛠️ Getting Started
 ```shell
-dotnet tool install -g Weavly.Cli
+dotnet tool install -g weavly.cli
 wv init
 ```

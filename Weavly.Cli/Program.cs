@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Spectre.Console.Cli;
 using Weavly.Cli.Commands;
 using Weavly.Cli.Commands.Module;
-using Spectre.Console.Cli;
 
 var app = new CommandApp();
 

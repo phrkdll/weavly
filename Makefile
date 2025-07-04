@@ -8,7 +8,6 @@ help: # Display this help screen
 
 build: # Perform "dotnet build ."
 	@dotnet build .
-tool: uninstall clean pack.cli install # Repack and reinstall Weavly.Cli
 
 run: # Run the sample project
 	@dotnet run --project ./Weavly.Api
@@ -19,15 +18,18 @@ check: # Perform "csharpier check ."
 format: # Perform "csharpier format ."
 	@csharpier format .
 
+cleanf: clean .cleanf-internal # Performs a full solution cleanup with bin/obj removal
 clean: # Perform "dotnet clean ."
 	@dotnet clean .
-clean-sym: # Performs a full solution cleanup with bin/obj removal
+.cleanf-internal:	
 	@dotnet msbuild -t:FullClean
-pack-cli: # Perform "dotnet pack ./Weavly.Cli"
-	@dotnet pack ./Weavly.Cli
+	
+tool: uninstall clean .packcli install # Repack and reinstall Weavly.Cli
+.packcli:
+	@dotnet pack ./Weavly.Cli/
 pack: # Perform "dotnet pack ."
 	@dotnet pack .
 install: # Install Weavly.Cli as a global tool
-	@dotnet tool install -g --add-source ./Weavly.Cli/nupkg Weavly.Cli
+	@dotnet tool install -g --add-source ./Weavly.Cli/nupkg/ Weavly.Cli
 uninstall: # Uninstall Weavly.Cli
 	-@dotnet tool uninstall -g Weavly.Cli ||:

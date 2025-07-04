@@ -4,7 +4,8 @@ public interface IWeavlyApplicationBuilder
 {
     IEnumerable<IWeavlyModule> Modules { get; }
 
-    IWeavlyApplicationBuilder AddModule<T>();
+    IWeavlyApplicationBuilder AddModule<T>()
+        where T : IWeavlyModule;
 
     void Build();
 }
