@@ -32,7 +32,7 @@ public static class Extensions
     /// </summary>
     /// <param name="app"><see cref="WebApplication"/></param>
     /// <exception cref="InvalidOperationException">Will be thrown if no modules have been registered.</exception>
-    public static void UseWeavlyModules(this WebApplication app)
+    public static void UseWeavly(this WebApplication app)
     {
         var modules =
             _weavlyApplicationBuilder?.Modules

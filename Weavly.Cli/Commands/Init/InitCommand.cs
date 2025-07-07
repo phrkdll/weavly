@@ -1,9 +1,11 @@
 using System.ComponentModel;
+using System.Text;
+using System.Text.RegularExpressions;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Weavly.Cli.Models;
 
-namespace Weavly.Cli.Commands;
+namespace Weavly.Cli.Commands.Init;
 
 [Description("Initialize a new Weavly solution")]
 public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
@@ -77,16 +79,21 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         var choices =
             result
                 ?.SearchResult.First()
-                .Packages.Where(x => !x.Id.EndsWith(".Cli") && !x.Id.EndsWith(".Shared") && !x.Id.Contains(".Core"))
-                .Select(x => x.Id) ?? [];
+                .Packages.Where(p => !p.Id.EndsWith(".Cli") && !p.Id.EndsWith(".Shared") && !p.Id.Contains(".Core"))
+                .OrderBy(p => p.Id)
+                .Select(p => p.Id) ?? [];
 
-        var selectedProviders = await new MultiSelectionPrompt<string>()
-            .Title("Which [teal]modules[/] do you want to use?")
-            .Required()
-            .PageSize(5)
-            .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
-            .AddChoices(choices)
-            .ShowAsync(AnsiConsole.Console, Token);
+        List<string> selectedModules =
+        [
+            "Weavly.Core",
+            .. await new MultiSelectionPrompt<string>()
+                .Title("Which [teal]modules[/] do you want to use?")
+                .Required()
+                .PageSize(5)
+                .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
+                .AddChoices(choices)
+                .ShowAsync(AnsiConsole.Console, Token),
+        ];
 
         await Runner
             .InDirectory(workingDir)
@@ -94,12 +101,77 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
             .RunAsync(DotnetCommand, $"new web -n {projectName}");
         await Runner.InDirectory(workingDir).RunAsync(DotnetCommand, $"sln add {projectName}");
 
-        foreach (var module in selectedProviders)
+        foreach (var module in selectedModules)
         {
             await Runner
                 .InDirectory(workingDir)
                 .WithMessage($"Adding module [teal]{module}[/]...\n")
                 .RunAsync(DotnetCommand, $"package add {module} --project ./{projectName}/{projectName}.csproj");
         }
+
+        await InitProgramBootstrapper(workingDir, projectName, selectedModules);
+    }
+
+    private async Task InitProgramBootstrapper(string workingDir, string projectName, List<string> selectedModules)
+    {
+        var programFilePath = Path.Combine(workingDir, projectName, "Program.cs");
+
+        var file = await File.ReadAllTextAsync(programFilePath, Token);
+
+        if (file == null)
+        {
+            return;
+        }
+
+        AddUsings(selectedModules, ref file);
+        AddBuilderSetup(selectedModules, ref file);
+        AddAppSetup(ref file);
+        RemoveEndpointMappings(ref file);
+
+        await File.WriteAllTextAsync(programFilePath, file, Token);
+    }
+
+    private static void RemoveEndpointMappings(ref string file)
+    {
+        string pattern = @"(.*app.Map.*;\s*app)";
+        string replacement = "app";
+
+        file = Regex.Replace(file, pattern, replacement);
+    }
+
+    private static void AddAppSetup(ref string file)
+    {
+        string pattern = @"(.*app.Run.*;)";
+        string replacement = $"app.UseWeavly();\n\n$1";
+
+        file = Regex.Replace(file, pattern, replacement);
+    }
+
+    private static void AddBuilderSetup(List<string> selectedModules, ref string file)
+    {
+        var setupPattern = @"(var builder.*;)";
+        var setupBuilder = new StringBuilder("$1\n\nbuilder.AddWeavly()\n");
+
+        foreach (var module in selectedModules)
+        {
+            var moduleName = module.Replace("Weavly.", string.Empty).Replace(".", string.Empty);
+            setupBuilder.AppendLine($"    .AddModule<{moduleName}Module>()");
+        }
+        setupBuilder.AppendLine("    .Build();");
+
+        file = Regex.Replace(file, setupPattern, setupBuilder.ToString());
+    }
+
+    private static void AddUsings(List<string> selectedModules, ref string file)
+    {
+        var usingBuilder = new StringBuilder();
+
+        foreach (var module in selectedModules)
+        {
+            usingBuilder.AppendLine($"using {module};");
+        }
+        usingBuilder.AppendLine();
+
+        file = $"{usingBuilder}{file}";
     }
 }
