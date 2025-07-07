@@ -14,9 +14,9 @@ builder
     .AddModule<AuthModule>()
     .AddModule<CoreModule>()
     .AddModule<ConfigurationModule>()
+    .AddModule<LoggingModule>()
     .AddModule<MailModule>()
     .AddModule<MessagesModule>()
-    .AddModule<LoggingModule>()
     .Build();
 
 builder.Services.AddCors();
@@ -29,6 +29,6 @@ app.UseCors(cors =>
     cors.AllowAnyOrigin();
 });
 
-app.UseWeavlyModules();
+app.UseWeavly();
 
 await app.RunAsync();

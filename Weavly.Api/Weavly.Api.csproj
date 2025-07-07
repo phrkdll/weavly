@@ -12,7 +12,7 @@
     <ProjectReference Include="..\Modules\Core\Weavly.Core\Weavly.Core.csproj" />
     <ProjectReference Include="..\Modules\Mail\Weavly.Mail\Weavly.Mail.csproj" />
     <ProjectReference Include="..\Modules\Messages\Weavly.Messages\Weavly.Messages.csproj" />
-    <ProjectReference Include="..\Modules\Logging\Weavly.Logging.Serilog\Weavly.Logging.Ser.csproj" />
+    <ProjectReference Include="..\Modules\Logging\Weavly.Logging.Serilog\Weavly.Logging.Serilog.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.dockerignore">
