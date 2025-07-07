@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace Weavly.Cli.Commands.Module;
 
-[Description("Initialized a custom module project for the current solution")]
+[Description("Initializes a new custom module project for the current solution")]
 public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
 {
     public class Settings : CommandSettings
@@ -13,7 +13,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         public string? ModuleName { get; set; }
     }
 
-    public override Task HandleAsync(CommandContext _, Settings settings)
+    public override Task HandleAsync(CommandContext commandContext, Settings settings)
     {
         throw new NotImplementedException();
     }

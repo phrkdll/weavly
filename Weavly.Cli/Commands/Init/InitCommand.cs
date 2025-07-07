@@ -29,7 +29,7 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         public string? ProjectName { get; set; }
     }
 
-    public override async Task HandleAsync(CommandContext _, Settings settings)
+    public override async Task HandleAsync(CommandContext commandContext, Settings settings)
     {
         var solutionNameInput =
             settings.SolutionName
@@ -69,20 +69,6 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
             .WithMessage($"Initializing solution [teal]'{solutionName}'[/]...\n")
             .RunAsync(DotnetCommand, $"new sln -o {solutionNameInput} -f {solutionFormat}");
 
-        var result = await Runner
-            .InDirectory(workingDir)
-            .ParseJsonAsync<PackageSearchData>(
-                DotnetCommand,
-                $"package search weavly --format json --verbosity detailed"
-            );
-
-        var choices =
-            result
-                ?.SearchResult.First()
-                .Packages.Where(p => !p.Id.EndsWith(".Cli") && !p.Id.EndsWith(".Shared") && !p.Id.Contains(".Core"))
-                .OrderBy(p => p.Id)
-                .Select(p => p.Id) ?? [];
-
         List<string> selectedModules =
         [
             "Weavly.Core",
@@ -91,7 +77,7 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
                 .Required()
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
-                .AddChoices(choices)
+                .AddChoices(await GetAvailableWeavlyPackages(workingDir))
                 .ShowAsync(AnsiConsole.Console, Token),
         ];
 

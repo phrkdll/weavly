@@ -8,7 +8,7 @@ namespace Weavly.Cli.Commands.Module;
 [Description("Add database migrations for selected providers to a module")]
 public class MigrateCommand : InterruptibleAsyncCommand
 {
-    public override async Task HandleAsync(CommandContext _)
+    public override async Task HandleAsync(CommandContext commandContext)
     {
         var modules = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
 
