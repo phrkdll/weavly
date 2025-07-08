@@ -6,9 +6,11 @@ using Spectre.Console.Cli;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Add database migrations for selected providers to a module")]
-public class MigrateCommand : InterruptibleAsyncCommand
+public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
 {
-    public override async Task HandleAsync(CommandContext commandContext)
+    public class Settings : CommandSettings { }
+
+    public override async Task HandleAsync(CommandContext commandContext, Settings settings)
     {
         var modules = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
 
@@ -51,7 +53,7 @@ public class MigrateCommand : InterruptibleAsyncCommand
                 .Append($" -- --provider {provider.ToLower()}");
 
             await Runner
-                .WithMessage($"Adding migration for [teal]'{contextName}'[/]...\n")
+                .WithMessage($"Adding migration for [teal]{contextName}[/]...\n")
                 .RunAsync("dotnet", command.ToString());
         }
     }

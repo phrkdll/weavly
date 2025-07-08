@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Weavly.Cli.Utils;
 
 namespace Weavly.Cli.Commands.Module;
 
@@ -26,26 +27,31 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
                 .AddChoices(projects.Keys)
                 .ShowAsync(AnsiConsole.Console, Token);
 
-        await Runner.WithMessage($"Adding module to [teal]'{projectName}'[/]...\n").RunAsync("echo", "");
+        AnsiConsole.Write(new Markup($"Adding module to [teal]{projectName}[/]...\n"));
 
         var workingDir = Path.Combine(Directory.GetCurrentDirectory(), projectName);
+
+        var installedPackages = await ListWeavlyPackagesAsync(projectName);
 
         List<string> selectedModules =
         [
             .. await new MultiSelectionPrompt<string>()
-                .Title("Which [teal]modules[/] do you want to use?")
+                .Title("Which [teal]modules[/] do you want to add?")
                 .Required()
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
-                .AddChoices(await GetAvailableWeavlyPackages(workingDir))
+                .AddChoices(await SearchWeavlyPackagesAsync(workingDir, installedPackages))
                 .ShowAsync(AnsiConsole.Console, Token),
         ];
 
-        Console.WriteLine("Selected modules:");
         foreach (var module in selectedModules)
         {
-            Console.WriteLine(module);
+            await Runner
+                .WithMessage($"Adding module [teal]{module}[/]...\n")
+                .RunAsync("dotnet", $"package add {module} --project ./{projectName}/{projectName}.csproj");
         }
+
+        await UpdateProgramBootstrapperAsync(projectName, selectedModules);
     }
 
     private static string ExtractFileNameWithoutExtension(string fileName)
@@ -58,5 +64,24 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
     private static string[] GetRelevantProjects()
     {
         return [.. Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories)];
+    }
+
+    private async Task UpdateProgramBootstrapperAsync(string projectName, List<string> selectedModules)
+    {
+        AnsiConsole.Write(new Markup($"Updating [teal]{projectName}/Program.cs[/]...\n"));
+
+        var programFilePath = Path.Combine(projectName, "Program.cs");
+
+        var file = await File.ReadAllTextAsync(programFilePath, Token);
+
+        if (file == null)
+        {
+            return;
+        }
+
+        ModuleManagementHelper.UpdateUsings(selectedModules, ref file);
+        ModuleManagementHelper.UpdateBuilderSetup(selectedModules, ref file);
+
+        await File.WriteAllTextAsync(programFilePath, file, Token);
     }
 }

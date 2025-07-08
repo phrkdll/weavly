@@ -1,6 +1,6 @@
-namespace Weavly.Cli.Models;
+namespace Weavly.Cli.Models.Dotnet.Package.Search;
 
-public sealed class PackageSearchData
+public sealed class Search
 {
     public int Version { get; set; }
 
