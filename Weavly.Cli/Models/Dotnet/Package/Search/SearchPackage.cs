@@ -1,6 +1,6 @@
-namespace Weavly.Cli.Models;
+namespace Weavly.Cli.Models.Dotnet.Package.Search;
 
-public class Package
+public class SearchPackage
 {
     public string Id { get; set; } = string.Empty;
 

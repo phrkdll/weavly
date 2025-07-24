@@ -1,7 +1,10 @@
 # Weavly 🧶
 
-**Snap. Weave. Scale.**  
+**Weave your backend!**
+
 _Modular API starter kit for modern applications._
+
+Available via [NuGet](https://www.nuget.org/packages?q=Weavly&includeComputedFrameworks=false&prerel=true).
 
 ## 🚨 Caution
 *The project is still at a very early stage. Some things may even be broken. Do not use in production!*
