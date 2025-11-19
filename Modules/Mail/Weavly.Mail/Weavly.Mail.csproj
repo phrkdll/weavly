@@ -2,5 +2,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Configuration\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj" />
     <ProjectReference Include="..\Weavly.Mail.Shared\Weavly.Mail.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -50,9 +50,12 @@ public class ProcessRunner
             AnsiConsole.Write(message);
         }
 
-        Process process = CreateProcess(fileName, arguments, true);
+        return await CreateProcess(fileName, arguments, true).StandardOutput.ReadToEndAsync(ct);
+    }
 
-        return await process.StandardOutput.ReadToEndAsync(ct);
+    public async Task RunDotnetAsync(string arguments, CancellationToken ct)
+    {
+        await RunAsync("dotnet", arguments, ct);
     }
 
     public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct)
