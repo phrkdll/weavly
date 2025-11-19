@@ -8,7 +8,6 @@ namespace Weavly.Cli.Utils;
 
 public class ProcessRunner
 {
-    private readonly CancellationTokenSource tokenSource;
     private IRenderable? message;
     private string? workingDirectory;
 
@@ -19,12 +18,7 @@ public class ProcessRunner
         PropertyNameCaseInsensitive = true,
     };
 
-    private ProcessRunner(CancellationTokenSource tokenSource)
-    {
-        this.tokenSource = tokenSource;
-    }
-
-    public static ProcessRunner Instance(CancellationTokenSource tokenSource) => new(tokenSource);
+    public static ProcessRunner Instance() => new();
 
     public ProcessRunner WithMessage(string message)
     {
@@ -49,7 +43,7 @@ public class ProcessRunner
             ) ?? throw new InvalidOperationException("Failed to start process");
     }
 
-    public async Task<string> RunAsync(string fileName, string arguments)
+    public async Task<string> RunAsync(string fileName, string arguments, CancellationToken ct)
     {
         if (message != null)
         {
@@ -58,10 +52,10 @@ public class ProcessRunner
 
         Process process = CreateProcess(fileName, arguments, true);
 
-        return await process.StandardOutput.ReadToEndAsync(tokenSource.Token);
+        return await process.StandardOutput.ReadToEndAsync(ct);
     }
 
-    public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments)
+    public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct)
     {
         if (message != null)
         {
@@ -70,7 +64,7 @@ public class ProcessRunner
 
         Process process = CreateProcess(fileName, arguments, true);
 
-        var output = await process.StandardOutput.ReadToEndAsync(tokenSource.Token);
+        var output = await process.StandardOutput.ReadToEndAsync(ct);
 
         return JsonSerializer.Deserialize<T>(output, jsonSerializerOptions);
     }

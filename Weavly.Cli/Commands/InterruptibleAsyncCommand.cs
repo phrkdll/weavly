@@ -11,24 +11,11 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 {
     protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
-    private readonly CancellationTokenSource TokenSource = new();
-
-    protected CancellationToken Token => TokenSource.Token;
-
-    protected InterruptibleAsyncCommand()
-    {
-        Console.CancelKeyPress += (_, args) =>
-        {
-            args.Cancel = true;
-            TokenSource.Cancel();
-        };
-    }
-
-    public override async Task<int> ExecuteAsync(CommandContext context, T settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct)
     {
         try
         {
-            await HandleAsync(context, settings);
+            await HandleAsync(context, settings, ct);
 
             return 0;
         }
@@ -47,18 +34,19 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
         }
     }
 
-    public abstract Task HandleAsync(CommandContext commandContext, T settings);
+    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct);
 
-    public ProcessRunner Runner => ProcessRunner.Instance(TokenSource);
+    public ProcessRunner Runner => ProcessRunner.Instance();
 
     protected async Task<IEnumerable<string>> SearchWeavlyPackagesAsync(
         string workingDir,
-        IEnumerable<string>? installedPackages = null
+        IEnumerable<string>? installedPackages = null,
+        CancellationToken ct = default
     )
     {
         var result = await Runner
             .InDirectory(workingDir)
-            .ParseJsonAsync<Search>("dotnet", $"package search weavly --format json --verbosity detailed");
+            .ParseJsonAsync<Search>("dotnet", $"package search weavly --format json --verbosity detailed", ct);
 
         var choices =
             result
@@ -76,11 +64,15 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
         return choices;
     }
 
-    protected async Task<IEnumerable<string>> ListWeavlyPackagesAsync(string projectName, string workingDir = ".")
+    protected async Task<IEnumerable<string>> ListWeavlyPackagesAsync(
+        string projectName,
+        string workingDir = ".",
+        CancellationToken ct = default
+    )
     {
         var result = await Runner
             .InDirectory(workingDir)
-            .ParseJsonAsync<List>("dotnet", $"package list --format json --project {projectName}");
+            .ParseJsonAsync<List>("dotnet", $"package list --format json --project {projectName}", ct);
 
         var choices = result?.Projects.First().Frameworks.First().Packages.OrderBy(p => p.Id).Select(p => p.Id) ?? [];
 

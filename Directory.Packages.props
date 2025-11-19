@@ -17,12 +17,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.EndsWith('.Cli'))">
-    <None Include="$(SolutionDir)LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
+    <None Include="$(SolutionDir)LICENSE.md" Pack="true" PackagePath="" />
+    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup Condition="$(AssemblyName.EndsWith('.Cli'))">
-    <None Include="../LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    <None Include="../README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
+    <None Include="../LICENSE.md" Pack="true" PackagePath="" />
+    <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.EndsWith('.Cli'))">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
@@ -65,8 +65,8 @@
     <PackageVersion Include="Scalar.AspNetCore" Version="2.5.1" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
-    <PackageVersion Include="Spectre.Console" Version="0.50.0" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.0" />
     <PackageVersion Include="Strongly" Version="1.5.1" />
     <PackageVersion Include="Strongly.EFCore" Version="1.5.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.14.0" />

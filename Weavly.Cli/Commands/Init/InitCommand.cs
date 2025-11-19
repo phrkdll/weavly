@@ -27,13 +27,13 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         public string? ProjectName { get; set; }
     }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings)
+    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
     {
         var solutionNameInput =
             settings.SolutionName
             ?? await new TextPrompt<string>("Please enter a solution name:")
                 .DefaultValue(DefaultSolutionName)
-                .ShowAsync(AnsiConsole.Console, Token);
+                .ShowAsync(AnsiConsole.Console, ct);
 
         var solutionName =
             solutionNameInput == DefaultSolutionName
@@ -44,7 +44,7 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
             settings.ProjectName
             ?? await new TextPrompt<string>("Please enter a project name:")
                 .DefaultValue(solutionName + ".Api")
-                .ShowAsync(AnsiConsole.Console, Token);
+                .ShowAsync(AnsiConsole.Console, ct);
 
         var workingDir =
             solutionNameInput == DefaultSolutionName
@@ -59,14 +59,14 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
                     .AddChoice(false)
                     .DefaultValue(true)
                     .WithConverter(choice => choice ? "y" : "n"),
-                Token
+                ct
             )
                 ? "slnx"
                 : "sln";
 
         await Runner
             .WithMessage($"Initializing solution [teal]{solutionName}[/]...\n")
-            .RunAsync(DotnetCommand, $"new sln -o {solutionNameInput} -f {solutionFormat}");
+            .RunAsync(DotnetCommand, $"new sln -o {solutionNameInput} -f {solutionFormat}", ct);
 
         List<string> selectedModules =
         [
@@ -77,24 +77,24 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
                 .AddChoices(await SearchWeavlyPackagesAsync(workingDir))
-                .ShowAsync(AnsiConsole.Console, Token),
+                .ShowAsync(AnsiConsole.Console, ct),
         ];
 
         await Runner
             .InDirectory(workingDir)
             .WithMessage($"Adding project [teal]{projectName}[/]...\n")
-            .RunAsync(DotnetCommand, $"new web -n {projectName}");
-        await Runner.InDirectory(workingDir).RunAsync(DotnetCommand, $"sln add {projectName}");
+            .RunAsync(DotnetCommand, $"new web -n {projectName}", ct);
+        await Runner.InDirectory(workingDir).RunAsync(DotnetCommand, $"sln add {projectName}", ct);
 
         foreach (var module in selectedModules)
         {
             await Runner
                 .InDirectory(workingDir)
                 .WithMessage($"Adding module [teal]{module}[/]...\n")
-                .RunAsync(DotnetCommand, $"package add {module} --project ./{projectName}/{projectName}.csproj");
+                .RunAsync(DotnetCommand, $"package add {module} --project ./{projectName}/{projectName}.csproj", ct);
         }
 
-        await UpdateProgramBootstrapperAsync(workingDir, projectName, selectedModules);
+        await UpdateProgramBootstrapperAsync(workingDir, projectName, selectedModules, ct);
 
         if (solutionNameInput != DefaultSolutionName)
         {
@@ -102,17 +102,18 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         }
     }
 
-    private async Task UpdateProgramBootstrapperAsync(
+    private static async Task UpdateProgramBootstrapperAsync(
         string workingDir,
         string projectName,
-        List<string> selectedModules
+        List<string> selectedModules,
+        CancellationToken ct
     )
     {
         AnsiConsole.Write(new Markup($"Updating [teal]{projectName}/Program.cs[/]...\n"));
 
         var programFilePath = Path.Combine(workingDir, projectName, "Program.cs");
 
-        var file = await File.ReadAllTextAsync(programFilePath, Token);
+        var file = await File.ReadAllTextAsync(programFilePath, ct);
 
         if (file == null)
         {
@@ -124,6 +125,6 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         ModuleManagementHelper.AddAppSetup(ref file);
         ModuleManagementHelper.RemoveEndpointMappings(ref file);
 
-        await File.WriteAllTextAsync(programFilePath, file, Token);
+        await File.WriteAllTextAsync(programFilePath, file, ct);
     }
 }

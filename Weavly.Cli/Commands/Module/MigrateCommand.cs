@@ -10,7 +10,7 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
 {
     public class Settings : CommandSettings { }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings)
+    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
     {
         var modules = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
 
@@ -19,7 +19,7 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
             .PageSize(10)
             .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
             .AddChoices(modules.Keys)
-            .ShowAsync(AnsiConsole.Console, Token);
+            .ShowAsync(AnsiConsole.Console, ct);
 
         var contexts = RetrieveModuleContexts(modules[selectedModule])
             .ToDictionary(ExtractFileNameWithoutExtension, f => f);
@@ -32,17 +32,17 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
             .PageSize(5)
             .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
             .AddChoices(contexts.Keys.Select(c => c.Replace(rootContext, string.Empty)))
-            .ShowAsync(AnsiConsole.Console, Token);
+            .ShowAsync(AnsiConsole.Console, ct);
 
         var migrationName = await new TextPrompt<string>("Please enter a migration name:").ShowAsync(
             AnsiConsole.Console,
-            Token
+            ct
         );
 
         foreach (var provider in selectedProviders)
         {
             var contextName = ExtractFileNameWithoutExtension(contexts[provider + rootContext]);
-            var fullContextName = await BuildFullContextName(contexts[contextName], contextName);
+            var fullContextName = await BuildFullContextName(contexts[contextName], contextName, ct);
 
             var command = new StringBuilder("ef migrations add")
                 .Append($" --project {modules[selectedModule].Replace($".{DirectorySeparator}", string.Empty)}")
@@ -54,7 +54,7 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
 
             await Runner
                 .WithMessage($"Adding migration for [teal]{contextName}[/]...\n")
-                .RunAsync("dotnet", command.ToString());
+                .RunAsync("dotnet", command.ToString(), ct);
         }
     }
 
@@ -65,9 +65,9 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
         return fileNameWithExtension[..fileNameWithExtension.LastIndexOf('.')];
     }
 
-    private async Task<string> BuildFullContextName(string context, string contextName)
+    private static async Task<string> BuildFullContextName(string context, string contextName, CancellationToken ct)
     {
-        return (await File.ReadAllLinesAsync(context, Token))
+        return (await File.ReadAllLinesAsync(context, ct))
                 .First(l => l.StartsWith("namespace"))
                 .Replace("namespace", string.Empty)
                 .Trim(';')
