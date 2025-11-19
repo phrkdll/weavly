@@ -15,7 +15,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         public string? ProjectName { get; set; }
     }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings)
+    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
     {
         var projects = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
         var projectName =
@@ -25,7 +25,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more projects)[/]")
                 .AddChoices(projects.Keys)
-                .ShowAsync(AnsiConsole.Console, Token);
+                .ShowAsync(AnsiConsole.Console, ct);
 
         AnsiConsole.Write(new Markup($"Adding module to [teal]{projectName}[/]...\n"));
 
@@ -41,17 +41,17 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
                 .AddChoices(await SearchWeavlyPackagesAsync(workingDir, installedPackages))
-                .ShowAsync(AnsiConsole.Console, Token),
+                .ShowAsync(AnsiConsole.Console, ct),
         ];
 
         foreach (var module in selectedModules)
         {
             await Runner
                 .WithMessage($"Adding module [teal]{module}[/]...\n")
-                .RunAsync("dotnet", $"package add {module} --project ./{projectName}/{projectName}.csproj");
+                .RunAsync("dotnet", $"package add {module} --project ./{projectName}/{projectName}.csproj", ct);
         }
 
-        await UpdateProgramBootstrapperAsync(projectName, selectedModules);
+        await UpdateProgramBootstrapperAsync(projectName, selectedModules, ct);
     }
 
     private static string ExtractFileNameWithoutExtension(string fileName)
@@ -66,13 +66,17 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         return [.. Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories)];
     }
 
-    private async Task UpdateProgramBootstrapperAsync(string projectName, List<string> selectedModules)
+    private static async Task UpdateProgramBootstrapperAsync(
+        string projectName,
+        List<string> selectedModules,
+        CancellationToken ct
+    )
     {
         AnsiConsole.Write(new Markup($"Updating [teal]{projectName}/Program.cs[/]...\n"));
 
         var programFilePath = Path.Combine(projectName, "Program.cs");
 
-        var file = await File.ReadAllTextAsync(programFilePath, Token);
+        var file = await File.ReadAllTextAsync(programFilePath, ct);
 
         if (file == null)
         {
@@ -82,6 +86,6 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         ModuleManagementHelper.UpdateUsings(selectedModules, ref file);
         ModuleManagementHelper.UpdateBuilderSetup(selectedModules, ref file);
 
-        await File.WriteAllTextAsync(programFilePath, file, Token);
+        await File.WriteAllTextAsync(programFilePath, file, ct);
     }
 }

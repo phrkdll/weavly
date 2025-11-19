@@ -13,7 +13,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         public string? ModuleName { get; set; }
     }
 
-    public override Task HandleAsync(CommandContext commandContext, Settings settings)
+    public override Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
     {
         throw new NotImplementedException();
     }
