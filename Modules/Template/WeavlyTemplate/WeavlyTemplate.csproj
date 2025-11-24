@@ -1,0 +1,6 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\WeavlyTemplate.Shared\WeavlyTemplate.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj" />
+  </ItemGroup>
+</Project>

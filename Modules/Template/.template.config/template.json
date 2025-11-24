@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "phrkdll",
+    "classifications": [
+        "Weavly",
+        "Module",
+        "Template"
+    ],
+    "identity": "Weavly.Module.Template",
+    "name": "Weavly Module Template",
+    "shortName": "weavly-module",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "WeavlyTemplate"
+}

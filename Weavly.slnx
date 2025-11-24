@@ -24,6 +24,11 @@
     <Project Path="Modules/Messages/Weavly.Messages.Shared/Weavly.Messages.Shared.csproj" />
     <Project Path="Modules/Messages/Weavly.Messages/Weavly.Messages.csproj" />
   </Folder>
+  <Folder Name="/Modules/Template/">
+    <Project Path="Modules/Template/WeavlyTemplate.Shared/WeavlyTemplate.Shared.csproj" />
+    <Project Path="Modules/Template/WeavlyTemplate.Tests/WeavlyTemplate.Tests.csproj" />
+    <Project Path="Modules/Template/WeavlyTemplate/WeavlyTemplate.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path="Directory.Packages.props" />
