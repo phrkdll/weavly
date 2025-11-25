@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <TargetFramework>net9</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -29,10 +29,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
+    <!-- <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" /> -->
   </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Cli')) AND !$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.StartsWith('Weavly.Api')) AND !$(AssemblyName.StartsWith('Weavly.Persistence'))">
     <Using Include="Weavly.Core.Shared.Implementation" />
@@ -44,38 +44,38 @@
     <Using Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.GitHub" Version="9.4.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="10.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.GitHub" Version="10.0.0" />
     <PackageVersion Include="DotNetEnv" Version="3.1.1" />
-    <PackageVersion Include="FastEndpoints" Version="6.2.0" />
-    <PackageVersion Include="FastEndpoints.Messaging.Core" Version="6.2.0" />
-    <PackageVersion Include="FastEndpoints.Swagger" Version="6.2.0" />
+    <PackageVersion Include="FastEndpoints" Version="7.1.1" />
+    <PackageVersion Include="FastEndpoints.Messaging.Core" Version="7.1.1" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="7.1.1" />
     <PackageVersion Include="GoogleAuthenticator" Version="3.2.0" />
-    <PackageVersion Include="MailKit" Version="4.13.0" />
+    <PackageVersion Include="MailKit" Version="4.14.1" />
     <PackageVersion Include="Mapster" Version="7.4.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.5.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.11.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     <PackageVersion Include="Spectre.Console" Version="0.54.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.0" />
     <PackageVersion Include="Strongly" Version="1.5.1" />
     <PackageVersion Include="Strongly.EFCore" Version="1.5.1" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.14.0" />
+    <!-- <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" /> -->
   </ItemGroup>
   <!-- Test -->
   <ItemGroup>
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4">
@@ -83,7 +83,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1">
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
