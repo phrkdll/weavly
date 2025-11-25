@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="Weavly.Core.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
     <ProjectReference Include="..\Weavly.Core.Persistence\Weavly.Core.Persistence.csproj" />
   </ItemGroup>

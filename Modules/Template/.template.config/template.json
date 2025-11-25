@@ -8,10 +8,11 @@
     ],
     "identity": "Weavly.Module.Template",
     "name": "Weavly Module Template",
+    "description": "Module template for Weavly with projects for the main module, shared data and tests",
     "shortName": "weavly-module",
+    "sourceName": "WeavlyTemplate",
     "tags": {
         "language": "C#",
         "type": "project"
-    },
-    "sourceName": "WeavlyTemplate"
+    }
 }
