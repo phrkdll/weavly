@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Spectre.Console;
 using Spectre.Console.Rendering;
+using Weavly.Cli.Models.ProcessRunner;
 
 namespace Weavly.Cli.Utils;
 
@@ -43,19 +44,14 @@ public class ProcessRunner
             ) ?? throw new InvalidOperationException("Failed to start process");
     }
 
-    public async Task<string> RunAsync(string fileName, string arguments, CancellationToken ct)
+    public async Task<string> RunAsync(ProcessRunnerCommand command, CancellationToken ct)
     {
         if (message != null)
         {
             AnsiConsole.Write(message);
         }
 
-        return await CreateProcess(fileName, arguments, true).StandardOutput.ReadToEndAsync(ct);
-    }
-
-    public async Task RunDotnetAsync(string arguments, CancellationToken ct)
-    {
-        await RunAsync("dotnet", arguments, ct);
+        return await CreateProcess(command.Command, command.Arguments, true).StandardOutput.ReadToEndAsync(ct);
     }
 
     public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct)
