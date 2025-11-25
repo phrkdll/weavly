@@ -46,6 +46,7 @@
     <PackageVersion Include="FastEndpoints" Version="7.1.1" />
     <PackageVersion Include="FastEndpoints.Messaging.Core" Version="7.1.1" />
     <PackageVersion Include="FastEndpoints.Swagger" Version="7.1.1" />
+    <PackageVersion Include="Fluid.Core" Version="2.31.0" />
     <PackageVersion Include="GoogleAuthenticator" Version="3.2.0" />
     <PackageVersion Include="MailKit" Version="4.14.1" />
     <PackageVersion Include="Mapster" Version="7.4.0" />

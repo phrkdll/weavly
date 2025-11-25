@@ -1,5 +1,6 @@
 using System.ComponentModel;
-using System.Text;
+using Fluid;
+using Namotion.Reflection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Weavly.Cli.Models;
@@ -10,6 +11,23 @@ namespace Weavly.Cli.Commands.Module;
 [Description("Initializes a new custom module project for the current solution")]
 public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
 {
+    private readonly IEnumerable<string> xunitPackages =
+    [
+        "coverlet.collector",
+        "Microsoft.NET.Test.Sdk",
+        "xunit",
+        "xunit.runner.visualstudio",
+    ];
+
+    private readonly IEnumerable<string> nunitPackages =
+    [
+        "coverlet.collector",
+        "Microsoft.NET.Test.Sdk",
+        "NUnit",
+        "NUnit.Analyzers",
+        "NUnit3TestAdapter",
+    ];
+
     private readonly WeavlyModule coreModule = WeavlyModule.New("Core", "Weavly");
 
     public class Settings : CommandSettings
@@ -49,41 +67,28 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
             .WithMessage($"Adding project [teal]{module.Tests}[/]...\n")
             .RunAsync(Dotnet.AddProject("classlib", module.Tests), ct);
 
-        switch (settings.TestingFramework.ToLowerInvariant().Trim())
-        {
-            case "xunit":
-                await Runner.RunAsync(
-                    Dotnet.AddPackage(
-                        module.Tests,
-                        "coverlet.collector",
-                        "Microsoft.NET.Test.Sdk",
-                        "xunit",
-                        "xunit.runner.visualstudio"
-                    ),
-                    ct
-                );
-                break;
-            case "nunit":
-                await Runner.RunAsync(
-                    Dotnet.AddPackage(
-                        module.Tests,
-                        "coverlet.collector",
-                        "Microsoft.NET.Test.Sdk",
-                        "NUnit",
-                        "NUnit.Analyzers",
-                        "NUnit3TestAdapter"
-                    ),
-                    ct
-                );
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported testing framework: {settings.TestingFramework}");
-        }
-
         await Runner
             .WithMessage($"Adding project/package references...\n")
             .RunAsync(Dotnet.AddReference(module.Main, module.Shared.Folder), ct);
         await Runner.RunAsync(Dotnet.AddReference(module.Tests, module.Main.Folder, module.Shared.Folder), ct);
+
+        switch (settings.TestingFramework.ToLowerInvariant().Trim())
+        {
+            case "xunit":
+                foreach (var pkg in xunitPackages)
+                {
+                    await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
+                }
+                break;
+            case "nunit":
+                foreach (var pkg in nunitPackages)
+                {
+                    await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
+                }
+                break;
+            default:
+                throw new InvalidOperationException($"Unsupported testing framework: {settings.TestingFramework}");
+        }
 
         if (solutionName == coreModule.Solution)
         {
@@ -94,6 +99,20 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         {
             await Runner.RunAsync(Dotnet.AddPackage(module.Main, coreModule.Main.FullName), ct);
             await Runner.RunAsync(Dotnet.AddPackage(module.Shared, coreModule.Shared.FullName), ct);
+        }
+
+        var defaultClassFile = "Class1.cs";
+        File.Delete(Path.Combine(module.Main.Folder, defaultClassFile));
+        File.Delete(Path.Combine(module.Shared.Folder, defaultClassFile));
+        File.Delete(Path.Combine(module.Tests.Folder, defaultClassFile));
+
+        var parser = new FluidParser();
+        if (parser.TryParse(Templates.Templates.Module, out var template))
+        {
+            using var writer = new StreamWriter(Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"), false);
+
+            var context = new TemplateContext(module);
+            await template.RenderAsync(writer, context);
         }
 
         await Runner

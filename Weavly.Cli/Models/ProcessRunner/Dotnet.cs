@@ -7,7 +7,7 @@ public class Dotnet : ProcessRunnerCommand
     private Dotnet(string arguments)
         : base("dotnet", arguments) { }
 
-    public static Dotnet AddPackage(WeavlyProject to, params string[] from) => new(BuildArguments("package", to, from));
+    public static Dotnet AddPackage(WeavlyProject to, string package) => new(BuildArguments("package", to, package));
 
     public static Dotnet AddReference(WeavlyProject to, params string[] from) =>
         new(BuildArguments("reference", to, from));
