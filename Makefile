@@ -18,10 +18,10 @@ check: # Perform "csharpier check ."
 format: # Perform "csharpier format ."
 	@csharpier format .
 
-cleanf: clean .cleanf-internal # Performs a full solution cleanup with bin/obj removal
+full-clean: clean .full-clean-internal # Performs a full solution cleanup with bin/obj removal
 clean: # Perform "dotnet clean ."
 	@dotnet clean .
-.cleanf-internal:	
+.full-clean-internal:	
 	@dotnet msbuild -t:FullClean
 	
 tool: uninstall clean .packcli install # Repack and reinstall Weavly.Cli

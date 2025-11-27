@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using Fluid;
-using Namotion.Reflection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Weavly.Cli.Models;
 using Weavly.Cli.Models.ProcessRunner;
+using Weavly.Cli.Utils;
 
 namespace Weavly.Cli.Commands.Module;
 
@@ -107,7 +107,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         File.Delete(Path.Combine(module.Tests.Folder, defaultClassFile));
 
         var parser = new FluidParser();
-        if (parser.TryParse(Templates.Templates.Module, out var template))
+        if (parser.TryParse(EmbeddedResources.GetTemplate("Module.cs.template"), out var template))
         {
             using var writer = new StreamWriter(Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"), false);
 
@@ -118,8 +118,5 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         await Runner
             .WithMessage($"Adding projects to solution...\n")
             .RunAsync(Dotnet.AddToSolution(module.Main, module.Shared, module.Tests), ct);
-
-        // TODO: Clean up project files (e.g., remove default Class1.cs, adjust namespaces, etc.)
-        // + Remove unnecessary entries from .csproj files
     }
 }
