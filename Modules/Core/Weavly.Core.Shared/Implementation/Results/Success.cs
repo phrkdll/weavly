@@ -1,9 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace Weavly.Core.Shared.Implementation.Results;
 
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class Success<T> : Result
 {
     [JsonConstructor]
