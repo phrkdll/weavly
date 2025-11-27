@@ -2,6 +2,7 @@
 using System.Text;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Weavly.Cli.Models.ProcessRunner;
 
 namespace Weavly.Cli.Commands.Module;
 
@@ -54,7 +55,7 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
 
             await Runner
                 .WithMessage($"Adding migration for [teal]{contextName}[/]...\n")
-                .RunAsync("dotnet", command.ToString(), ct);
+                .RunAsync(Dotnet.Custom(command.ToString()), ct);
         }
     }
 

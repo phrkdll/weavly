@@ -11,6 +11,7 @@
   <Folder Name="/Modules/Core/">
     <Project Path="Modules/Core/Weavly.Core.Persistence/Weavly.Core.Persistence.csproj" />
     <Project Path="Modules/Core/Weavly.Core.Shared/Weavly.Core.Shared.csproj" />
+    <Project Path="Modules/Core/Weavly.Core.Tests/Weavly.Core.Tests.csproj" />
     <Project Path="Modules/Core/Weavly.Core/Weavly.Core.csproj" />
   </Folder>
   <Folder Name="/Modules/Logging/">

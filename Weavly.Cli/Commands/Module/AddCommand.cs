@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Weavly.Cli.Models.ProcessRunner;
 using Weavly.Cli.Utils;
 
 namespace Weavly.Cli.Commands.Module;
@@ -31,7 +32,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
 
         var workingDir = Path.Combine(Directory.GetCurrentDirectory(), projectName);
 
-        var installedPackages = await ListWeavlyPackagesAsync(projectName);
+        var installedPackages = await ListWeavlyPackagesAsync(projectName, ct: ct);
 
         List<string> selectedModules =
         [
@@ -40,7 +41,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
                 .Required()
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
-                .AddChoices(await SearchWeavlyPackagesAsync(workingDir, installedPackages))
+                .AddChoices(await SearchWeavlyPackagesAsync(workingDir, installedPackages, ct: ct))
                 .ShowAsync(AnsiConsole.Console, ct),
         ];
 
@@ -48,7 +49,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         {
             await Runner
                 .WithMessage($"Adding module [teal]{module}[/]...\n")
-                .RunAsync("dotnet", $"package add {module} --project ./{projectName}/{projectName}.csproj", ct);
+                .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
         }
 
         await UpdateProgramBootstrapperAsync(projectName, selectedModules, ct);

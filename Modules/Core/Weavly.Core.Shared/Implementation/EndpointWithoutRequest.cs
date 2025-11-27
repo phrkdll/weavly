@@ -7,17 +7,17 @@ public abstract class EndpointWithoutRequest : EndpointWithoutRequest<Result>
 {
     protected Task SendConflictAsync(Result response, CancellationToken ct)
     {
-        return SendAsync(response, (int)HttpStatusCode.Conflict, ct);
+        return Send.ResponseAsync(response, (int)HttpStatusCode.Conflict, ct);
     }
 
     protected Task SendBadRequestAsync(Result response, CancellationToken ct)
     {
-        return SendAsync(response, (int)HttpStatusCode.BadRequest, ct);
+        return Send.ResponseAsync(response, (int)HttpStatusCode.BadRequest, ct);
     }
 
     protected Task SendUnauthorizedAsync(Result response, CancellationToken ct)
     {
-        return SendAsync(response, (int)HttpStatusCode.Unauthorized, ct);
+        return Send.ResponseAsync(response, (int)HttpStatusCode.Unauthorized, ct);
     }
 
     public abstract override void Configure();
@@ -31,7 +31,7 @@ public abstract class EndpointWithoutRequest : EndpointWithoutRequest<Result>
 
         if (response.Success)
         {
-            await SendOkAsync(response, ct);
+            await Send.OkAsync(response, ct);
         }
         else
         {

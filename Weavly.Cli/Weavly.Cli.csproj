@@ -5,7 +5,11 @@
     <ToolCommandName>wv</ToolCommandName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Fluid.Core" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="Spectre.Console.Cli" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates/**/*" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>

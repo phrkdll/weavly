@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
     <ProjectReference Include="..\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>

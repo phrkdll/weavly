@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Weavly.Cli.Models.ProcessRunner;
 using Weavly.Cli.Utils;
 
 namespace Weavly.Cli.Commands.Init;
@@ -66,7 +67,9 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
 
         await Runner
             .WithMessage($"Initializing solution [teal]{solutionName}[/]...\n")
-            .RunAsync(DotnetCommand, $"new sln -o {solutionNameInput} -f {solutionFormat}", ct);
+            .RunAsync(Dotnet.NewSolution(solutionNameInput, solutionFormat), ct);
+
+        await Runner.InDirectory(workingDir).RunAsync(Dotnet.Custom("new packagesprops"), ct);
 
         List<string> selectedModules =
         [
@@ -76,22 +79,22 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
                 .Required()
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
-                .AddChoices(await SearchWeavlyPackagesAsync(workingDir))
+                .AddChoices(await SearchWeavlyPackagesAsync(workingDir, ct: ct))
                 .ShowAsync(AnsiConsole.Console, ct),
         ];
 
         await Runner
             .InDirectory(workingDir)
             .WithMessage($"Adding project [teal]{projectName}[/]...\n")
-            .RunAsync(DotnetCommand, $"new web -n {projectName}", ct);
-        await Runner.InDirectory(workingDir).RunAsync(DotnetCommand, $"sln add {projectName}", ct);
+            .RunAsync(Dotnet.Custom($"new web -n {projectName}"), ct);
+        await Runner.InDirectory(workingDir).RunAsync(Dotnet.Custom($"sln add {projectName}"), ct);
 
         foreach (var module in selectedModules)
         {
             await Runner
                 .InDirectory(workingDir)
                 .WithMessage($"Adding module [teal]{module}[/]...\n")
-                .RunAsync(DotnetCommand, $"package add {module} --project ./{projectName}/{projectName}.csproj", ct);
+                .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
         }
 
         await UpdateProgramBootstrapperAsync(workingDir, projectName, selectedModules, ct);
