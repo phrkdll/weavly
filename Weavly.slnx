@@ -6,6 +6,7 @@
   </Folder>
   <Folder Name="/Modules/Configuration/">
     <Project Path="Modules/Configuration/Weavly.Configuration.Shared/Weavly.Configuration.Shared.csproj" />
+    <Project Path="Modules/Configuration/Weavly.Configuration.Tests/Weavly.Configuration.Tests.csproj" />
     <Project Path="Modules/Configuration/Weavly.Configuration/Weavly.Configuration.csproj" />
   </Folder>
   <Folder Name="/Modules/Core/">
