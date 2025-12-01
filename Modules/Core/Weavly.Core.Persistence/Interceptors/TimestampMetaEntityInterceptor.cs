@@ -1,5 +1,5 @@
-﻿using Weavly.Core.Persistence.Models;
-using Weavly.Core.Shared.Contracts;
+﻿using Weavly.Core.Shared.Contracts;
+using Weavly.Core.Shared.Models;
 
 namespace Weavly.Core.Persistence.Interceptors;
 
