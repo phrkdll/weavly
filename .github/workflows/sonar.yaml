@@ -19,7 +19,6 @@ jobs:
         sonarProjectName:  weavly
         # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
         sonarOrganization: phrkdll
-
-  env:
-    SONAR_TOKEN: ${{ $SONAR_TOKEN }}
-    GITHUB_TOKEN: ${{ $GITHUB_TOKEN }}
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
