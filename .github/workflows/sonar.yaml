@@ -34,7 +34,7 @@ jobs:
           /o:"phrkdll" \
           /d:sonar.login="$SONAR_TOKEN" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml"
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
     # Build & test with coverage
     - name: Build with dotnet
@@ -42,15 +42,16 @@ jobs:
 
     - name: Run tests with Cobertura coverage
       run: |
-        dotnet test \
-          --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./coverage
+          dotnet test \
+            --configuration Release \
+            /p:CollectCoverage=true \
+            /p:CoverletOutput=./TestResults/coverage/ \
+            /p:CoverletOutputFormat=opencover
 
-    - name: List coverage outputs (for debugging)
+    - name: Debug coverage output
       run: |
-        echo "Coverage directory:"
-        ls -R ./coverage
+        echo "--- Coverage files found ---"
+        find . -name "coverage.opencover.xml"
 
     - name: End Sonar Analysis
       env:
