@@ -25,7 +25,7 @@ jobs:
       run: dotnet tool install --global dotnet-sonarscanner
 
     # Begin SonarCloud analysis
-    - name: SonarCloud - Begin Analysis
+    - name: Begin Sonar Analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
@@ -34,29 +34,25 @@ jobs:
           /o:"phrkdll" \
           /d:sonar.login="$SONAR_TOKEN" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml"
 
     # Build & test with coverage
     - name: Build with dotnet
       run: dotnet build --configuration Release
 
-    - name: Run tests with coverage
+    - name: Run tests with Cobertura coverage
       run: |
         dotnet test \
           --configuration Release \
           --collect:"XPlat Code Coverage" \
           --results-directory ./coverage
 
-    # Convert coverage to OpenCover (required by SonarCloud)
-    - name: Convert Coverage to OpenCover
+    - name: List coverage outputs (for debugging)
       run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator \
-          -reports:coverage/*/coverage.cobertura.xml \
-          -targetdir:coverage/opencover \
-          -reporttypes:opencover
+        echo "Coverage directory:"
+        ls -R ./coverage
 
-    - name: SonarCloud - End Analysis
+    - name: End Sonar Analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
