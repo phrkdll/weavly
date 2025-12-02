@@ -10,15 +10,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: SonarScanner for .NET 10 with pull request decoration support
-      uses: highbyte/sonarscan-dotnet@v2.5.0
+    - name: Checkout repository
+      uses: actions/checkout@v4
       with:
-        # The key of the SonarQube project
-        sonarProjectKey: phrkdll_weavly
-        # The name of the SonarQube project
-        sonarProjectName:  weavly
-        # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
-        sonarOrganization: phrkdll
+        fetch-depth: 0   # Needed so SonarCloud can detect PRs & branches
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    # Install SonarScanner for .NET
+    - name: Install SonarScanner
+      run: dotnet tool install --global dotnet-sonarscanner
+
+    # Begin SonarCloud analysis
+    - name: SonarCloud - Begin Analysis
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet sonarscanner begin \
+          /k:"phrkdll_weavly" \
+          /o:"phrkdll" \
+          /d:sonar.login="$SONAR_TOKEN" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
+    # Build & test with coverage
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+
+    - name: Run tests with coverage
+      run: |
+        dotnet test \
+          --configuration Release \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./coverage
+
+    # Convert coverage to OpenCover (required by SonarCloud)
+    - name: Convert Coverage to OpenCover
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator \
+          -reports:coverage/*/coverage.cobertura.xml \
+          -targetdir:coverage/opencover \
+          -reporttypes:opencover
+
+    - name: SonarCloud - End Analysis
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
