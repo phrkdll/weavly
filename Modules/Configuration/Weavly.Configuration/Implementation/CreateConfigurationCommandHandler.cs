@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Weavly.Configuration.Models;
 using Weavly.Configuration.Persistence;
-using Weavly.Configuration.Shared;
+using Weavly.Configuration.Shared.Features.CreateConfig;
 
 namespace Weavly.Configuration.Implementation;
 

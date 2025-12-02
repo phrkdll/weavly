@@ -1,23 +1,22 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Core.Implementation;
 
-internal sealed class WeavlyApplicationBuilder(WebApplicationBuilder builder) : IWeavlyApplicationBuilder
+internal sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : IWeavlyApplicationBuilder
 {
-    private readonly List<IWeavlyModule> _modules = [];
+    private readonly HashSet<IWeavlyModule> modules = [];
 
-    public IEnumerable<IWeavlyModule> Modules => _modules;
+    public IEnumerable<IWeavlyModule> Modules => modules;
 
     public IWeavlyApplicationBuilder AddModule<T>()
         where T : IWeavlyModule
     {
         if (Activator.CreateInstance<T>() is IWeavlyModule module)
         {
-            _modules.Add(module);
+            modules.Add(module);
         }
 
         return this;
@@ -30,7 +29,7 @@ internal sealed class WeavlyApplicationBuilder(WebApplicationBuilder builder) : 
             module.Configure(builder);
         }
 
-        var assemblies = _modules.Select(module => module.GetType().Assembly).ToArray();
+        var assemblies = modules.Select(module => module.GetType().Assembly).ToArray();
 
         builder.Services.AddFastEndpoints(o => o.Assemblies = assemblies);
 

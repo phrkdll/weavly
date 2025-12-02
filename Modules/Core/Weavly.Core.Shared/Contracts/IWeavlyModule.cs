@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 
 namespace Weavly.Core.Shared.Contracts;
 
@@ -8,9 +9,9 @@ public interface IWeavlyModule
     ///     Perform any tasks regarding setup here (i.e. service registration)
     /// </summary>
     /// <param name="builder">
-    ///     <see cref="WebApplicationBuilder"/>
+    ///     <see cref="IHostApplicationBuilder"/>
     /// </param>
-    void Configure(WebApplicationBuilder builder);
+    void Configure(IHostApplicationBuilder builder);
 
     /// <summary>
     ///     Perform any tasks regarding app start here (i.e. endpoint activation)

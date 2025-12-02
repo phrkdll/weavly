@@ -1,6 +1,7 @@
 using EntityFrameworkCore.Testing.NSubstitute;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Implementation;
@@ -33,7 +34,7 @@ public class LoadConfigurationCommandHandlerTests
             new AppConfiguration
             {
                 Id = new ConfigurationId(),
-                Module = "ModuleA",
+                Module = "ExistingModule",
                 Category = "Default",
                 Name = "FeatureEnabled",
                 BoolValue = true,
@@ -41,7 +42,7 @@ public class LoadConfigurationCommandHandlerTests
             new AppConfiguration
             {
                 Id = new ConfigurationId(),
-                Module = "ModuleA",
+                Module = "ExistingModule",
                 Category = "Default",
                 Name = "Endpoint",
                 StringValue = "TestValue",
@@ -49,15 +50,17 @@ public class LoadConfigurationCommandHandlerTests
             new AppConfiguration
             {
                 Id = new ConfigurationId(),
-                Module = "ModuleB",
+                Module = "ExistingModule",
                 Category = "Default",
+                Name = "MaxItems",
                 IntValue = 42,
             },
             new AppConfiguration
             {
                 Id = new ConfigurationId(),
-                Module = "ModuleB",
+                Module = "ExistingModule",
                 Category = "Default",
+                Name = "PiValue",
                 DoubleValue = 3.14,
             }
         );
@@ -78,7 +81,7 @@ public class LoadConfigurationCommandHandlerTests
     [Fact]
     public async Task ExecuteAsync_ShouldReturn_FailureInstance_WhenNoConfigurationFound()
     {
-        var command = LoadConfigurationCommand.Create<ModuleC>();
+        var command = LoadConfigurationCommand.Create<LoadConfigurationCommandHandlerTests>();
 
         var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
 
@@ -86,25 +89,25 @@ public class LoadConfigurationCommandHandlerTests
         result.Message.ShouldBe("Could not find configuration");
     }
 
-    [Theory]
-    [InlineData(nameof(ModuleA))]
-    [InlineData(nameof(ModuleB))]
-    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_WithConfigurationResponse(string moduleName)
+    [Fact]
+    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_WithConfigurationResponse()
     {
-        var command = LoadConfigurationCommand.Create(moduleName);
+        var command = LoadConfigurationCommand.Create("ExistingModule");
 
         var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
 
         var castResult = result.ShouldBeOfType<Success<LoadConfigurationResponse>>();
         var data = castResult.Data.ShouldBeOfType<LoadConfigurationResponse>();
 
-        data.Module.ShouldBe(moduleName);
-        data.Items.Count().ShouldBe(2);
+        data.Module.ShouldBe("ExistingModule");
+        data.Items.Count().ShouldBe(4);
+
+        var category = data.Items.Select(x => x.Category).Distinct().SingleOrDefault();
+        category.ShouldBe("Default");
+
+        data.Items.ShouldContain(i => i.Name == "FeatureEnabled" && i.AsBool());
+        data.Items.ShouldContain(i => i.Name == "Endpoint" && i.AsString() == "TestValue");
+        data.Items.ShouldContain(i => i.Name == "MaxItems" && i.AsInt() == 42);
+        data.Items.ShouldContain(i => i.Name == "PiValue" && i.AsDouble().Equals(3.14));
     }
-
-    private sealed class ModuleA { };
-
-    private sealed class ModuleB { };
-
-    private sealed class ModuleC { };
 }

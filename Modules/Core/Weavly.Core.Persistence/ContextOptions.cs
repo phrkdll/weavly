@@ -22,6 +22,9 @@ public static class ContextOptions
             case "postgres":
                 PreparePostgres(options, builder);
                 break;
+            case "inmemory":
+                PrepareInMemory(builder);
+                break;
             default:
                 throw new ArgumentException("Unsupported database type");
         }
@@ -36,7 +39,7 @@ public static class ContextOptions
     {
         var options = new ModuleOptions();
 
-        var provider = configuration.GetValue("provider", null as string);
+        var provider = configuration.GetValue("provider", "inmemory");
 
         if (provider != null)
         {
@@ -67,5 +70,10 @@ public static class ContextOptions
         }
 
         builder.UseSqlite(connectionString);
+    }
+
+    private static void PrepareInMemory(DbContextOptionsBuilder builder)
+    {
+        builder.UseSqlite("Data Source=:memory:");
     }
 }

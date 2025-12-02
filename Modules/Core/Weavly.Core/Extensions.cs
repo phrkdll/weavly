@@ -17,9 +17,9 @@ public static class Extensions
     /// <summary>
     ///     Add Weavly core components to the application
     /// </summary>
-    /// <param name="builder"><see cref="WebApplicationBuilder"/></param>
+    /// <param name="builder"><see cref="IHostApplicationBuilder"/></param>
     /// <returns><see cref="IWeavlyApplicationBuilder"/></returns>
-    public static IWeavlyApplicationBuilder AddWeavly(this WebApplicationBuilder builder)
+    public static IWeavlyApplicationBuilder AddWeavly(this IHostApplicationBuilder builder)
     {
         _weavlyApplicationBuilder = new WeavlyApplicationBuilder(builder);
 
@@ -46,7 +46,7 @@ public static class Extensions
             {
                 if (scope.ServiceProvider.GetRequiredService(dbContextType) is CoreDbContext ctx)
                 {
-                    ctx.Database.Migrate();
+                    ctx.Database?.Migrate();
                 }
             }
 
@@ -67,7 +67,7 @@ public static class Extensions
     /// </summary>
     /// <typeparam name="TModule">The module containing the database context.</typeparam>
     /// <typeparam name="TDbContext">The base database context being registered.</typeparam>
-    public static void AddWeavlyModuleDbContext<TModule, TDbContext>(this WebApplicationBuilder builder)
+    public static void AddWeavlyModuleDbContext<TModule, TDbContext>(this IHostApplicationBuilder builder)
         where TDbContext : CoreDbContext
     {
         var contexts = typeof(TDbContext)

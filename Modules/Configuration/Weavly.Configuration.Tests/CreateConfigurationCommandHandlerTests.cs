@@ -5,7 +5,7 @@ using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Implementation;
 using Weavly.Configuration.Persistence;
-using Weavly.Configuration.Shared;
+using Weavly.Configuration.Shared.Features.CreateConfig;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation.Results;
 
@@ -35,10 +35,16 @@ public class CreateConfigurationCommandHandlerTests
         sut = new CreateConfigurationCommandHandler(dbContextMock, loggerMock);
     }
 
-    [Fact]
-    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_ForValidConfigurations()
+    [Theory]
+    [InlineData("TestString"), InlineData(123), InlineData(true), InlineData(45.67)]
+    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_ForValidConfigurations(object value)
     {
-        var result = await this.sut.ExecuteAsync(TestCommand, CancellationToken.None);
+        var command = CreateConfigurationCommand.Create<CreateConfigurationCommandHandlerTests>(
+            "TestConfig",
+            value,
+            "TestCategory"
+        );
+        var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Success<ConfigurationId>>();
 

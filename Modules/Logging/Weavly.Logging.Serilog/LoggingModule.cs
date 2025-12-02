@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -6,9 +7,9 @@ namespace Weavly.Logging.Serilog;
 
 public sealed class LoggingModule : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
-        builder.Host.UseSerilog(
+        ((WebApplicationBuilder)builder).Host.UseSerilog(
             (_, configuration) =>
             {
                 configuration.WriteTo.Console(theme: AnsiConsoleTheme.Literate, applyThemeToRedirectedOutput: true);

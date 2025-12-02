@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.Extensions.Hosting;
 using Weavly.Configuration.Persistence;
 using Weavly.Core;
 
@@ -6,7 +6,7 @@ namespace Weavly.Configuration;
 
 public sealed class ConfigurationModule : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
         builder.AddWeavlyModuleDbContext<ConfigurationModule, ConfigurationDbContext>();
 
