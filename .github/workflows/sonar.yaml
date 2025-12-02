@@ -30,8 +30,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         dotnet sonarscanner begin \
-          /k:"<your_project_key>" \
-          /o:"<your_org_key>" \
+          /k:"$SONAR_PROJECT_KEY" \
+          /o:"$SONAR_ORG_KEY" \
           /d:sonar.login="$SONAR_TOKEN" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
