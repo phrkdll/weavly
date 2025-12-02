@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # Needed so SonarCloud can detect PRs & branches
+        
     - name: SonarScanner for .NET 10 with pull request decoration support
       uses: highbyte/sonarscan-dotnet@v2.5.0
       with:
