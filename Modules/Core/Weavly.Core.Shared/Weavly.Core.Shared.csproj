@@ -9,5 +9,6 @@
     <PackageReference Include="Scalar.AspNetCore" />
     <PackageReference Include="Strongly" />
     <PackageReference Include="Strongly.EFCore" />
+    <PackageReference Include="Testably.Abstractions" />
   </ItemGroup>
 </Project>

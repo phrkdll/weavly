@@ -13,12 +13,14 @@ public sealed class LoadConfigurationCommandHandler(
     ILogger<LoadConfigurationCommandHandler> logger
 ) : ICommandHandler<LoadConfigurationCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(LoadConfigurationCommand request, CancellationToken ct = default)
+    public async Task<Result> ExecuteAsync(LoadConfigurationCommand request, CancellationToken ct)
     {
-        logger.LogInformation("Received {MessageType} message", nameof(LoadConfigurationCommand));
-
         try
         {
+            ArgumentNullException.ThrowIfNull(request);
+
+            logger.LogInformation("Received {MessageType} message", nameof(LoadConfigurationCommand));
+
             var queryResult = await dbContext
                 .Configurations.Where(x => x.Module == request.Module)
                 .ToListAsync(cancellationToken: ct);
@@ -29,6 +31,7 @@ public sealed class LoadConfigurationCommandHandler(
             }
 
             var converted = queryResult.Select(x => x.Adapt<ConfigurationResponse>());
+
             return Success.Create(new LoadConfigurationResponse(request.Module, converted));
         }
         catch (Exception e)

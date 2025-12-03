@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Weavly.Configuration.Models;
 using Weavly.Configuration.Persistence;
-using Weavly.Configuration.Shared;
+using Weavly.Configuration.Shared.Features.CreateConfig;
 
 namespace Weavly.Configuration.Implementation;
 
@@ -13,12 +13,14 @@ public sealed class CreateConfigurationCommandHandler(
     ILogger<CreateConfigurationCommandHandler> logger
 ) : ICommandHandler<CreateConfigurationCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(CreateConfigurationCommand request, CancellationToken ct = default)
+    public async Task<Result> ExecuteAsync(CreateConfigurationCommand request, CancellationToken ct)
     {
-        logger.LogInformation("Received {MessageType} message", nameof(CreateConfigurationCommand));
-
         try
         {
+            ArgumentNullException.ThrowIfNull(request);
+
+            logger.LogInformation("Received {MessageType} message", nameof(CreateConfigurationCommand));
+
             if (await ConfigurationCanNotBeRegisteredAsync(request))
             {
                 return Failure.Create("Configuration can't be registered");
@@ -29,7 +31,7 @@ public sealed class CreateConfigurationCommandHandler(
 
             await dbContext.SaveChangesAsync(ct);
 
-            return Success.Create(request.Id);
+            return Success.Create(configuration.Id);
         }
         catch (Exception e)
         {
@@ -37,13 +39,6 @@ public sealed class CreateConfigurationCommandHandler(
         }
     }
 
-    private async Task<bool> ConfigurationCanNotBeRegisteredAsync(CreateConfigurationCommand? request)
-    {
-        if (request is null)
-        {
-            return true;
-        }
-
-        return await dbContext.Configurations.AnyAsync(x => x.Module == request.Module && x.Name == request.Name);
-    }
+    private async Task<bool> ConfigurationCanNotBeRegisteredAsync(CreateConfigurationCommand request) =>
+        await dbContext.Configurations.AnyAsync(x => x.Module == request.Module && x.Name == request.Name);
 }

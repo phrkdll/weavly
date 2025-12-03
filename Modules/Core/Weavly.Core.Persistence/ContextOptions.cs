@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using System.IO.Abstractions;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class ContextOptions
     {
         var scopedProvider = serviceProvider.CreateScope().ServiceProvider;
         var configuration = scopedProvider.GetRequiredService<IConfiguration>();
+        var fileSystem = scopedProvider.GetRequiredService<IFileSystem>();
 
         var options = RetrieveModuleOptions(configuration, moduleName);
 
@@ -17,10 +19,13 @@ public static class ContextOptions
         switch (options.DatabaseType?.ToLower())
         {
             case "sqlite":
-                PrepareSqlite(options, moduleName, builder);
+                PrepareSqlite(options, moduleName, builder, fileSystem.Directory);
                 break;
             case "postgres":
                 PreparePostgres(options, builder);
+                break;
+            case "inmemory":
+                PrepareInMemory(builder);
                 break;
             default:
                 throw new ArgumentException("Unsupported database type");
@@ -47,7 +52,7 @@ public static class ContextOptions
             configuration.Bind(moduleName, options);
         }
 
-        options.DatabaseType = options.DatabaseType?.ToLower();
+        options.DatabaseType = options.DatabaseType?.ToLower() ?? "inmemory";
 
         return options;
     }
@@ -57,15 +62,25 @@ public static class ContextOptions
         builder.UseNpgsql(options.ConnectionString);
     }
 
-    private static void PrepareSqlite(ModuleOptions options, string moduleName, DbContextOptionsBuilder builder)
+    private static void PrepareSqlite(
+        ModuleOptions options,
+        string moduleName,
+        DbContextOptionsBuilder builder,
+        IDirectory directory
+    )
     {
         var connectionString = options.ConnectionString ?? $"Data Source=data/{moduleName}.db";
 
-        if (!Directory.Exists("data"))
+        if (!directory.Exists("data"))
         {
-            Directory.CreateDirectory("data");
+            directory.CreateDirectory("data");
         }
 
         builder.UseSqlite(connectionString);
+    }
+
+    private static void PrepareInMemory(DbContextOptionsBuilder builder)
+    {
+        builder.UseSqlite("Data Source=:memory:");
     }
 }

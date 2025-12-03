@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
+using System.Diagnostics.CodeAnalysis;
 
 namespace {{Solution}}.{{Name}};
 
+[ExcludeFromCodeCoverage]
 public class {{Name}}Module : WeavlyModule
 {
     public override void Configure(WebApplicationBuilder builder)

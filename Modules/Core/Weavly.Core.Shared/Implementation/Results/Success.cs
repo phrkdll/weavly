@@ -21,4 +21,6 @@ public class Success<T> : Result
 public static class Success
 {
     public static Success<T> Create<T>(T data, string? message = null) => Success<T>.Create(data, message);
+
+    public static Success<object> Create(string? message = null) => Success<object>.Create(default!, message);
 }

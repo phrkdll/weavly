@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 
-namespace Weavly.Configuration.Shared;
+namespace Weavly.Configuration.Shared.Features.CreateConfig;
 
 public sealed record CreateConfigurationCommand : ConfigurationResponse, ICommand<Result>
 {

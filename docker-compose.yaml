@@ -20,14 +20,7 @@
     ports:
       - "127.0.0.1:5432:5432"
     restart: unless-stopped
-  ollama:
-    container_name: ollama
-    image: ollama/ollama
-    volumes:
-      - ollama_data:/root/.ollama
-    restart: unless-stopped
 
 volumes:
   postgres_data:
   smtp4dev_data:
-  ollama_data:

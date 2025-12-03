@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Weavly.Configuration.Shared;
+using Microsoft.Extensions.Hosting;
+using Weavly.Configuration.Shared.Features.CreateConfig;
 using Weavly.Mail.Implementation;
 using Weavly.Mail.Shared;
 
@@ -9,7 +9,7 @@ namespace Weavly.Mail;
 
 public class MailModule : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
         builder.Services.AddScoped<IMailService, MailService>();
 

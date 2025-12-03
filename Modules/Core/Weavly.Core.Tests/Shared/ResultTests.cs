@@ -7,7 +7,7 @@ public sealed class ResultTests
 {
     [Theory]
     [ClassData(typeof(SuccessFactoryTestData))]
-    public void SuccessFactory_Should_Return_Success_Instance(object data, string? message)
+    public void SuccessFactory_ShouldReturn_SuccessInstance(string data, string? message)
     {
         var result = Success.Create(data, message);
 
@@ -23,7 +23,7 @@ public sealed class ResultTests
 
     [Theory]
     [ClassData(typeof(FailureFactoryTestData))]
-    public void FailureFactory_Should_Return_Failure_Instance(string message)
+    public void FailureFactory_ShouldReturn_FailureInstance(string message)
     {
         var result = Failure.Create(message);
 
@@ -35,12 +35,26 @@ public sealed class ResultTests
         result.Message.ShouldBe(message);
     }
 
-    internal class SuccessFactoryTestData : TheoryData<object, string>
+    [Theory]
+    [ClassData(typeof(FailureFactoryExceptionTestData))]
+    public void FailureFactory_ShouldReturn_FailureInstance_ForException(Exception ex)
+    {
+        var result = Failure.Create(ex);
+
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<Failure>();
+
+        result.Success.ShouldBeFalse();
+
+        result.Message.ShouldBe(ex.Message);
+    }
+
+    internal class SuccessFactoryTestData : TheoryData<string, string>
     {
         public SuccessFactoryTestData()
         {
             Add("Data", "Message");
-            Add(new FileInfo("test.txt"), "File found");
+            Add("test.txt", "File found");
         }
     }
 
@@ -50,6 +64,15 @@ public sealed class ResultTests
         {
             Add("Message");
             Add("File not found");
+        }
+    }
+
+    internal class FailureFactoryExceptionTestData : TheoryData<Exception>
+    {
+        public FailureFactoryExceptionTestData()
+        {
+            Add(new Exception("Message"));
+            Add(new Exception("File not found"));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Auth.Contracts;
 using Weavly.Auth.Implementation;
@@ -16,15 +18,16 @@ using Weavly.Auth.Persistence.Interceptors;
 using Weavly.Auth.Shared.Features.CreateAppRole;
 using Weavly.Auth.Shared.Features.CreateAppUser;
 using Weavly.Auth.Shared.Identifiers;
-using Weavly.Configuration.Shared;
+using Weavly.Configuration.Shared.Features.CreateConfig;
 using Weavly.Core;
 using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth;
 
+[ExcludeFromCodeCoverage]
 public sealed class AuthModule : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
         builder
             .Services.AddAuthentication(options =>
@@ -32,8 +35,8 @@ public sealed class AuthModule : WeavlyModule
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie()
-            .AddGitHub(options => SetOAuthOptions("GitHub", options, builder))
-            .AddDiscord(options => SetOAuthOptions("Discord", options, builder));
+            .AddGitHub(options => SetOAuthOptions("GitHub", options, (WebApplicationBuilder)builder))
+            .AddDiscord(options => SetOAuthOptions("Discord", options, (WebApplicationBuilder)builder));
 
         builder
             .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

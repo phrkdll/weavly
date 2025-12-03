@@ -1,0 +1,33 @@
+name: Analyze with Sonar
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # Needed so SonarCloud can detect PRs & branches
+        
+    - name: Sonar Analysis
+      uses: highbyte/sonarscan-dotnet@252f699a9c4e005bf3902d44a1c6c0aea43c678e
+      with:
+        # The key of the SonarQube project
+        sonarProjectKey: ${{ vars.SONAR_PROJECT_KEY }}
+        # The name of the SonarQube project
+        sonarProjectName: ${{ vars.SONAR_PROJECT_NAME }}
+        # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
+        sonarOrganization: ${{ vars.SONAR_ORGANIZATION }}
+        # Optional command arguments to dotnet test
+        dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        # Optional extra command arguments the the SonarScanner 'begin' command
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

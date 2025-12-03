@@ -1,4 +1,4 @@
-﻿namespace Weavly.Core.Persistence.Models;
+﻿namespace Weavly.Core.Shared.Models;
 
 public interface IUserMetaEntity<TUserId>
     where TUserId : struct

@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Abstractions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Testably.Abstractions;
 using Weavly.Core.Implementation;
 using Weavly.Core.Persistence.Interceptors;
 using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Core;
 
+[ExcludeFromCodeCoverage]
 public sealed class CoreModule : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
         builder.Services.AddOpenApi();
 
@@ -18,6 +22,8 @@ public sealed class CoreModule : WeavlyModule
         builder.Services.AddSingleton<ITimeProvider, DefaultTimeProvider>();
 
         builder.Services.AddScoped<ISaveChangesInterceptor, TimestampMetaEntityInterceptor>();
+
+        builder.Services.AddSingleton<IFileSystem, RealFileSystem>();
 
         base.Configure(builder);
     }

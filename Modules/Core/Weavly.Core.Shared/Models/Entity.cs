@@ -1,4 +1,4 @@
-namespace Weavly.Core.Persistence.Models;
+namespace Weavly.Core.Shared.Models;
 
 public abstract class Entity<TEntityId>
     where TEntityId : struct

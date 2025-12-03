@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Weavly.Auth.Shared.Identifiers;
-using Weavly.Core.Persistence.Models;
+using Weavly.Core.Shared.Models;
 
 namespace Weavly.Auth.Models;
 
