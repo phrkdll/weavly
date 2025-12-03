@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -23,6 +24,7 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth;
 
+[ExcludeFromCodeCoverage]
 public sealed class AuthModule : WeavlyModule
 {
     public override void Configure(IHostApplicationBuilder builder)

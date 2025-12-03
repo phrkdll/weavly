@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Abstractions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,7 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Core;
 
+[ExcludeFromCodeCoverage]
 public sealed class CoreModule : WeavlyModule
 {
     public override void Configure(IHostApplicationBuilder builder)

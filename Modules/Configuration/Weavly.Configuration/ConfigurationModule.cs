@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Hosting;
 using Weavly.Configuration.Persistence;
 using Weavly.Core;
 
 namespace Weavly.Configuration;
 
+[ExcludeFromCodeCoverage]
 public sealed class ConfigurationModule : WeavlyModule
 {
     public override void Configure(IHostApplicationBuilder builder)
