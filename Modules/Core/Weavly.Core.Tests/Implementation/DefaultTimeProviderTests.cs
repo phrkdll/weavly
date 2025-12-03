@@ -3,7 +3,7 @@ using Weavly.Core.Implementation;
 
 namespace Weavly.Core.Tests.Implementation;
 
-public class DefaultTimeProviderTests
+public sealed class DefaultTimeProviderTests
 {
     [Fact]
     public void DefaultTimeProvider_ReturnsUtcTime()

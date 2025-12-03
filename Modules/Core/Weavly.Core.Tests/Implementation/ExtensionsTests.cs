@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using Shouldly;
@@ -11,7 +9,7 @@ using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Core.Tests.Implementation;
 
-public class ExtensionsTests
+public sealed class ExtensionsTests
 {
     private readonly IHostApplicationBuilder builder = Substitute.For<IHostApplicationBuilder>();
     private readonly WebApplicationBuilder slimBuilder = WebApplication.CreateSlimBuilder();

@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using System.IO.Abstractions;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Testably.Abstractions;
 using Weavly.Core.Implementation;
 using Weavly.Core.Persistence.Interceptors;
 using Weavly.Core.Shared.Contracts;
@@ -18,6 +20,8 @@ public sealed class CoreModule : WeavlyModule
         builder.Services.AddSingleton<ITimeProvider, DefaultTimeProvider>();
 
         builder.Services.AddScoped<ISaveChangesInterceptor, TimestampMetaEntityInterceptor>();
+
+        builder.Services.AddSingleton<IFileSystem, RealFileSystem>();
 
         base.Configure(builder);
     }

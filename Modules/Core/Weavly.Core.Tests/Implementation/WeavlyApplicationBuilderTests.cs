@@ -11,7 +11,7 @@ using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Core.Tests.Implementation;
 
-public class WeavlyApplicationBuilderTests
+public sealed class WeavlyApplicationBuilderTests
 {
     private readonly IHostApplicationBuilder hostApplicationBuilderMock = Substitute.For<IHostApplicationBuilder>();
 
