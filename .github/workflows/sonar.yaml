@@ -19,11 +19,11 @@ jobs:
       uses: highbyte/sonarscan-dotnet@252f699a9c4e005bf3902d44a1c6c0aea43c678e
       with:
         # The key of the SonarQube project
-        sonarProjectKey: phrkdll_weavly
+        sonarProjectKey: ${{ vars.SONAR_PROJECT_KEY }}
         # The name of the SonarQube project
-        sonarProjectName:  weavly
+        sonarProjectName: ${{ vars.SONAR_PROJECT_NAME }}
         # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
-        sonarOrganization: phrkdll
+        sonarOrganization: ${{ vars.SONAR_ORGANIZATION }}
         # Optional command arguments to dotnet test
         dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         # Optional extra command arguments the the SonarScanner 'begin' command
