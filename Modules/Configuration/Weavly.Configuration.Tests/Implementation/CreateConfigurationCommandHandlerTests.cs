@@ -9,7 +9,7 @@ using Weavly.Configuration.Shared.Features.CreateConfig;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation.Results;
 
-namespace Weavly.Configuration.Tests;
+namespace Weavly.Configuration.Tests.Implementation;
 
 public class CreateConfigurationCommandHandlerTests
 {

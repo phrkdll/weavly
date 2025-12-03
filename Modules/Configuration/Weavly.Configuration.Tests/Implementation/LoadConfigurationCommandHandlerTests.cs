@@ -1,7 +1,6 @@
 using EntityFrameworkCore.Testing.NSubstitute;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Implementation;
@@ -11,7 +10,7 @@ using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation.Results;
 
-namespace Weavly.Configuration.Tests;
+namespace Weavly.Configuration.Tests.Implementation;
 
 public class LoadConfigurationCommandHandlerTests
 {
