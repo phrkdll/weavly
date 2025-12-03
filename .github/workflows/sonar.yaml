@@ -15,8 +15,8 @@ jobs:
       with:
         fetch-depth: 0   # Needed so SonarCloud can detect PRs & branches
         
-    - name: SonarScanner for .NET 10 with pull request decoration support
-      uses: highbyte/sonarscan-dotnet@v2.5.0
+    - name: Sonar Analysis
+      uses: highbyte/sonarscan-dotnet@252f699a9c4e005bf3902d44a1c6c0aea43c678e
       with:
         # The key of the SonarQube project
         sonarProjectKey: phrkdll_weavly
