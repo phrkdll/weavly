@@ -47,6 +47,7 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="EntityFrameworkCore.Testing.NSubstitute" />
+    <PackageReference Include="Testably.Abstractions.Testing" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="10.0.0" />
@@ -74,6 +75,8 @@
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.0" />
     <PackageVersion Include="Strongly" Version="1.5.1" />
     <PackageVersion Include="Strongly.EFCore" Version="1.5.1" />
+    <PackageVersion Include="Testably.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Testably.Abstractions.Testing" Version="5.0.1" />
   </ItemGroup>
   <!-- Test -->
   <ItemGroup>
