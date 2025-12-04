@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Weavly.Auth.Enums;

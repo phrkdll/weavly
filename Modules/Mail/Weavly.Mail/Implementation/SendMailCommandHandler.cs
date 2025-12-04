@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;

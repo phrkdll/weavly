@@ -1,5 +1,4 @@
-﻿using FastEndpoints;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weavly.Configuration.Shared.Features.CreateConfig;
 using Weavly.Mail.Implementation;

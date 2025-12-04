@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using FastEndpoints;
 
 namespace Weavly.Configuration.Shared.Features.CreateConfig;
 

@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FastEndpoints;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Auth.Contracts;
 using Weavly.Auth.Models;

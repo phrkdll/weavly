@@ -1,4 +1,3 @@
-using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.Extensions.Hosting;
 using Weavly.Core.Shared.Contracts;

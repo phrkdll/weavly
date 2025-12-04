@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Weavly.Auth.Enums;
 using Weavly.Auth.Models;

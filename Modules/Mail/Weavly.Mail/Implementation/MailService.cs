@@ -1,4 +1,3 @@
-using FastEndpoints;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

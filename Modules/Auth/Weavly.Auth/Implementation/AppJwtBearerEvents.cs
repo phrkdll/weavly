@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Configuration.Shared.Features.LoadConfig;

@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using System.Text;
-using FastEndpoints;
 using Google.Authenticator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

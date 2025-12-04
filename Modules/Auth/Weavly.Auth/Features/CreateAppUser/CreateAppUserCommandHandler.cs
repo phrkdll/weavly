@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Weavly.Auth.Models;

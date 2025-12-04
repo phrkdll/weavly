@@ -1,5 +1,4 @@
 using System.Text;
-using FastEndpoints;
 using Google.Authenticator;
 using Microsoft.EntityFrameworkCore;
 using Weavly.Auth.Contracts;

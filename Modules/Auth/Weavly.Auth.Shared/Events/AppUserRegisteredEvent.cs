@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using FastEndpoints;
 using Weavly.Auth.Shared.Identifiers;
 
 namespace Weavly.Auth.Shared.Events;

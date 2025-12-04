@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Weavly.Auth.Persistence;

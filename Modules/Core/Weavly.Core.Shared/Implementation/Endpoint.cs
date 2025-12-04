@@ -1,5 +1,4 @@
 using System.Net;
-using FastEndpoints;
 
 namespace Weavly.Core.Shared.Implementation;
 
