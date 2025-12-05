@@ -32,7 +32,6 @@
   </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Cli')) AND !$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.StartsWith('Weavly.Api')) AND !$(AssemblyName.StartsWith('Weavly.Persistence'))">
     <Using Include="Weavly.Core.Shared.Implementation" />
-    <Using Include="Weavly.Core.Shared.Implementation.Results" />
   </ItemGroup>
   <ItemGroup Condition="$(AssemblyName.StartsWith('Weavly.Core.Persistence')) OR $(AssemblyName.EndsWith('.Shared'))">
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
@@ -53,9 +52,6 @@
     <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="10.0.0" />
     <PackageVersion Include="AspNet.Security.OAuth.GitHub" Version="10.0.0" />
     <PackageVersion Include="DotNetEnv" Version="3.1.1" />
-    <PackageVersion Include="FastEndpoints" Version="7.1.1" />
-    <PackageVersion Include="FastEndpoints.Messaging.Core" Version="7.1.1" />
-    <PackageVersion Include="FastEndpoints.Swagger" Version="7.1.1" />
     <PackageVersion Include="Fluid.Core" Version="2.31.0" />
     <PackageVersion Include="GoogleAuthenticator" Version="3.2.0" />
     <PackageVersion Include="MailKit" Version="4.14.1" />
@@ -77,6 +73,7 @@
     <PackageVersion Include="Strongly.EFCore" Version="1.5.1" />
     <PackageVersion Include="Testably.Abstractions" Version="10.0.0" />
     <PackageVersion Include="Testably.Abstractions.Testing" Version="5.0.1" />
+    <PackageVersion Include="WolverineFx" Version="5.5.0" />
   </ItemGroup>
   <!-- Test -->
   <ItemGroup>

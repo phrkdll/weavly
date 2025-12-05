@@ -1,4 +1,3 @@
-using FastEndpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +6,7 @@ using Scalar.AspNetCore;
 using Weavly.Core.Implementation;
 using Weavly.Core.Persistence;
 using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Core;
 
@@ -37,6 +37,13 @@ public static class Extensions
             _weavlyApplicationBuilder?.Modules
             ?? throw new InvalidOperationException("Weavly has not been initialized");
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
+
+        app.MapOpenApi();
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapScalarApiReference();
+        }
 
         foreach (var module in modules)
         {
@@ -50,15 +57,7 @@ public static class Extensions
                 }
             }
 
-            app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync().Wait());
-        }
-
-        app.UseFastEndpoints();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.MapScalarApiReference();
+            app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync(bus).Wait());
         }
     }
 

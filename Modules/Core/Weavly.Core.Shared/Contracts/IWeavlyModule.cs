@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
+using Wolverine;
 
 namespace Weavly.Core.Shared.Contracts;
 
@@ -24,7 +25,7 @@ public interface IWeavlyModule
     /// <summary>
     ///     Perform any tasks regarding first time module initialization here
     /// </summary>
-    Task InitializeAsync();
+    Task InitializeAsync(IMessageBus bus);
 
     /// <summary>
     ///     Returns the types of DbContexts used within this module

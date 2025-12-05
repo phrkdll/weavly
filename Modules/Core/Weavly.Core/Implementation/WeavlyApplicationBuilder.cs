@@ -1,7 +1,8 @@
-using FastEndpoints;
-using FastEndpoints.Swagger;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Core.Implementation;
 
@@ -31,11 +32,24 @@ internal sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) 
 
         var assemblies = modules.Select(module => module.GetType().Assembly).ToArray();
 
-        builder.Services.AddFastEndpoints(o => o.Assemblies = assemblies);
+        builder.UseWolverine(x =>
+        {
+            x.Policies.MessageExecutionLogLevel(LogLevel.None);
+            x.Policies.MessageSuccessLogLevel(LogLevel.None);
+
+            x.Discovery.DisableConventionalDiscovery();
+            x.Discovery.CustomizeMessageDiscovery(m => m.Includes.Implements<IWeavlyCommand>());
+            x.Discovery.CustomizeHandlerDiscovery(h => h.Includes.Implements<IWeavlyCommandHandler>());
+
+            foreach (var assembly in assemblies)
+            {
+                x.Discovery.IncludeAssembly(assembly);
+            }
+        });
 
         if (builder.Environment.IsDevelopment())
         {
-            builder.Services.SwaggerDocument();
+            builder.Services.AddOpenApi();
         }
     }
 }
