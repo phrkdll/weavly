@@ -9,9 +9,12 @@ namespace Weavly.Auth.Implementation;
 
 public class AppJwtBearerEvents : JwtBearerEvents
 {
-    public AppJwtBearerEvents()
+    private readonly IMessageBus bus;
+
+    public AppJwtBearerEvents(IMessageBus bus)
     {
         SetOnMessageReceivedHandler();
+        this.bus = bus;
     }
 
     private void SetOnMessageReceivedHandler()
@@ -27,7 +30,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
             }
 
             var config =
-                await LoadConfigurationCommand.Create<AuthModule>("Jwt").ExecuteAsync()
+                await bus.InvokeAsync<Result>(LoadConfigurationCommand.Create<AuthModule>("Jwt"))
                 as Success<LoadConfigurationResponse>;
 
             // Set the parameters from the provider

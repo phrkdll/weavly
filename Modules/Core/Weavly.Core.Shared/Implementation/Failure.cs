@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Weavly.Core.Shared.Implementation.Results;
+namespace Weavly.Core.Shared.Implementation;
 
 public class Failure : Result
 {

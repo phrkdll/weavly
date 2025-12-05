@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Weavly.Core.Shared.Contracts;
 using Wolverine;
 
@@ -33,6 +34,9 @@ internal sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) 
 
         builder.UseWolverine(x =>
         {
+            x.Policies.MessageExecutionLogLevel(LogLevel.None);
+            x.Policies.MessageSuccessLogLevel(LogLevel.None);
+
             x.Discovery.DisableConventionalDiscovery();
             x.Discovery.CustomizeMessageDiscovery(m => m.Includes.Implements<IWeavlyCommand>());
             x.Discovery.CustomizeHandlerDiscovery(h => h.Includes.Implements<IWeavlyCommandHandler>());

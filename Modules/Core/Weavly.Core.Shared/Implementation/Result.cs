@@ -1,4 +1,4 @@
-namespace Weavly.Core.Shared.Implementation.Results;
+namespace Weavly.Core.Shared.Implementation;
 
 public class Result
 {

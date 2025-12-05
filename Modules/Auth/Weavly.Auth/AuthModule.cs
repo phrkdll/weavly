@@ -52,13 +52,14 @@ public sealed class AuthModule : WeavlyModule
                 };
 
                 // Configure the JwtBearerEvents
-                options.Events = new AppJwtBearerEvents();
+                options.EventsType = typeof(AppJwtBearerEvents);
             });
 
         builder.Services.AddAuthorization();
 
         builder.Services.AddScoped(_ => new PasswordHasher<AppUser>());
         builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+        builder.Services.AddScoped<AppJwtBearerEvents>();
 
         builder.Services.AddScoped<IUserContext<AppUserId>, AppUserContext>();
 

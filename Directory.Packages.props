@@ -32,7 +32,6 @@
   </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Cli')) AND !$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.StartsWith('Weavly.Api')) AND !$(AssemblyName.StartsWith('Weavly.Persistence'))">
     <Using Include="Weavly.Core.Shared.Implementation" />
-    <Using Include="Weavly.Core.Shared.Implementation.Results" />
   </ItemGroup>
   <ItemGroup Condition="$(AssemblyName.StartsWith('Weavly.Core.Persistence')) OR $(AssemblyName.EndsWith('.Shared'))">
     <PackageReference Include="Microsoft.EntityFrameworkCore" />

@@ -39,6 +39,12 @@ public static class Extensions
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
+        app.MapOpenApi();
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapScalarApiReference();
+        }
+
         foreach (var module in modules)
         {
             module.Use(app);
@@ -52,14 +58,6 @@ public static class Extensions
             }
 
             app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync(bus).Wait());
-        }
-
-        // TODO: Map endpoints
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.MapScalarApiReference();
         }
     }
 

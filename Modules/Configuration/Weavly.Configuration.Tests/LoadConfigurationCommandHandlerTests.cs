@@ -1,7 +1,6 @@
 using EntityFrameworkCore.Testing.NSubstitute;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Features.LoadConfiguration;
@@ -10,7 +9,7 @@ using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
-using Weavly.Core.Shared.Implementation.Results;
+using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests;
 
@@ -76,7 +75,7 @@ public class LoadConfigurationCommandHandlerTests
         var result = await this.sut.HandleAsync(null!, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
-        result.Message.ShouldBe("Value cannot be null. (Parameter 'request')");
+        result.Message.ShouldBe("Value cannot be null. (Parameter 'command')");
     }
 
     [Fact]

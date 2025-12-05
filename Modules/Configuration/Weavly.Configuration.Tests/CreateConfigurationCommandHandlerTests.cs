@@ -7,7 +7,7 @@ using Weavly.Configuration.Features.CreateConfiguration;
 using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
-using Weavly.Core.Shared.Implementation.Results;
+using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests;
 

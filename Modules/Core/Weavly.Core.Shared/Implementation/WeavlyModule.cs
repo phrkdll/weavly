@@ -12,7 +12,13 @@ public abstract class WeavlyModule : IWeavlyModule
 
     public virtual void Use(WebApplication app)
     {
-        app.Logger.LogInformation("Registered module {ModuleName}", GetType().Namespace);
+        var numberOfEndpoints = app.MapEndpoints(this);
+
+        app.Logger.LogInformation(
+            "Registered module {ModuleName} with {NumberOfEndpoints} endpoints",
+            GetType().Namespace,
+            numberOfEndpoints
+        );
     }
 
     public virtual Task InitializeAsync(IMessageBus bus)
