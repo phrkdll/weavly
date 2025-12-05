@@ -4,14 +4,15 @@ using Weavly.Auth.Models;
 using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Features.Verification;
 using Weavly.Core.Shared.Contracts;
-using Weavly.Mail.Shared.Triggers;
+using Weavly.Mail.Shared.Features.SendMail;
+using Wolverine;
 
 namespace Weavly.Auth.Features.Verification;
 
-public sealed class VerificationCommandHandler(AuthDbContext dbContext, ITimeProvider timeProvider)
-    : ICommandHandler<VerificationCommand, Result>
+public sealed class VerificationCommandHandler(AuthDbContext dbContext, ITimeProvider timeProvider, IMessageBus bus)
+    : IWeavlyCommandHandler<VerificationCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(VerificationCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(VerificationCommand command, CancellationToken ct)
     {
         var user = await dbContext
             .Users.Include(x => x.Tokens)
@@ -30,7 +31,7 @@ public sealed class VerificationCommandHandler(AuthDbContext dbContext, ITimePro
         dbContext.Update(user);
 
         await dbContext.SaveChangesAsync(ct);
-        await VerificationSuccessMail(user).ExecuteAsync(ct);
+        await bus.InvokeAsync<Result>(VerificationSuccessMail(user), ct);
 
         return Success.Create(new VerificationResponse());
     }

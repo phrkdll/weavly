@@ -1,19 +1,19 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Weavly.Auth.Shared.Features.TokenLogin;
+using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Auth.Features.TokenLogin;
 
-internal sealed class TokenLoginEndpoint : EndpointWithoutRequest
+internal sealed class TokenLoginEndpoint(IMessageBus bus) : IWeavlyEndpoint<TokenLoginCommand>
 {
-    public override void Configure()
-    {
-        Get("user/login");
-        AllowAnonymous();
-    }
+    public void MapEndpoint(WebApplication app) => app.MapGet("user/login", () => HandleAsync);
 
-    public override async Task HandleAsync(CancellationToken ct)
+    public async Task<IResult> HandleAsync(TokenLoginCommand request, CancellationToken ct)
     {
-        var request = new TokenLoginCommand(Query<Guid>("token"));
+        var result = await bus.InvokeAsync<Result>(request, ct);
 
-        await HandleDefaultAsync(request, ct);
+        return result.Success ? Results.Ok(result) : Results.BadRequest(result);
     }
 }

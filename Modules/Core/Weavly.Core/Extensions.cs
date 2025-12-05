@@ -6,6 +6,7 @@ using Scalar.AspNetCore;
 using Weavly.Core.Implementation;
 using Weavly.Core.Persistence;
 using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Core;
 
@@ -36,6 +37,7 @@ public static class Extensions
             _weavlyApplicationBuilder?.Modules
             ?? throw new InvalidOperationException("Weavly has not been initialized");
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
         foreach (var module in modules)
         {
@@ -49,10 +51,10 @@ public static class Extensions
                 }
             }
 
-            app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync().Wait());
+            app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync(bus).Wait());
         }
 
-        app.UseFastEndpoints();
+        // TODO: Map endpoints
 
         if (app.Environment.IsDevelopment())
         {

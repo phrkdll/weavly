@@ -4,10 +4,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
-using Weavly.Configuration.Implementation;
+using Weavly.Configuration.Features.LoadConfiguration;
 using Weavly.Configuration.Models;
 using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.LoadConfig;
+using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation.Results;
 
@@ -70,31 +71,31 @@ public class LoadConfigurationCommandHandlerTests
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldReturn_FailureInstance_ForNullRequest()
+    public async Task HandleAsync_ShouldReturn_FailureInstance_ForNullRequest()
     {
-        var result = await this.sut.ExecuteAsync(null!, CancellationToken.None);
+        var result = await this.sut.HandleAsync(null!, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
         result.Message.ShouldBe("Value cannot be null. (Parameter 'request')");
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldReturn_FailureInstance_WhenNoConfigurationFound()
+    public async Task HandleAsync_ShouldReturn_FailureInstance_WhenNoConfigurationFound()
     {
         var command = LoadConfigurationCommand.Create<LoadConfigurationCommandHandlerTests>();
 
-        var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
+        var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
         result.Message.ShouldBe("Could not find configuration");
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_WithConfigurationResponse()
+    public async Task HandleAsync_ShouldReturn_SuccessInstance_WithConfigurationResponse()
     {
         var command = LoadConfigurationCommand.Create("ExistingModule");
 
-        var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
+        var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
         var castResult = result.ShouldBeOfType<Success<LoadConfigurationResponse>>();
         var data = castResult.Data.ShouldBeOfType<LoadConfigurationResponse>();

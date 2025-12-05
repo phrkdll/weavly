@@ -3,19 +3,20 @@ using Weavly.Auth.Contracts;
 using Weavly.Auth.Enums;
 using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Features.TokenLogin;
+using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.TokenLogin;
 
 public sealed class TokenLoginCommandHandler(AuthDbContext dbContext, IJwtProvider jwtProvider)
-    : ICommandHandler<TokenLoginCommand, Result>
+    : IWeavlyCommandHandler<TokenLoginCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(TokenLoginCommand request, CancellationToken ct)
+    public async Task<Result> HandleAsync(TokenLoginCommand command, CancellationToken ct)
     {
-        var user = dbContext
+        var user = await dbContext
             .Users.Include(x => x.Tokens)
-            .SingleOrDefault(u => u.Tokens.Any(t => t.Purpose == AppUserTokenPurpose.TokenLogin));
+            .SingleOrDefaultAsync(u => u.Tokens.Any(t => t.Purpose == AppUserTokenPurpose.TokenLogin), ct);
 
-        var token = user?.Tokens.SingleOrDefault(t => t.Value == request.Token);
+        var token = user?.Tokens.SingleOrDefault(t => t.Value == command.Token);
 
         if (user is null || token is null)
         {

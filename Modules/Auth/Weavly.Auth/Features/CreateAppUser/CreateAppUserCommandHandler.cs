@@ -3,13 +3,14 @@ using Microsoft.Extensions.Logging;
 using Weavly.Auth.Models;
 using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Features.CreateAppUser;
+using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.CreateAppUser;
 
 public sealed class CreateAppUserCommandHandler(AuthDbContext dbContext, ILogger<CreateAppUserCommandHandler> logger)
-    : ICommandHandler<CreateAppUserCommand, Result>
+    : IWeavlyCommandHandler<CreateAppUserCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(CreateAppUserCommand command, CancellationToken ct = default)
+    public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
     {
         logger.LogInformation("Received {MessageType} message", nameof(CreateAppUserCommand));
 
@@ -20,7 +21,7 @@ public sealed class CreateAppUserCommandHandler(AuthDbContext dbContext, ILogger
                 return Failure.Create("User can't be registered");
             }
 
-            var role = dbContext.Roles.SingleOrDefault(x => x.Name == command.InitialRole);
+            var role = await dbContext.Roles.SingleOrDefaultAsync(x => x.Name == command.InitialRole, ct);
             if (role is null && !dbContext.Users.Any())
             {
                 role = AppRole.Create(command.InitialRole);

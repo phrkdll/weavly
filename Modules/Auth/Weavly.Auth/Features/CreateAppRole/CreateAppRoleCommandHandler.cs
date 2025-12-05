@@ -3,13 +3,14 @@ using Microsoft.Extensions.Logging;
 using Weavly.Auth.Models;
 using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Features.CreateAppRole;
+using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.CreateAppRole;
 
 public sealed class CreateAppRoleCommandHandler(AuthDbContext dbContext, ILogger<CreateAppRoleCommandHandler> logger)
-    : ICommandHandler<CreateAppRoleCommand, Result>
+    : IWeavlyCommandHandler<CreateAppRoleCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(CreateAppRoleCommand command, CancellationToken ct = default)
+    public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct)
     {
         logger.LogInformation("Received {MessageType} message", nameof(CreateAppRoleCommand));
 

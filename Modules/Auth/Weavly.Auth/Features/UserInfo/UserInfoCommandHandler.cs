@@ -8,9 +8,9 @@ using Weavly.Core.Shared.Contracts;
 namespace Weavly.Auth.Features.UserInfo;
 
 public sealed class UserInfoCommandHandler(AuthDbContext dbContext, IUserContext<AppUserId> userContext)
-    : ICommandHandler<UserInfoCommand, Result>
+    : IWeavlyCommandHandler<UserInfoCommand, Result>
 {
-    public async Task<Result> ExecuteAsync(UserInfoCommand _, CancellationToken ct)
+    public async Task<Result> HandleAsync(UserInfoCommand _, CancellationToken ct)
     {
         var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userContext.UserId, ct);
 

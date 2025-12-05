@@ -1,9 +1,6 @@
-using FastEndpoints.Swagger;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Weavly.Core.Implementation;
 using Weavly.Core.Shared.Implementation;
@@ -42,19 +39,6 @@ public sealed class WeavlyApplicationBuilderTests
         var module = sut.Modules.First().ShouldBeOfType<TestModule>();
 
         module.ConfigureCalled.ShouldBeTrue();
-        serviceCollectionMock.ReceivedWithAnyArgs().AddFastEndpoints();
-    }
-
-    [Fact]
-    public async Task Build_ShouldInvoke_SwaggerDocument_InDevEnvironment()
-    {
-        hostApplicationBuilderMock.Environment.Returns(
-            new HostingEnvironment { EnvironmentName = Environments.Development }
-        );
-
-        sut.AddModule<TestModule>().Build();
-
-        serviceCollectionMock.Received().SwaggerDocument();
     }
 
     private class TestModule : WeavlyModule
@@ -65,20 +49,6 @@ public sealed class WeavlyApplicationBuilderTests
         {
             ConfigureCalled = true;
             base.Configure(builder);
-        }
-    }
-
-    private class TestEndpoint : Core.Shared.Implementation.Endpoint<object>
-    {
-        public override void Configure()
-        {
-            Get("/");
-            AllowAnonymous();
-        }
-
-        public override Task HandleAsync(object req, CancellationToken ct)
-        {
-            throw new NotImplementedException();
         }
     }
 }

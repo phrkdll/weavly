@@ -1,19 +1,19 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Weavly.Auth.Shared.Features.Verification;
+using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Auth.Features.Verification;
 
-public sealed class VerificationEndpoint : EndpointWithoutRequest
+internal sealed class VerificationEndpoint(IMessageBus bus) : IWeavlyEndpoint<VerificationCommand>
 {
-    public override void Configure()
-    {
-        Get("user/verify");
-        AllowAnonymous();
-    }
+    public void MapEndpoint(WebApplication app) => app.MapGet("user/verify", () => HandleAsync);
 
-    public override async Task HandleAsync(CancellationToken ct)
+    public async Task<IResult> HandleAsync(VerificationCommand request, CancellationToken ct)
     {
-        var request = new VerificationCommand(Query<Guid>("token"));
+        var result = await bus.InvokeAsync<Result>(request, ct);
 
-        await HandleDefaultAsync(request, ct);
+        return result.Success ? Results.Ok(result) : Results.BadRequest(result);
     }
 }

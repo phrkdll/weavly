@@ -1,16 +1,19 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Weavly.Auth.Shared.Features.CreateAppUser;
+using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Auth.Features.CreateAppUser;
 
-internal sealed class CreateAppUserEndpoint : Endpoint<CreateAppUserCommand>
+internal sealed class CreateAppUserEndpoint(IMessageBus bus) : IWeavlyEndpoint<CreateAppUserCommand>
 {
-    public override void Configure()
-    {
-        Post("user");
-    }
+    public void MapEndpoint(WebApplication app) => app.MapPost("user", () => HandleAsync).RequireAuthorization();
 
-    public override async Task HandleAsync(CreateAppUserCommand request, CancellationToken ct)
+    public async Task<IResult> HandleAsync(CreateAppUserCommand request, CancellationToken ct)
     {
-        await HandleDefaultAsync(request, ct);
+        var result = await bus.InvokeAsync<Result>(request, ct);
+
+        return result.Success ? Results.Ok(result) : Results.BadRequest(result);
     }
 }

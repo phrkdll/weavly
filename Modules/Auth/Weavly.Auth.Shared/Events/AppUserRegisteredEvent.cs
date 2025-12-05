@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
 using Weavly.Auth.Shared.Identifiers;
+using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Shared.Events;
 
-public sealed class AppUserRegisteredEvent : IEvent
+public sealed class AppUserRegisteredEvent : IWeavlyEvent
 {
     public AppUserId? Id { get; }
     public string Email { get; }

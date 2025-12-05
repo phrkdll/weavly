@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Weavly.Configuration.Shared.Features.CreateConfig;
+using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Mail.Implementation;
-using Weavly.Mail.Shared;
+using Weavly.Mail.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Mail;
 
@@ -15,7 +16,7 @@ public class MailModule : WeavlyModule
         base.Configure(builder);
     }
 
-    public override async Task InitializeAsync()
+    public override async Task InitializeAsync(IMessageBus bus)
     {
         CreateConfigurationCommand[] configurationItems =
         [
@@ -29,9 +30,9 @@ public class MailModule : WeavlyModule
 
         foreach (var item in configurationItems)
         {
-            await item.ExecuteAsync();
+            await bus.InvokeAsync<Result>(item);
         }
 
-        await base.InitializeAsync();
+        await base.InitializeAsync(bus);
     }
 }

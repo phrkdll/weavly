@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
-using Weavly.Configuration.Implementation;
+using Weavly.Configuration.Features.CreateConfiguration;
 using Weavly.Configuration.Persistence;
-using Weavly.Configuration.Shared.Features.CreateConfig;
+using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation.Results;
 
@@ -37,14 +37,14 @@ public class CreateConfigurationCommandHandlerTests
 
     [Theory]
     [InlineData("TestString"), InlineData(123), InlineData(true), InlineData(45.67)]
-    public async Task ExecuteAsync_ShouldReturn_SuccessInstance_ForValidConfigurations(object value)
+    public async Task HandleAsync_ShouldReturn_SuccessInstance_ForValidConfigurations(object value)
     {
         var command = CreateConfigurationCommand.Create<CreateConfigurationCommandHandlerTests>(
             "TestConfig",
             value,
             "TestCategory"
         );
-        var result = await this.sut.ExecuteAsync(command, CancellationToken.None);
+        var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Success<ConfigurationId>>();
 
@@ -54,11 +54,11 @@ public class CreateConfigurationCommandHandlerTests
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldReturn_FailureInstance_ForDuplicateConfigurations()
+    public async Task HandleAsync_ShouldReturn_FailureInstance_ForDuplicateConfigurations()
     {
-        await this.sut.ExecuteAsync(TestCommand, CancellationToken.None);
+        await this.sut.HandleAsync(TestCommand, CancellationToken.None);
 
-        var result = await this.sut.ExecuteAsync(TestCommand, CancellationToken.None);
+        var result = await this.sut.HandleAsync(TestCommand, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
 
@@ -68,9 +68,9 @@ public class CreateConfigurationCommandHandlerTests
     }
 
     [Fact]
-    public async Task ExecuteAsync_ShouldReturn_FailureInstance_ForNullRequest()
+    public async Task HandleAsync_ShouldReturn_FailureInstance_ForNullRequest()
     {
-        var result = await this.sut.ExecuteAsync(null!, CancellationToken.None);
+        var result = await this.sut.HandleAsync(null!, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }
