@@ -2,5 +2,9 @@
     "files.exclude": {
         "**/obj": false,
         "**/bin": true
+    },
+    "sonarlint.connectedMode.project": {
+        "connectionId": "phrkdll",
+        "projectKey": "phrkdll_weavly"
     }
 }
