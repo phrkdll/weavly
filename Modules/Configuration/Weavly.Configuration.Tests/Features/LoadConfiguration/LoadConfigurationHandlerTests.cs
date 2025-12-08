@@ -11,7 +11,7 @@ using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation;
 
-namespace Weavly.Configuration.Tests;
+namespace Weavly.Configuration.Tests.Features.LoadConfiguration;
 
 public class LoadConfigurationHandlerTests
 {
@@ -94,8 +94,9 @@ public class LoadConfigurationHandlerTests
 
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
-        var castResult = result.ShouldBeOfType<Success<LoadConfigurationResponse>>();
-        var data = castResult.Data.ShouldBeOfType<LoadConfigurationResponse>();
+        var data = result
+            .ShouldBeOfType<Success<LoadConfigurationResponse>>()
+            .Data.ShouldBeOfType<LoadConfigurationResponse>();
 
         data.Module.ShouldBe("ExistingModule");
         data.Items.Count().ShouldBe(4);

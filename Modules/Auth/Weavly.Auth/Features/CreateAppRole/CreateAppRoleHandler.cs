@@ -34,13 +34,13 @@ public sealed class CreateAppRoleHandler(AuthDbContext dbContext, ILogger<Create
         }
     }
 
-    private async Task<bool> RoleCanNotBeCreatedAsync(AppRole? request)
+    private async Task<bool> RoleCanNotBeCreatedAsync(AppRole? role)
     {
-        if (request is null)
+        if (role is null)
         {
             return true;
         }
 
-        return await dbContext.Roles.AnyAsync(x => x.Name == request.Name);
+        return await dbContext.Roles.AnyAsync(x => x.Name == role.Name);
     }
 }

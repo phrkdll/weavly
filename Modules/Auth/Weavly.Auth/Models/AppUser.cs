@@ -29,23 +29,16 @@ public sealed class AppUser : MetaEntity<AppUserId, AppUserId>
 
     public bool IsEmailVerified => Tokens.Any(t => t.Purpose == AppUserTokenPurpose.EmailValidation);
 
-    public AppUserToken? GetUserToken(AppUserTokenPurpose purpose)
-    {
-        return Tokens.FirstOrDefault(x => x.Purpose == purpose);
-    }
+    public AppUserToken? GetUserToken(AppUserTokenPurpose purpose) => Tokens.FirstOrDefault(x => x.Purpose == purpose);
 
-    public static AppUser Create(string email, ICollection<AppUserToken> tokens)
-    {
-        return new AppUser { Email = email, Tokens = tokens };
-    }
+    public static AppUser Create(string email, ICollection<AppUserToken> tokens) =>
+        new() { Email = email, Tokens = tokens };
 
-    public static AppUser Create(string email, string userName, AppRole initialRole)
-    {
-        return new AppUser
+    public static AppUser Create(string email, string userName, AppRole initialRole) =>
+        new()
         {
             Email = email,
             UserName = userName,
             Roles = [initialRole],
         };
-    }
 }

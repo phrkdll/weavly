@@ -6,13 +6,13 @@ namespace Weavly.Configuration.Persistence;
 
 public abstract class ConfigurationDbContext : CoreDbContext
 {
-    public virtual DbSet<AppConfiguration> Configurations { get; init; }
-
     protected ConfigurationDbContext(IServiceProvider serviceProvider)
         : base(serviceProvider, nameof(ConfigurationModule)) { }
 
     protected ConfigurationDbContext(DbContextOptions options)
         : base(options) { }
+
+    public virtual DbSet<AppConfiguration> Configurations { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

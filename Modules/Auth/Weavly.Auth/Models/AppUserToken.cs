@@ -12,18 +12,11 @@ public sealed class AppUserToken(AppUserTokenPurpose purpose, DateTime? expiresA
 
     public DateTime? ExpiresAt { get; init; } = expiresAt;
 
-    public static AppUserToken CreateEmailValidationToken()
-    {
-        return new AppUserToken(AppUserTokenPurpose.EmailValidation, DateTime.UtcNow.AddHours(1));
-    }
+    public static AppUserToken CreateEmailValidationToken() =>
+        new(AppUserTokenPurpose.EmailValidation, DateTime.UtcNow.AddHours(1));
 
-    public static AppUserToken CreateLoginToken()
-    {
-        return new AppUserToken(AppUserTokenPurpose.TokenLogin, DateTime.UtcNow.AddMinutes(5));
-    }
+    public static AppUserToken CreateLoginToken() => new(AppUserTokenPurpose.TokenLogin, DateTime.UtcNow.AddMinutes(5));
 
-    public static AppUserToken CreateTwoFactorAuthenticationToken()
-    {
-        return new AppUserToken(AppUserTokenPurpose.TwoFactorAuthentication, null);
-    }
+    public static AppUserToken CreateTwoFactorAuthenticationToken() =>
+        new(AppUserTokenPurpose.TwoFactorAuthentication, null);
 }
