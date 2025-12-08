@@ -2,6 +2,7 @@
   <Folder Name="/Modules/" />
   <Folder Name="/Modules/Auth/">
     <Project Path="Modules/Auth/Weavly.Auth.Shared/Weavly.Auth.Shared.csproj" />
+    <Project Path="Modules/Auth/Weavly.Auth.Tests/Weavly.Auth.Tests.csproj" />
     <Project Path="Modules/Auth/Weavly.Auth/Weavly.Auth.csproj" />
   </Folder>
   <Folder Name="/Modules/Configuration/">
