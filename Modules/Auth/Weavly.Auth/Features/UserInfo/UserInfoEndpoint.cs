@@ -4,4 +4,11 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.UserInfo;
 
-internal sealed class UserInfoEndpoint(IMessageBus bus) : GetEndpoint<UserInfoCommand, AuthModule>("user", bus);
+internal sealed class UserInfoEndpoint : GetEndpoint<UserInfoCommand, AuthModule>
+{
+    public UserInfoEndpoint(IMessageBus bus)
+        : base("user", bus)
+    {
+        Authorize();
+    }
+}

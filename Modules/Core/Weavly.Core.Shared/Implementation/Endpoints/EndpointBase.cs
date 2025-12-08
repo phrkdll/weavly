@@ -5,10 +5,13 @@ using Wolverine;
 
 namespace Weavly.Core.Shared.Implementation.Endpoints;
 
-public abstract class EndpointBase<TRequest, TModule>(IMessageBus bus) : IWeavlyEndpoint<TRequest>
+public abstract class EndpointBase<TRequest>(IMessageBus bus) : IWeavlyEndpoint<TRequest>
     where TRequest : IWeavlyCommand
-    where TModule : IWeavlyModule
 {
+    private bool authorize;
+
+    private string[] policies = [];
+
     public virtual async Task<IResult> HandleAsync(TRequest request, CancellationToken ct)
     {
         var result = await bus.InvokeAsync<Result>(request, ct);
@@ -16,5 +19,21 @@ public abstract class EndpointBase<TRequest, TModule>(IMessageBus bus) : IWeavly
         return result.Success ? Results.Ok(result) : Results.BadRequest(result);
     }
 
-    public abstract void MapEndpoint(WebApplication app);
+    public abstract RouteHandlerBuilder Map(WebApplication app);
+
+    public void MapEndpoint(WebApplication app)
+    {
+        var builder = Map(app);
+
+        if (authorize)
+        {
+            builder.RequireAuthorization(policies);
+        }
+    }
+
+    protected void Authorize(params string[] policies)
+    {
+        this.authorize = true;
+        this.policies = policies;
+    }
 }
