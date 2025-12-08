@@ -10,12 +10,13 @@ using Weavly.Auth.Shared.Features.EnableTwoFactorAuth;
 using Weavly.Auth.Shared.Identifiers;
 using Weavly.Core.Shared.Contracts;
 
-namespace Weavly.Auth.Features.TwoFactorAuth.Enable;
+namespace Weavly.Auth.Features.EnableTwoFactorAuth;
 
 public sealed class EnableTwoFactorAuthCommandHandler(AuthDbContext dbContext, IHttpContextAccessor contextAccessor)
     : IWeavlyCommandHandler<EnableTwoFactorAuthCommand, Result>
 {
-    private readonly HttpContext _httpContext = contextAccessor.HttpContext ?? throw new NullReferenceException();
+    private readonly HttpContext _httpContext =
+        contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));
 
     public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct)
     {
