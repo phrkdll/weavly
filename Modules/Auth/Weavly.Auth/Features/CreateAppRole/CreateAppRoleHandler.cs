@@ -7,8 +7,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.CreateAppRole;
 
-public sealed class CreateAppRoleCommandHandler(AuthDbContext dbContext, ILogger<CreateAppRoleCommandHandler> logger)
-    : IWeavlyCommandHandler<CreateAppRoleCommand, Result>
+public sealed class CreateAppRoleHandler(AuthDbContext dbContext, ILogger<CreateAppRoleHandler> logger)
+    : IWeavlyHandler<CreateAppRoleCommand, Result>
 {
     public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct)
     {

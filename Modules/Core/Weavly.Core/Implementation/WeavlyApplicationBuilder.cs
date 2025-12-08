@@ -39,7 +39,7 @@ internal sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) 
 
             x.Discovery.DisableConventionalDiscovery();
             x.Discovery.CustomizeMessageDiscovery(m => m.Includes.Implements<IWeavlyCommand>());
-            x.Discovery.CustomizeHandlerDiscovery(h => h.Includes.Implements<IWeavlyCommandHandler>());
+            x.Discovery.CustomizeHandlerDiscovery(h => h.Includes.Implements<IWeavlyHandler>());
 
             foreach (var assembly in assemblies)
             {

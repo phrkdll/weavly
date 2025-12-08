@@ -9,10 +9,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Features.LoadConfiguration;
 
-public sealed class LoadConfigurationCommandHandler(
-    ConfigurationDbContext dbContext,
-    ILogger<LoadConfigurationCommandHandler> logger
-) : IWeavlyCommandHandler<LoadConfigurationCommand, Result>
+public sealed class LoadConfigurationHandler(ConfigurationDbContext dbContext, ILogger<LoadConfigurationHandler> logger)
+    : IWeavlyHandler<LoadConfigurationCommand, Result>
 {
     public async Task<Result> HandleAsync(LoadConfigurationCommand command, CancellationToken ct)
     {

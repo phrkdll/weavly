@@ -7,8 +7,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.CreateAppUser;
 
-public sealed class CreateAppUserCommandHandler(AuthDbContext dbContext, ILogger<CreateAppUserCommandHandler> logger)
-    : IWeavlyCommandHandler<CreateAppUserCommand, Result>
+public sealed class CreateAppUserHandler(AuthDbContext dbContext, ILogger<CreateAppUserHandler> logger)
+    : IWeavlyHandler<CreateAppUserCommand, Result>
 {
     public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
     {

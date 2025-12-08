@@ -12,8 +12,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.EnableTwoFactorAuth;
 
-public sealed class EnableTwoFactorAuthCommandHandler(AuthDbContext dbContext, IHttpContextAccessor contextAccessor)
-    : IWeavlyCommandHandler<EnableTwoFactorAuthCommand, Result>
+public sealed class EnableTwoFactorAuthHandler(AuthDbContext dbContext, IHttpContextAccessor contextAccessor)
+    : IWeavlyHandler<EnableTwoFactorAuthCommand, Result>
 {
     private readonly HttpContext _httpContext =
         contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));

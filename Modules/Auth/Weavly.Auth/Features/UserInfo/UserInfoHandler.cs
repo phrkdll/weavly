@@ -7,8 +7,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.UserInfo;
 
-public sealed class UserInfoCommandHandler(AuthDbContext dbContext, IUserContext<AppUserId> userContext)
-    : IWeavlyCommandHandler<UserInfoCommand, Result>
+public sealed class UserInfoHandler(AuthDbContext dbContext, IUserContext<AppUserId> userContext)
+    : IWeavlyHandler<UserInfoCommand, Result>
 {
     public async Task<Result> HandleAsync(UserInfoCommand _, CancellationToken ct)
     {

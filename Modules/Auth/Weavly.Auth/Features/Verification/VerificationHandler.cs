@@ -9,8 +9,8 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.Verification;
 
-public sealed class VerificationCommandHandler(AuthDbContext dbContext, ITimeProvider timeProvider, IMessageBus bus)
-    : IWeavlyCommandHandler<VerificationCommand, Result>
+public sealed class VerificationHandler(AuthDbContext dbContext, ITimeProvider timeProvider, IMessageBus bus)
+    : IWeavlyHandler<VerificationCommand, Result>
 {
     public async Task<Result> HandleAsync(VerificationCommand command, CancellationToken ct)
     {

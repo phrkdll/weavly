@@ -9,11 +9,11 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.VerifyTwoFactorAuth;
 
-public sealed class VerifyTwoFactorAuthCommandHandler(
+public sealed class VerifyTwoFactorAuthHandler(
     AuthDbContext dbContext,
     IJwtProvider jwtProvider,
     ITimeProvider timeProvider
-) : IWeavlyCommandHandler<VerifyTwoFactorAuthCommand, Result>
+) : IWeavlyHandler<VerifyTwoFactorAuthCommand, Result>
 {
     public async Task<Result> HandleAsync(VerifyTwoFactorAuthCommand command, CancellationToken ct)
     {

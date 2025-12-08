@@ -11,20 +11,20 @@ using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests;
 
-public class CreateConfigurationCommandHandlerTests
+public class CreateConfigurationHandlerTests
 {
     private static CreateConfigurationCommand TestCommand =>
-        CreateConfigurationCommand.Create<CreateConfigurationCommandHandlerTests>("Test", 10, "TestCategory");
+        CreateConfigurationCommand.Create<CreateConfigurationHandlerTests>("Test", 10, "TestCategory");
 
-    private readonly ILogger<CreateConfigurationCommandHandler> loggerMock = Substitute.For<
-        ILogger<CreateConfigurationCommandHandler>
+    private readonly ILogger<CreateConfigurationHandler> loggerMock = Substitute.For<
+        ILogger<CreateConfigurationHandler>
     >();
 
     private readonly ConfigurationDbContext dbContextMock;
 
-    private readonly CreateConfigurationCommandHandler sut;
+    private readonly CreateConfigurationHandler sut;
 
-    public CreateConfigurationCommandHandlerTests()
+    public CreateConfigurationHandlerTests()
     {
         var dbContextOptions = new DbContextOptionsBuilder()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -32,14 +32,14 @@ public class CreateConfigurationCommandHandlerTests
 
         dbContextMock = Create.MockedDbContextFor<TestConfigurationDbContext>(dbContextOptions.Options);
 
-        sut = new CreateConfigurationCommandHandler(dbContextMock, loggerMock);
+        sut = new CreateConfigurationHandler(dbContextMock, loggerMock);
     }
 
     [Theory]
     [InlineData("TestString"), InlineData(123), InlineData(true), InlineData(45.67)]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_ForValidConfigurations(object value)
     {
-        var command = CreateConfigurationCommand.Create<CreateConfigurationCommandHandlerTests>(
+        var command = CreateConfigurationCommand.Create<CreateConfigurationHandlerTests>(
             "TestConfig",
             value,
             "TestCategory"

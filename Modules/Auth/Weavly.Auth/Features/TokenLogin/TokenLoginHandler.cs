@@ -7,8 +7,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.TokenLogin;
 
-public sealed class TokenLoginCommandHandler(AuthDbContext dbContext, IJwtProvider jwtProvider)
-    : IWeavlyCommandHandler<TokenLoginCommand, Result>
+public sealed class TokenLoginHandler(AuthDbContext dbContext, IJwtProvider jwtProvider)
+    : IWeavlyHandler<TokenLoginCommand, Result>
 {
     public async Task<Result> HandleAsync(TokenLoginCommand command, CancellationToken ct)
     {

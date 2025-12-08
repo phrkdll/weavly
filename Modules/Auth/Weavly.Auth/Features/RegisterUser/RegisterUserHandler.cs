@@ -11,8 +11,8 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.RegisterUser;
 
-public sealed class RegisterUserCommandHandler(AuthDbContext dbContext, PasswordHasher<AppUser> hasher, IMessageBus bus)
-    : IWeavlyCommandHandler<RegisterUserCommand, Result>
+public sealed class RegisterUserHandler(AuthDbContext dbContext, PasswordHasher<AppUser> hasher, IMessageBus bus)
+    : IWeavlyHandler<RegisterUserCommand, Result>
 {
     public async Task<Result> HandleAsync(RegisterUserCommand command, CancellationToken ct)
     {

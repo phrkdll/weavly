@@ -9,12 +9,12 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.LoginUser;
 
-public sealed class LoginUserCommandHandler(
+public sealed class LoginUserHandler(
     AuthDbContext dbContext,
     PasswordHasher<AppUser> hasher,
     IJwtProvider jwtProvider,
     ITimeProvider timeProvider
-) : IWeavlyCommandHandler<LoginUserCommand, Result>
+) : IWeavlyHandler<LoginUserCommand, Result>
 {
     public async Task<Result> HandleAsync(LoginUserCommand command, CancellationToken ct)
     {

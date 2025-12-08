@@ -13,17 +13,15 @@ using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests;
 
-public class LoadConfigurationCommandHandlerTests
+public class LoadConfigurationHandlerTests
 {
-    private readonly ILogger<LoadConfigurationCommandHandler> loggerMock = Substitute.For<
-        ILogger<LoadConfigurationCommandHandler>
-    >();
+    private readonly ILogger<LoadConfigurationHandler> loggerMock = Substitute.For<ILogger<LoadConfigurationHandler>>();
 
     private readonly ConfigurationDbContext dbContextMock;
 
-    private readonly LoadConfigurationCommandHandler sut;
+    private readonly LoadConfigurationHandler sut;
 
-    public LoadConfigurationCommandHandlerTests()
+    public LoadConfigurationHandlerTests()
     {
         var dbContextOptions = new DbContextOptionsBuilder()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -66,7 +64,7 @@ public class LoadConfigurationCommandHandlerTests
         );
         dbContextMock.SaveChanges();
 
-        sut = new LoadConfigurationCommandHandler(dbContextMock, loggerMock);
+        sut = new LoadConfigurationHandler(dbContextMock, loggerMock);
     }
 
     [Fact]
@@ -81,7 +79,7 @@ public class LoadConfigurationCommandHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenNoConfigurationFound()
     {
-        var command = LoadConfigurationCommand.Create<LoadConfigurationCommandHandlerTests>();
+        var command = LoadConfigurationCommand.Create<LoadConfigurationHandlerTests>();
 
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
