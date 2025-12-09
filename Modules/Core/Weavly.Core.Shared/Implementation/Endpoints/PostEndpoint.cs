@@ -13,6 +13,6 @@ public abstract class PostEndpoint<TRequest, TModule>(string path, IMessageBus b
     public override RouteHandlerBuilder Map(WebApplication app) =>
         app.MapPost(path, HandleAsync).WithTags(typeof(TModule).Name);
 
-    public override Task<IResult> HandleAsync([FromBody] TRequest request, CancellationToken ct) =>
+    public override Task<IResult> HandleAsync([FromBody] TRequest request, CancellationToken ct = default) =>
         base.HandleAsync(request, ct);
 }

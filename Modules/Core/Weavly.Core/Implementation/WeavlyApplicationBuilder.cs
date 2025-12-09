@@ -6,7 +6,7 @@ using Wolverine;
 
 namespace Weavly.Core.Implementation;
 
-internal sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : IWeavlyApplicationBuilder
+public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : IWeavlyApplicationBuilder
 {
     private readonly HashSet<IWeavlyModule> modules = [];
 

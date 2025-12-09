@@ -4,5 +4,5 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.Verification;
 
-internal sealed class VerificationEndpoint(IMessageBus bus)
+public sealed class VerificationEndpoint(IMessageBus bus)
     : GetEndpoint<VerificationCommand, AuthModule>("user/verify", bus);

@@ -10,7 +10,7 @@ namespace Weavly.Auth.Features.CreateAppRole;
 public sealed class CreateAppRoleHandler(AuthDbContext dbContext, ILogger<CreateAppRoleHandler> logger)
     : IWeavlyHandler<CreateAppRoleCommand, Result>
 {
-    public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct = default)
     {
         logger.LogInformation("Received {MessageType} message", nameof(CreateAppRoleCommand));
 

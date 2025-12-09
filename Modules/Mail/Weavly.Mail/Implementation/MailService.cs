@@ -9,7 +9,7 @@ using Wolverine;
 
 namespace Weavly.Mail.Implementation;
 
-internal sealed class MailService(IConfiguration configuration, ILogger<MailService> logger, IMessageBus bus)
+public sealed class MailService(IConfiguration configuration, ILogger<MailService> logger, IMessageBus bus)
     : IMailService
 {
     public async Task SendEmailAsync(MimeMessage message, CancellationToken ct = default)

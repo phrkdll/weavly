@@ -15,7 +15,7 @@ public sealed class VerifyTwoFactorAuthHandler(
     ITimeProvider timeProvider
 ) : IWeavlyHandler<VerifyTwoFactorAuthCommand, Result>
 {
-    public async Task<Result> HandleAsync(VerifyTwoFactorAuthCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(VerifyTwoFactorAuthCommand command, CancellationToken ct = default)
     {
         var user = await dbContext.Users.Include(x => x.Tokens).FirstOrDefaultAsync(x => x.Email == command.Email, ct);
 

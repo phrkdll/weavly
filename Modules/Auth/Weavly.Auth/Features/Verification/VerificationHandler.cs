@@ -12,7 +12,7 @@ namespace Weavly.Auth.Features.Verification;
 public sealed class VerificationHandler(AuthDbContext dbContext, ITimeProvider timeProvider, IMessageBus bus)
     : IWeavlyHandler<VerificationCommand, Result>
 {
-    public async Task<Result> HandleAsync(VerificationCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(VerificationCommand command, CancellationToken ct = default)
     {
         var user = await dbContext
             .Users.Include(x => x.Tokens)

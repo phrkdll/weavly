@@ -71,7 +71,7 @@ public sealed class RegisterUserHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
     {
-        dbContextMock.Add(Arg.Any<AppUser>()).Throws(new Exception("Database error"));
+        dbContextMock.Users.Throws(new Exception("Database error"));
 
         var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
         var result = await sut.HandleAsync(command, CancellationToken.None);

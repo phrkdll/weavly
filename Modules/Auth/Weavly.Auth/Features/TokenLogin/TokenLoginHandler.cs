@@ -10,7 +10,7 @@ namespace Weavly.Auth.Features.TokenLogin;
 public sealed class TokenLoginHandler(AuthDbContext dbContext, IJwtProvider jwtProvider)
     : IWeavlyHandler<TokenLoginCommand, Result>
 {
-    public async Task<Result> HandleAsync(TokenLoginCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(TokenLoginCommand command, CancellationToken ct = default)
     {
         var user = await dbContext
             .Users.Include(x => x.Tokens)

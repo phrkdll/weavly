@@ -14,7 +14,7 @@ namespace Weavly.Auth.Features.RegisterUser;
 public sealed class RegisterUserHandler(AuthDbContext dbContext, PasswordHasher<AppUser> hasher, IMessageBus bus)
     : IWeavlyHandler<RegisterUserCommand, Result>
 {
-    public async Task<Result> HandleAsync(RegisterUserCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(RegisterUserCommand command, CancellationToken ct = default)
     {
         try
         {

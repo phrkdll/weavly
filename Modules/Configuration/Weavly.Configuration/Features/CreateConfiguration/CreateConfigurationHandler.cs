@@ -13,7 +13,7 @@ public sealed class CreateConfigurationHandler(
     ILogger<CreateConfigurationHandler> logger
 ) : IWeavlyHandler<CreateConfigurationCommand, Result>
 {
-    public async Task<Result> HandleAsync(CreateConfigurationCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(CreateConfigurationCommand command, CancellationToken ct = default)
     {
         try
         {

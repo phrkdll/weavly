@@ -12,6 +12,6 @@ public abstract class GetEndpoint<TRequest, TModule>(string path, IMessageBus bu
     public override RouteHandlerBuilder Map(WebApplication app) =>
         app.MapGet(path, HandleAsync).WithTags(typeof(TModule).Name);
 
-    public override Task<IResult> HandleAsync([AsParameters] TRequest request, CancellationToken ct) =>
+    public override Task<IResult> HandleAsync([AsParameters] TRequest request, CancellationToken ct = default) =>
         base.HandleAsync(request, ct);
 }

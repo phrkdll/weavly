@@ -12,7 +12,7 @@ namespace Weavly.Configuration.Features.LoadConfiguration;
 public sealed class LoadConfigurationHandler(ConfigurationDbContext dbContext, ILogger<LoadConfigurationHandler> logger)
     : IWeavlyHandler<LoadConfigurationCommand, Result>
 {
-    public async Task<Result> HandleAsync(LoadConfigurationCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(LoadConfigurationCommand command, CancellationToken ct = default)
     {
         try
         {

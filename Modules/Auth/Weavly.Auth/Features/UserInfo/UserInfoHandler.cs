@@ -10,7 +10,7 @@ namespace Weavly.Auth.Features.UserInfo;
 public sealed class UserInfoHandler(AuthDbContext dbContext, IUserContext<AppUserId> userContext)
     : IWeavlyHandler<UserInfoCommand, Result>
 {
-    public async Task<Result> HandleAsync(UserInfoCommand _, CancellationToken ct)
+    public async Task<Result> HandleAsync(UserInfoCommand _, CancellationToken ct = default)
     {
         try
         {

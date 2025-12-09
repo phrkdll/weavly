@@ -10,7 +10,7 @@ using Wolverine;
 
 namespace Weavly.Auth.Implementation;
 
-internal sealed class JwtProvider(IMessageBus bus) : IJwtProvider
+public sealed class JwtProvider(IMessageBus bus) : IJwtProvider
 {
     public async Task<string> GenerateTokenAsync(AppUser user, DateTime expires)
     {

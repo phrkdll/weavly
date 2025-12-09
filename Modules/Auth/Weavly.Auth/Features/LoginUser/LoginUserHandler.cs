@@ -16,7 +16,7 @@ public sealed class LoginUserHandler(
     ITimeProvider timeProvider
 ) : IWeavlyHandler<LoginUserCommand, Result>
 {
-    public async Task<Result> HandleAsync(LoginUserCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(LoginUserCommand command, CancellationToken ct = default)
     {
         var user = await dbContext.Users.Include(x => x.Tokens).SingleOrDefaultAsync(u => u.Email == command.Email, ct);
 

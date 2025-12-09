@@ -5,7 +5,7 @@ using Weavly.Core.Shared.Models;
 
 namespace Weavly.Auth.Persistence.Interceptors;
 
-internal sealed class UserMetaEntityInterceptor(IUserContextFactory<AppUserId> userContextFactory)
+public sealed class UserMetaEntityInterceptor(IUserContextFactory<AppUserId> userContextFactory)
     : CoreSaveChangesInterceptor<IUserMetaEntity<AppUserId>>
 {
     private AppUserId userId;

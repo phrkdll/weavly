@@ -1,6 +1,6 @@
 namespace Weavly.Auth.Implementation;
 
-internal sealed class JwtOptions
+public sealed class JwtOptions
 {
     public string Issuer { get; init; } = string.Empty;
 

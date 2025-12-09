@@ -1,6 +1,7 @@
 using EntityFrameworkCore.Testing.NSubstitute;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using Weavly.Auth.Features.UserInfo;
 using Weavly.Auth.Models;
@@ -53,6 +54,17 @@ public sealed class UserInfoHandlerTests
         userContextMock.UserId.Returns(new AppUserId());
 
         var result = await sut.HandleAsync(new UserInfoCommand(), CancellationToken.None);
+
+        result.ShouldBeOfType<Failure>();
+    }
+
+    [Fact]
+    public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
+    {
+        dbContextMock.Users.Throws(new Exception("Database error"));
+
+        var command = new UserInfoCommand();
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }

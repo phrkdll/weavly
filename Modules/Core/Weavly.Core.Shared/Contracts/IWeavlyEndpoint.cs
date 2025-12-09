@@ -6,7 +6,7 @@ namespace Weavly.Core.Shared.Contracts;
 public interface IWeavlyEndpoint<TRequest> : IWeavlyEndpoint
     where TRequest : IWeavlyCommand
 {
-    Task<IResult> HandleAsync(TRequest request, CancellationToken ct);
+    Task<IResult> HandleAsync(TRequest request, CancellationToken ct = default);
 }
 
 public interface IWeavlyEndpoint

@@ -4,5 +4,5 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.RegisterUser;
 
-internal sealed class RegisterUserEndpoint(IMessageBus bus)
+public sealed class RegisterUserEndpoint(IMessageBus bus)
     : PostEndpoint<RegisterUserCommand, AuthModule>("user/register", bus);

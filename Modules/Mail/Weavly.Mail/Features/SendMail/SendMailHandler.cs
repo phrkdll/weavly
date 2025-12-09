@@ -14,7 +14,7 @@ namespace Weavly.Mail.Features.SendMail;
 public sealed class SendMailHandler(IMailService mailService, ILogger<SendMailHandler> logger, IMessageBus bus)
     : IWeavlyHandler<SendMailCommand, Result>
 {
-    public async Task<Result> HandleAsync(SendMailCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(SendMailCommand command, CancellationToken ct = default)
     {
         logger.LogInformation("Received {MessageType} message", nameof(SendMailCommand));
 

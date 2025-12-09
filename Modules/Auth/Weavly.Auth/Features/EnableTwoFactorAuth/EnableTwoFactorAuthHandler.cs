@@ -18,7 +18,7 @@ public sealed class EnableTwoFactorAuthHandler(AuthDbContext dbContext, IHttpCon
     private readonly HttpContext _httpContext =
         contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));
 
-    public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct = default)
     {
         var id =
             _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;

@@ -12,7 +12,7 @@ public abstract class EndpointBase<TRequest>(IMessageBus bus) : IWeavlyEndpoint<
 
     private string[] policies = [];
 
-    public virtual async Task<IResult> HandleAsync(TRequest request, CancellationToken ct)
+    public virtual async Task<IResult> HandleAsync(TRequest request, CancellationToken ct = default)
     {
         var result = await bus.InvokeAsync<Result>(request, ct);
 

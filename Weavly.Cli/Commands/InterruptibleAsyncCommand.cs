@@ -11,7 +11,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 {
     protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
-    public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct)
+    public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct = default)
     {
         try
         {
@@ -34,7 +34,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
         }
     }
 
-    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct);
+    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct = default);
 
     public ProcessRunner Runner => ProcessRunner.Instance();
 

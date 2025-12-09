@@ -10,7 +10,7 @@ namespace Weavly.Auth.Features.CreateAppUser;
 public sealed class CreateAppUserHandler(AuthDbContext dbContext, ILogger<CreateAppUserHandler> logger)
     : IWeavlyHandler<CreateAppUserCommand, Result>
 {
-    public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct)
+    public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
     {
         logger.LogInformation("Received {MessageType} message", nameof(CreateAppUserCommand));
 
