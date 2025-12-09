@@ -54,4 +54,13 @@ public sealed class CreateAppRoleHandlerTests
 
         result.ShouldBeOfType<Failure>();
     }
+
+    [Fact]
+    public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
+    {
+        var command = new CreateAppRoleCommand("");
+        var result = await sut.HandleAsync(command, CancellationToken.None);
+
+        result.ShouldBeOfType<Failure>();
+    }
 }

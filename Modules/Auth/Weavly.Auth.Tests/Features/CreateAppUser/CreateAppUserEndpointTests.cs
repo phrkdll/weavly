@@ -12,7 +12,7 @@ public sealed class CreateAppUserEndpointTests
     private readonly IMessageBus busMock = Substitute.For<IMessageBus>();
 
     [Fact]
-    public async Task CreateAppUserEndpoint_ShouldReturn_SuccessInstance_WhenNewUserWasCreated()
+    public async Task HandleAsync_CallsInvokeAsync_OnMessageBus()
     {
         busMock.InvokeAsync<Result>(Arg.Any<CreateAppUserCommand>()).Returns(Success.Create(new AppUserId()));
 

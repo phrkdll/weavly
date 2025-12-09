@@ -12,7 +12,7 @@ public sealed class RegisterUserEndpointTests
     private readonly IMessageBus busMock = Substitute.For<IMessageBus>();
 
     [Fact]
-    public async Task RegisterUserEndpoint_ShouldReturn_SuccessInstance_WhenNewUserWasCreated()
+    public async Task HandleAsync_CallsInvokeAsync_OnMessageBus()
     {
         busMock
             .InvokeAsync<Result>(Arg.Any<RegisterUserCommand>())
