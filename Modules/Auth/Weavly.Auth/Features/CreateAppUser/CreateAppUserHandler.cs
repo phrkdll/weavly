@@ -10,7 +10,7 @@ namespace Weavly.Auth.Features.CreateAppUser;
 public sealed class CreateAppUserHandler(AuthDbContext dbContext, ILogger<CreateAppUserHandler> logger)
     : IWeavlyHandler<CreateAppUserCommand, Result>
 {
-    public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
+    public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct)
     {
         logger.LogInformation("Received {MessageType} message", nameof(CreateAppUserCommand));
 
@@ -22,13 +22,13 @@ public sealed class CreateAppUserHandler(AuthDbContext dbContext, ILogger<Create
             }
 
             var role = await dbContext.Roles.SingleOrDefaultAsync(x => x.Name == command.InitialRole, ct);
-            if (role is null && !dbContext.Users.Any())
+            if (role is null && !await dbContext.Users.AnyAsync(ct))
             {
                 role = AppRole.Create(command.InitialRole);
                 dbContext.Roles.Add(role);
             }
 
-            ArgumentNullException.ThrowIfNull(role, nameof(role));
+            ArgumentNullException.ThrowIfNull(role);
             var user = AppUser.Create(command.Email, command.UserName, role);
             dbContext.Add(user);
             await dbContext.SaveChangesAsync(ct);

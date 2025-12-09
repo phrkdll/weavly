@@ -3,25 +3,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
-using Weavly.Auth.Features.CreateAppRole;
+using Weavly.Auth.Features.CreateAppUser;
 using Weavly.Auth.Models;
 using Weavly.Auth.Persistence;
-using Weavly.Auth.Shared.Features.CreateAppRole;
+using Weavly.Auth.Shared.Features.CreateAppUser;
 using Weavly.Auth.Shared.Identifiers;
-using Weavly.Core.Shared.Contracts;
 using Weavly.Core.Shared.Implementation;
 
-namespace Weavly.Auth.Tests.Features.CreateAppRole;
+namespace Weavly.Auth.Tests.Features.CreateAppUser;
 
-public sealed class CreateAppRoleHandlerTests
+public sealed class CreateAppUserHandlerTests
 {
-    private readonly ILogger<CreateAppRoleHandler> loggerMock = Substitute.For<ILogger<CreateAppRoleHandler>>();
+    private readonly ILogger<CreateAppUserHandler> loggerMock = Substitute.For<ILogger<CreateAppUserHandler>>();
 
     private readonly AuthDbContext dbContextMock;
 
-    private readonly CreateAppRoleHandler sut;
+    private readonly CreateAppUserHandler sut;
 
-    public CreateAppRoleHandlerTests()
+    public CreateAppUserHandlerTests()
     {
         var dbContextOptions = new DbContextOptionsBuilder()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -29,15 +28,15 @@ public sealed class CreateAppRoleHandlerTests
 
         dbContextMock = Create.MockedDbContextFor<TestAuthDbContext>(dbContextOptions.Options);
 
-        sut = new CreateAppRoleHandler(dbContextMock, loggerMock);
+        sut = new CreateAppUserHandler(dbContextMock, loggerMock);
     }
 
     [Fact]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenNewRoleWasCreated()
     {
-        var command = new CreateAppRoleCommand("TestRole");
+        var command = new CreateAppUserCommand("admin@test.local", "Admin", "Admin", "P@ssw0rd!");
         var result = await sut.HandleAsync(command, CancellationToken.None);
-        var data = result.ShouldBeOfType<Success<AppRoleId>>().Data.ShouldBeOfType<AppRoleId>();
+        var data = result.ShouldBeOfType<Success<AppUserId>>().Data.ShouldBeOfType<AppUserId>();
 
         data.Value.ShouldNotBeEmpty();
     }
@@ -45,11 +44,11 @@ public sealed class CreateAppRoleHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenRoleAlreadyExists()
     {
-        var existingRole = AppRole.Create("ExistingRole");
-        dbContextMock.Roles.AddRange(existingRole);
+        var user = AppUser.Create("admin@test.local", [AppUserToken.CreateEmailValidationToken()]);
+        dbContextMock.Users.AddRange(user);
         await dbContextMock.SaveChangesAsync();
 
-        var command = new CreateAppRoleCommand("ExistingRole");
+        var command = new CreateAppUserCommand("admin@test.local", "Admin", "Admin");
         var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
