@@ -1,4 +1,3 @@
-using EntityFrameworkCore.Testing.NSubstitute;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
@@ -7,32 +6,20 @@ using Shouldly;
 using Weavly.Auth.Enums;
 using Weavly.Auth.Features.RegisterUser;
 using Weavly.Auth.Models;
-using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Events;
 using Weavly.Auth.Shared.Features.RegisterUser;
 using Weavly.Core.Shared.Implementation;
 using Weavly.Mail.Shared.Features.SendMail;
-using Wolverine;
 
 namespace Weavly.Auth.Tests.Features.RegisterUser;
 
-public sealed class RegisterUserHandlerTests
+public sealed class RegisterUserHandlerTests : AuthHandlerTests
 {
-    private readonly IMessageBus busMock = Substitute.For<IMessageBus>();
-
-    private readonly AuthDbContext dbContextMock;
-
     private readonly RegisterUserHandler sut;
 
     public RegisterUserHandlerTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .UseStronglyTypeConverters();
-
-        dbContextMock = Create.MockedDbContextFor<TestAuthDbContext>(dbContextOptions.Options);
-
-        sut = new RegisterUserHandler(dbContextMock, new PasswordHasher<AppUser>(), busMock);
+        sut = new RegisterUserHandler(dbContextMock, new PasswordHasher<AppUser>(), messageBusMock);
     }
 
     [Fact]
@@ -51,8 +38,8 @@ public sealed class RegisterUserHandlerTests
         user.PasswordHash.ShouldNotBeNullOrEmpty();
         user.PasswordHash.ShouldNotBe(command.Password);
 
-        await busMock.Received().PublishAsync(Arg.Any<SendMailCommand>());
-        await busMock.Received().PublishAsync(Arg.Any<AppUserRegisteredEvent>());
+        await messageBusMock.Received().PublishAsync(Arg.Any<SendMailCommand>());
+        await messageBusMock.Received().PublishAsync(Arg.Any<AppUserRegisteredEvent>());
     }
 
     [Fact]

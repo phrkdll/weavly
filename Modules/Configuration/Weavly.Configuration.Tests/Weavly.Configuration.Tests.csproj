@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weavly.Configuration\Weavly.Configuration.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core.Tests\Weavly.Core.Tests.csproj" />
   </ItemGroup>
 </Project>

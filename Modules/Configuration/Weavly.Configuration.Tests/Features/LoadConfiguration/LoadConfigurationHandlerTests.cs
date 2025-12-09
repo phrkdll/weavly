@@ -1,11 +1,8 @@
-using EntityFrameworkCore.Testing.NSubstitute;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Features.LoadConfiguration;
 using Weavly.Configuration.Models;
-using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
@@ -13,21 +10,14 @@ using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests.Features.LoadConfiguration;
 
-public class LoadConfigurationHandlerTests
+public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
 {
     private readonly ILogger<LoadConfigurationHandler> loggerMock = Substitute.For<ILogger<LoadConfigurationHandler>>();
-
-    private readonly ConfigurationDbContext dbContextMock;
 
     private readonly LoadConfigurationHandler sut;
 
     public LoadConfigurationHandlerTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .UseStronglyTypeConverters();
-
-        dbContextMock = Create.MockedDbContextFor<TestConfigurationDbContext>(dbContextOptions.Options);
         dbContextMock.Configurations.AddRange(
             new AppConfiguration
             {

@@ -1,17 +1,14 @@
-﻿using EntityFrameworkCore.Testing.NSubstitute;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Features.CreateConfiguration;
-using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Configuration.Tests.Features.CreateConfiguration;
 
-public class CreateConfigurationHandlerTests
+public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
 {
     private static CreateConfigurationCommand TestCommand =>
         CreateConfigurationCommand.Create<CreateConfigurationHandlerTests>("Test", 10, "TestCategory");
@@ -20,18 +17,10 @@ public class CreateConfigurationHandlerTests
         ILogger<CreateConfigurationHandler>
     >();
 
-    private readonly ConfigurationDbContext dbContextMock;
-
     private readonly CreateConfigurationHandler sut;
 
     public CreateConfigurationHandlerTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .UseStronglyTypeConverters();
-
-        dbContextMock = Create.MockedDbContextFor<TestConfigurationDbContext>(dbContextOptions.Options);
-
         sut = new CreateConfigurationHandler(dbContextMock, loggerMock);
     }
 

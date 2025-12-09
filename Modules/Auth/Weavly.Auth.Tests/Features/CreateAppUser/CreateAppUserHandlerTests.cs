@@ -1,33 +1,22 @@
-using EntityFrameworkCore.Testing.NSubstitute;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using Weavly.Auth.Features.CreateAppUser;
 using Weavly.Auth.Models;
-using Weavly.Auth.Persistence;
 using Weavly.Auth.Shared.Features.CreateAppUser;
 using Weavly.Auth.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Auth.Tests.Features.CreateAppUser;
 
-public sealed class CreateAppUserHandlerTests
+public sealed class CreateAppUserHandlerTests : AuthHandlerTests
 {
     private readonly ILogger<CreateAppUserHandler> loggerMock = Substitute.For<ILogger<CreateAppUserHandler>>();
-
-    private readonly AuthDbContext dbContextMock;
 
     private readonly CreateAppUserHandler sut;
 
     public CreateAppUserHandlerTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .UseStronglyTypeConverters();
-
-        dbContextMock = Create.MockedDbContextFor<TestAuthDbContext>(dbContextOptions.Options);
-
         sut = new CreateAppUserHandler(dbContextMock, loggerMock);
     }
 
@@ -54,3 +43,5 @@ public sealed class CreateAppUserHandlerTests
         result.ShouldBeOfType<Failure>();
     }
 }
+
+public class WeavGlyHandlerTests<T1, T2> { }
