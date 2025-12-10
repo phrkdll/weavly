@@ -5,8 +5,6 @@ using Weavly.Auth.Features.LoginUser;
 using Weavly.Auth.Implementation;
 using Weavly.Auth.Models;
 using Weavly.Auth.Shared.Features.LoginUser;
-using Weavly.Configuration.Shared;
-using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Implementation;
 using Weavly.Core.Shared.Implementation;
 
@@ -39,30 +37,6 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenLoginWasValid()
     {
-        messageBusMock
-            .InvokeAsync<Result>(Arg.Any<LoadConfigurationCommand>())
-            .Returns(
-                Success.Create(
-                    new LoadConfigurationResponse(
-                        "AuthModule",
-                        [
-                            ConfigurationResponse.Create("Secret") with
-                            {
-                                StringValue = AuthModule.GenerateEncryptionKey(256),
-                            },
-                            ConfigurationResponse.Create("Issuer") with
-                            {
-                                StringValue = "Weavly",
-                            },
-                            ConfigurationResponse.Create("Audience") with
-                            {
-                                StringValue = "Weavly",
-                            },
-                        ]
-                    )
-                )
-            );
-
         passwordHasherMock
             .VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(PasswordVerificationResult.Success);

@@ -14,16 +14,16 @@ public sealed class TokenLoginHandler(AuthDbContext dbContext, IJwtProvider jwtP
     {
         var user = await dbContext
             .Users.Include(x => x.Tokens)
-            .SingleOrDefaultAsync(u => u.Tokens.Any(t => t.Purpose == AppUserTokenPurpose.TokenLogin), ct);
+            .SingleOrDefaultAsync(u => u.Tokens.Any(t => t.Value == command.Token), ct);
 
-        var token = user?.Tokens.SingleOrDefault(t => t.Value == command.Token);
+        var token = user?.Tokens.SingleOrDefault(t => t.Purpose == AppUserTokenPurpose.TwoFactorAuthentication);
 
         if (user is null || token is null)
         {
             return Failure.Create("Invalid login token.");
         }
 
-        user.Tokens?.Remove(token);
+        user.Tokens.Remove(token);
 
         dbContext.Update(user);
 

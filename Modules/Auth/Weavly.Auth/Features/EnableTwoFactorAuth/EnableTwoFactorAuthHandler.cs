@@ -1,7 +1,5 @@
-using System.Security.Claims;
 using System.Text;
 using Google.Authenticator;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Weavly.Auth.Enums;
 using Weavly.Auth.Models;
@@ -12,20 +10,14 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Auth.Features.EnableTwoFactorAuth;
 
-public sealed class EnableTwoFactorAuthHandler(AuthDbContext dbContext, IHttpContextAccessor contextAccessor)
+public sealed class EnableTwoFactorAuthHandler(AuthDbContext dbContext, IUserContext<AppUserId> userContext)
     : IWeavlyHandler<EnableTwoFactorAuthCommand, Result>
 {
-    private readonly HttpContext _httpContext =
-        contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));
-
     public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct = default)
     {
-        var id =
-            _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-
         var user = await dbContext
             .Users.Include(x => x.Tokens)
-            .FirstOrDefaultAsync(x => x.Id == AppUserId.Parse(id), ct);
+            .FirstOrDefaultAsync(x => x.Id == userContext.UserId, ct);
 
         if (user is null)
         {
