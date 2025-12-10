@@ -16,9 +16,9 @@ public sealed class VerificationHandler(AuthDbContext dbContext, ITimeProvider t
     {
         var user = await dbContext
             .Users.Include(x => x.Tokens)
-            .FirstOrDefaultAsync(u => u.Tokens.Any(t => t.Value == command.Token), ct);
+            .SingleOrDefaultAsync(u => u.Tokens.Any(t => t.Value == command.Token), ct);
 
-        var token = user?.Tokens.FirstOrDefault(t => t.Purpose == AppUserTokenPurpose.EmailValidation);
+        var token = user?.Tokens.SingleOrDefault(t => t.Purpose == AppUserTokenPurpose.EmailValidation);
 
         if (user is null || token is null || timeProvider.UtcNow > token.ExpiresAt)
         {
