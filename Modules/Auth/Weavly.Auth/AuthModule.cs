@@ -57,7 +57,7 @@ public sealed class AuthModule : WeavlyModule
 
         builder.Services.AddAuthorization();
 
-        builder.Services.AddScoped(_ => new PasswordHasher<AppUser>());
+        builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
         builder.Services.AddScoped<IJwtProvider, JwtProvider>();
         builder.Services.AddScoped<AppJwtBearerEvents>();
 
@@ -110,7 +110,7 @@ public sealed class AuthModule : WeavlyModule
         }
     }
 
-    private static string GenerateEncryptionKey(int keySize)
+    public static string GenerateEncryptionKey(int keySize)
     {
         using var aes = Aes.Create();
 

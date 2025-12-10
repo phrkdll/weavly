@@ -6,7 +6,7 @@ namespace Weavly.Auth.Persistence;
 
 public abstract class AuthDbContext : CoreDbContext
 {
-    public AuthDbContext(IServiceProvider serviceProvider)
+    protected AuthDbContext(IServiceProvider serviceProvider)
         : base(serviceProvider, nameof(AuthModule)) { }
 
     protected AuthDbContext(DbContextOptions options)

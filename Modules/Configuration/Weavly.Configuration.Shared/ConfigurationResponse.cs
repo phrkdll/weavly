@@ -1,3 +1,4 @@
+using JasperFx.CodeGeneration.Services;
 using Weavly.Configuration.Shared.Identifiers;
 
 namespace Weavly.Configuration.Shared;
@@ -27,4 +28,6 @@ public record ConfigurationResponse
     public double AsDouble() => DoubleValue ?? 0;
 
     public bool AsBool() => BoolValue ?? false;
+
+    public static ConfigurationResponse Create(string name) => new ConfigurationResponse() with { Name = name };
 }

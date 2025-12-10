@@ -11,7 +11,7 @@ namespace Weavly.Auth.Features.LoginUser;
 
 public sealed class LoginUserHandler(
     AuthDbContext dbContext,
-    PasswordHasher<AppUser> hasher,
+    IPasswordHasher<AppUser> hasher,
     IJwtProvider jwtProvider,
     ITimeProvider timeProvider
 ) : IWeavlyHandler<LoginUserCommand, Result>
@@ -49,7 +49,6 @@ public sealed class LoginUserHandler(
 
         var utcNow = timeProvider.UtcNow;
         user.LastLoginAt = utcNow;
-
         dbContext.Update(user);
 
         await dbContext.SaveChangesAsync(ct);
