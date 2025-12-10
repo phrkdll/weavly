@@ -2,7 +2,6 @@ using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Mail.Shared.Contracts;
 using Wolverine;

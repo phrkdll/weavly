@@ -6,7 +6,6 @@ using Weavly.Auth.Implementation;
 using Weavly.Auth.Models;
 using Weavly.Auth.Shared.Features.LoginUser;
 using Weavly.Configuration.Shared;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Implementation;
 using Weavly.Core.Shared.Implementation;

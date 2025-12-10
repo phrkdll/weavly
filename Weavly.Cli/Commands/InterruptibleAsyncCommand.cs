@@ -11,7 +11,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 {
     protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
-    public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct = default)
+    public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct)
     {
         try
         {

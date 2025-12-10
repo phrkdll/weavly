@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Auth.Contracts;
 using Weavly.Auth.Models;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Wolverine;
 

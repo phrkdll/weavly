@@ -10,7 +10,7 @@ public sealed record CreateConfigurationCommand : ConfigurationResponse, IWeavly
 
     public static CreateConfigurationCommand Create<TModule>(string name, object value, string category = "Default")
     {
-        var item = new CreateConfigurationCommand
+        var command = new CreateConfigurationCommand
         {
             Module = typeof(TModule).Name,
             Name = name,
@@ -19,10 +19,10 @@ public sealed record CreateConfigurationCommand : ConfigurationResponse, IWeavly
 
         return value switch
         {
-            string s => item with { StringValue = s },
-            int i => item with { IntValue = i },
-            bool b => item with { BoolValue = b },
-            double d => item with { DoubleValue = d },
+            string s => command with { StringValue = s },
+            int i => command with { IntValue = i },
+            bool b => command with { BoolValue = b },
+            double d => command with { DoubleValue = d },
             _ => throw new InvalidOperationException("Unsupported configuration value type"),
         };
     }

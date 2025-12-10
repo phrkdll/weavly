@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Shared.Contracts;
 

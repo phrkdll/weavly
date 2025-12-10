@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Weavly.Configuration.Shared.Features.LoadConfig;
+namespace Weavly.Configuration.Shared.Features.LoadConfiguration;
 
 public sealed record LoadConfigurationResponse(string Module, IEnumerable<ConfigurationResponse> Items)
 {

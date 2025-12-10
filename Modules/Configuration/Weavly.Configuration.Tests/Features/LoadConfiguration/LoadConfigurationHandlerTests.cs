@@ -3,7 +3,6 @@ using NSubstitute;
 using Shouldly;
 using Weavly.Configuration.Features.LoadConfiguration;
 using Weavly.Configuration.Models;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Configuration.Shared.Identifiers;
 using Weavly.Core.Shared.Implementation;

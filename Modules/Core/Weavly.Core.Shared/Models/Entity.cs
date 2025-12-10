@@ -1,10 +1,11 @@
 namespace Weavly.Core.Shared.Models;
 
-public abstract class Entity<TEntityId>
+public abstract record Entity<TEntityId>
     where TEntityId : struct
 {
-    public TEntityId Id { get; set; }
+    public TEntityId Id { get; init; }
 
-    public bool IsDeleted { get; set; }
-    public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; init; }
+
+    public DateTime? DeletedAt { get; init; }
 }

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
-using Weavly.Configuration.Shared.Features.LoadConfig;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Shared.Contracts;
 using Weavly.Mail.Implementation;

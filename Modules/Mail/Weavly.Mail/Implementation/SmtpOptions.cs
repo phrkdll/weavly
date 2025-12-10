@@ -1,4 +1,4 @@
-using Weavly.Configuration.Shared.Features.LoadConfig;
+using Weavly.Configuration.Shared.Features.LoadConfiguration;
 
 namespace Weavly.Mail.Implementation;
 

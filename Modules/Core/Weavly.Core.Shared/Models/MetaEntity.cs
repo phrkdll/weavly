@@ -1,6 +1,6 @@
 ﻿namespace Weavly.Core.Shared.Models;
 
-public class MetaEntity<TEntityId, TUserId> : Entity<TEntityId>, ITimestampMetaEntity, IUserMetaEntity<TUserId>
+public record MetaEntity<TEntityId, TUserId> : Entity<TEntityId>, ITimestampMetaEntity, IUserMetaEntity<TUserId>
     where TEntityId : struct
     where TUserId : struct
 {

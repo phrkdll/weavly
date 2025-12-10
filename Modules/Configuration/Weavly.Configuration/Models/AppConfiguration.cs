@@ -5,7 +5,7 @@ using Weavly.Core.Shared.Models;
 
 namespace Weavly.Configuration.Models;
 
-public sealed class AppConfiguration : MetaEntity<ConfigurationId, AppUserId>
+public sealed record AppConfiguration : MetaEntity<ConfigurationId, AppUserId>
 {
     [MaxLength(32)]
     public string Category { get; init; } = string.Empty;
