@@ -1,16 +1,14 @@
 using Weavly.Auth.Shared.Features.CreateAppRole;
+using Weavly.Core.Shared.Implementation.Endpoints;
+using Wolverine;
 
 namespace Weavly.Auth.Features.CreateAppRole;
 
-internal sealed class CreateAppRoleEndpoint : Endpoint<CreateAppRoleCommand>
+public sealed class CreateAppRoleEndpoint : PostEndpoint<CreateAppRoleCommand, AuthModule>
 {
-    public override void Configure()
+    public CreateAppRoleEndpoint(IMessageBus bus)
+        : base("role", bus)
     {
-        Post("role");
-    }
-
-    public override async Task HandleAsync(CreateAppRoleCommand request, CancellationToken ct)
-    {
-        await HandleDefaultAsync(request, ct);
+        Authorize();
     }
 }

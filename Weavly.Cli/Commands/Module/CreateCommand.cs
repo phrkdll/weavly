@@ -42,7 +42,11 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         public string TestingFramework { get; set; } = "xunit";
     }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
+    public override async Task HandleAsync(
+        CommandContext commandContext,
+        Settings settings,
+        CancellationToken ct = default
+    )
     {
         var solutionName =
             Directory.GetFiles(".", "*.sln*").Select(Path.GetFileNameWithoutExtension).FirstOrDefault()

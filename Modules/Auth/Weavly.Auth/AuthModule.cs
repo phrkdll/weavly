@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
-using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -18,9 +17,10 @@ using Weavly.Auth.Persistence.Interceptors;
 using Weavly.Auth.Shared.Features.CreateAppRole;
 using Weavly.Auth.Shared.Features.CreateAppUser;
 using Weavly.Auth.Shared.Identifiers;
-using Weavly.Configuration.Shared.Features.CreateConfig;
+using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Core;
 using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Auth;
 
@@ -52,13 +52,14 @@ public sealed class AuthModule : WeavlyModule
                 };
 
                 // Configure the JwtBearerEvents
-                options.Events = new AppJwtBearerEvents();
+                options.EventsType = typeof(AppJwtBearerEvents);
             });
 
         builder.Services.AddAuthorization();
 
-        builder.Services.AddScoped(_ => new PasswordHasher<AppUser>());
+        builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
         builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+        builder.Services.AddScoped<AppJwtBearerEvents>();
 
         builder.Services.AddScoped<IUserContext<AppUserId>, AppUserContext>();
 
@@ -86,14 +87,14 @@ public sealed class AuthModule : WeavlyModule
         base.Use(app);
     }
 
-    public override async Task InitializeAsync()
+    public override async Task InitializeAsync(IMessageBus bus)
     {
-        await new CreateAppUserCommand("system@weavly.local", "system", "System").ExecuteAsync();
+        await bus.InvokeAsync<Result>(new CreateAppUserCommand("system@weavly.local", "system", "System"));
 
         CreateAppRoleCommand[] initialRoles = [new("Administrator"), new("User")];
         foreach (var role in initialRoles)
         {
-            await role.ExecuteAsync();
+            await bus.InvokeAsync<Result>(role);
         }
 
         CreateConfigurationCommand[] configItems =
@@ -105,11 +106,11 @@ public sealed class AuthModule : WeavlyModule
 
         foreach (var configItem in configItems)
         {
-            await configItem.ExecuteAsync();
+            await bus.InvokeAsync<Result>(configItem);
         }
     }
 
-    private static string GenerateEncryptionKey(int keySize)
+    public static string GenerateEncryptionKey(int keySize)
     {
         using var aes = Aes.Create();
 

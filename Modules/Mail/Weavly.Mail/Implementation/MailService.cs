@@ -1,19 +1,22 @@
-using FastEndpoints;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using Weavly.Configuration.Shared.Features.LoadConfig;
-using Weavly.Mail.Shared;
+using Weavly.Configuration.Shared.Features.LoadConfiguration;
+using Weavly.Mail.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Mail.Implementation;
 
-internal sealed class MailService(IConfiguration configuration, ILogger<MailService> logger) : IMailService
+public sealed class MailService(IConfiguration configuration, ILogger<MailService> logger, IMessageBus bus)
+    : IMailService
 {
     public async Task SendEmailAsync(MimeMessage message, CancellationToken ct = default)
     {
         var options =
-            await LoadConfigurationCommand.Create<MailModule>().ExecuteAsync(ct) as Success<LoadConfigurationResponse>;
+            await bus.InvokeAsync<Result>(LoadConfigurationCommand.Create<MailModule>(), ct)
+            as Success<LoadConfigurationResponse>;
+
         ArgumentNullException.ThrowIfNull(options);
 
         var smtpOptions = SmtpOptions.FromConfigurationResponse(options.Data);
@@ -38,7 +41,6 @@ internal sealed class MailService(IConfiguration configuration, ILogger<MailServ
         catch (Exception e)
         {
             logger.LogError(e, "Error sending email");
-            throw;
         }
     }
 }

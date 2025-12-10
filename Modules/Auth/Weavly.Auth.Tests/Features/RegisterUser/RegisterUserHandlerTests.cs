@@ -1,0 +1,68 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
+using Shouldly;
+using Weavly.Auth.Enums;
+using Weavly.Auth.Features.RegisterUser;
+using Weavly.Auth.Models;
+using Weavly.Auth.Shared.Events;
+using Weavly.Auth.Shared.Features.RegisterUser;
+using Weavly.Core.Shared.Implementation;
+using Weavly.Mail.Shared.Features.SendMail;
+
+namespace Weavly.Auth.Tests.Features.RegisterUser;
+
+public sealed class RegisterUserHandlerTests : AuthHandlerTests
+{
+    private readonly RegisterUserHandler sut;
+
+    public RegisterUserHandlerTests()
+    {
+        sut = new RegisterUserHandler(dbContextMock, new PasswordHasher<AppUser>(), messageBusMock);
+    }
+
+    [Fact]
+    public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenNewUserWasCreated()
+    {
+        var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
+        var result = await sut.HandleAsync(command, CancellationToken.None);
+        var data = result.ShouldBeOfType<Success<RegisterUserResponse>>().Data;
+
+        data.ShouldNotBeNull();
+        data.Id.ShouldNotBeNull();
+
+        var user = await dbContextMock.Users.FirstOrDefaultAsync();
+        user.ShouldNotBeNull();
+        user.Tokens.ShouldContain(t => t.Purpose == AppUserTokenPurpose.EmailValidation);
+        user.PasswordHash.ShouldNotBeNullOrEmpty();
+        user.PasswordHash.ShouldNotBe(command.Password);
+
+        await messageBusMock.Received().PublishAsync(Arg.Any<SendMailCommand>());
+        await messageBusMock.Received().PublishAsync(Arg.Any<AppUserRegisteredEvent>());
+    }
+
+    [Fact]
+    public async Task HandleAsync_ShouldReturn_FailureInstance_WhenUserAlreadyExists()
+    {
+        var user = AppUser.Create("admin@test.local", [AppUserToken.CreateEmailValidationToken()]);
+        dbContextMock.Users.AddRange(user);
+        await dbContextMock.SaveChangesAsync();
+
+        var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
+        var result = await sut.HandleAsync(command, CancellationToken.None);
+
+        result.ShouldBeOfType<Failure>();
+    }
+
+    [Fact]
+    public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
+    {
+        dbContextMock.Users.Throws(new Exception("Database error"));
+
+        var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
+        var result = await sut.HandleAsync(command, CancellationToken.None);
+
+        result.ShouldBeOfType<Failure>();
+    }
+}

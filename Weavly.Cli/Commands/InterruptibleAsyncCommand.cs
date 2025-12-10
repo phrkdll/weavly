@@ -34,7 +34,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
         }
     }
 
-    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct);
+    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct = default);
 
     public ProcessRunner Runner => ProcessRunner.Instance();
 

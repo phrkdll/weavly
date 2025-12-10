@@ -44,7 +44,7 @@ public class ProcessRunner
             ) ?? throw new InvalidOperationException("Failed to start process");
     }
 
-    public async Task<string> RunAsync(ProcessRunnerCommand command, CancellationToken ct)
+    public async Task<string> RunAsync(ProcessRunnerCommand command, CancellationToken ct = default)
     {
         if (message != null)
         {
@@ -54,7 +54,7 @@ public class ProcessRunner
         return await CreateProcess(command.Command, command.Arguments, true).StandardOutput.ReadToEndAsync(ct);
     }
 
-    public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct)
+    public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct = default)
     {
         if (message != null)
         {

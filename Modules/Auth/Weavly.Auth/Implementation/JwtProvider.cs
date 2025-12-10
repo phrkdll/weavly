@@ -1,19 +1,19 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FastEndpoints;
 using Microsoft.IdentityModel.Tokens;
 using Weavly.Auth.Contracts;
 using Weavly.Auth.Models;
-using Weavly.Configuration.Shared.Features.LoadConfig;
+using Weavly.Configuration.Shared.Features.LoadConfiguration;
+using Wolverine;
 
 namespace Weavly.Auth.Implementation;
 
-internal sealed class JwtProvider() : IJwtProvider
+public sealed class JwtProvider(IMessageBus bus) : IJwtProvider
 {
     public async Task<string> GenerateTokenAsync(AppUser user, DateTime expires)
     {
-        var response = await LoadConfigurationCommand.Create<AuthModule>("Jwt").ExecuteAsync();
+        var response = await bus.InvokeAsync<Result>(LoadConfigurationCommand.Create<AuthModule>("Jwt"));
 
         if (response is not Success<LoadConfigurationResponse> config)
         {

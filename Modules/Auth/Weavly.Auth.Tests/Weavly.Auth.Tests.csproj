@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Weavly.Auth/Weavly.Auth.csproj" />
+    <ProjectReference Include="../../Core/Weavly.Core.Tests/Weavly.Core.Tests.csproj" />
+  </ItemGroup>
+</Project>

@@ -16,7 +16,11 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         public string? ProjectName { get; set; }
     }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
+    public override async Task HandleAsync(
+        CommandContext commandContext,
+        Settings settings,
+        CancellationToken ct = default
+    )
     {
         var projects = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
         var projectName =

@@ -1,8 +1,8 @@
-using Weavly.Configuration.Shared.Features.LoadConfig;
+using Weavly.Configuration.Shared.Features.LoadConfiguration;
 
 namespace Weavly.Mail.Implementation;
 
-internal sealed class SmtpOptions
+public sealed class SmtpOptions
 {
     public string SmtpHost { get; init; } = string.Empty;
 

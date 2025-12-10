@@ -28,7 +28,11 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         public string? ProjectName { get; set; }
     }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
+    public override async Task HandleAsync(
+        CommandContext commandContext,
+        Settings settings,
+        CancellationToken ct = default
+    )
     {
         var solutionNameInput =
             settings.SolutionName

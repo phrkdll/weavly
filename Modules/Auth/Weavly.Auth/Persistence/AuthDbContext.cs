@@ -4,14 +4,19 @@ using Weavly.Core.Persistence;
 
 namespace Weavly.Auth.Persistence;
 
-public abstract class AuthDbContext(IServiceProvider serviceProvider)
-    : CoreDbContext(serviceProvider, nameof(AuthModule))
+public abstract class AuthDbContext : CoreDbContext
 {
-    public DbSet<AppUser> Users { get; init; }
+    protected AuthDbContext(IServiceProvider serviceProvider)
+        : base(serviceProvider, nameof(AuthModule)) { }
 
-    public DbSet<AppRole> Roles { get; init; }
+    protected AuthDbContext(DbContextOptions options)
+        : base(options) { }
 
-    public DbSet<AppUserToken> Tokens { get; init; }
+    public virtual DbSet<AppUser> Users { get; init; }
+
+    public virtual DbSet<AppRole> Roles { get; init; }
+
+    public virtual DbSet<AppUserToken> Tokens { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

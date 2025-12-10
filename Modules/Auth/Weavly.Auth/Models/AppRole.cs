@@ -4,18 +4,28 @@ using Weavly.Core.Shared.Models;
 
 namespace Weavly.Auth.Models;
 
-public sealed class AppRole : Entity<AppRoleId>
+public sealed record AppRole : Entity<AppRoleId>
 {
-    private AppRole() { }
-
     [Required]
     [MaxLength(24)]
-    public string Name { get; private init; } = string.Empty;
+    public string Name { get; init; }
 
-    public ICollection<AppUser> Users { get; private init; } = [];
+    public ICollection<AppUser> Users { get; init; } = [];
 
-    public static AppRole Create(string name)
+    public AppRole(string name)
     {
-        return new AppRole { Name = name };
+        ArgumentException.ThrowIfNullOrEmpty(name);
+
+        Name = name;
+    }
+
+    public static AppRole Create(string name) => new(name);
+}
+
+public static class AppRoleFactory
+{
+    extension(AppRole)
+    {
+        public static AppRole New(string name) => new(name);
     }
 }

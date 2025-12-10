@@ -11,7 +11,11 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
 {
     public class Settings : CommandSettings { }
 
-    public override async Task HandleAsync(CommandContext commandContext, Settings settings, CancellationToken ct)
+    public override async Task HandleAsync(
+        CommandContext commandContext,
+        Settings settings,
+        CancellationToken ct = default
+    )
     {
         var modules = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
 
@@ -66,7 +70,11 @@ public class MigrateCommand : InterruptibleAsyncCommand<MigrateCommand.Settings>
         return fileNameWithExtension[..fileNameWithExtension.LastIndexOf('.')];
     }
 
-    private static async Task<string> BuildFullContextName(string context, string contextName, CancellationToken ct)
+    private static async Task<string> BuildFullContextName(
+        string context,
+        string contextName,
+        CancellationToken ct = default
+    )
     {
         return (await File.ReadAllLinesAsync(context, ct))
                 .First(l => l.StartsWith("namespace"))
