@@ -39,8 +39,6 @@ public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeav
 
         builder.RequireAuthorization(this.authorizationPolicies);
         builder.Produces<Success<TResponse>>();
-        builder.Produces<Failure>(400);
-        builder.ProducesValidationProblem();
     }
 
     protected abstract RouteHandlerBuilder Map(WebApplication app);
