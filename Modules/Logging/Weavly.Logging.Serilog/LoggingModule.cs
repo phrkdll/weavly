@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Settings.Configuration;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Weavly.Logging.Serilog;

@@ -4,4 +4,5 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.LoginUser;
 
-public sealed class LoginUserEndpoint(IMessageBus bus) : PostEndpoint<LoginUserCommand, LoginUserResponse, AuthModule>("user/login", bus);
+public sealed class LoginUserEndpoint(IMessageBus bus)
+    : PostEndpoint<LoginUserCommand, LoginUserResponse, AuthModule>("user/login", bus);

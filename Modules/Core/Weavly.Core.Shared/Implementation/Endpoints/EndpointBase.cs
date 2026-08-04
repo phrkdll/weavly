@@ -10,9 +10,8 @@ public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeav
     where TRequest : IWeavlyCommand
     where TResponse : class
 {
-    private bool authorize;
-
     private string[] authorizationPolicies = [];
+    private bool authorize;
 
     public virtual async Task<IResult> HandleAsync(TRequest request, CancellationToken ct = default)
     {

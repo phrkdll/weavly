@@ -57,5 +57,8 @@ public sealed class WeavlyCollectionMock<T, TDocumentId>(ITimeProvider timeProvi
         return Task.CompletedTask;
     }
 
-    public IQueryable<T> Query(AggregateOptions? aggregateOptions = null) => this.collection.AsQueryable();
+    public IQueryable<T> Query(AggregateOptions? aggregateOptions = null)
+    {
+        return this.collection.AsQueryable();
+    }
 }

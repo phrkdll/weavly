@@ -4,7 +4,8 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.EnableTwoFactorAuth;
 
-public sealed class EnableTwoFactorAuthEndpoint : PostEndpoint<EnableTwoFactorAuthCommand, EnableTwoFactorAuthResponse, AuthModule>
+public sealed class
+    EnableTwoFactorAuthEndpoint : PostEndpoint<EnableTwoFactorAuthCommand, EnableTwoFactorAuthResponse, AuthModule>
 {
     public EnableTwoFactorAuthEndpoint(IMessageBus bus)
         : base("user/2fa/enable", bus)

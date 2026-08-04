@@ -4,4 +4,5 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.TokenLogin;
 
-public sealed class TokenLoginEndpoint(IMessageBus bus) : GetEndpoint<TokenLoginCommand, TokenLoginResponse, AuthModule>("user/login", bus);
+public sealed class TokenLoginEndpoint(IMessageBus bus)
+    : GetEndpoint<TokenLoginCommand, TokenLoginResponse, AuthModule>("user/login", bus);
