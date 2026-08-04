@@ -56,5 +56,8 @@ public sealed class WeavlyCollection<T, TDocumentId>(IMongoCollection<T> collect
         _ = await collection.ReplaceOneAsync(expressionFilter, document, null as ReplaceOptions, ct);
     }
 
-    public IQueryable<T> Query(AggregateOptions? options = null) => collection.AsQueryable(options);
+    public IQueryable<T> Query(AggregateOptions? options = null)
+    {
+        return collection.AsQueryable(options);
+    }
 }
