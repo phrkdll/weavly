@@ -13,7 +13,7 @@ public static class ResultExtensions
 
         public static Success<object> Success(string? message = null)
         {
-            return new Success<object>(default!, message);
+            return new Success<object>(null!, message);
         }
 
         public static Failure Failure(string message)

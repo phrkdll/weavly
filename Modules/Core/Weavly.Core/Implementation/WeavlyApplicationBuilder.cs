@@ -33,7 +33,7 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
 
         var assemblies = this.modules.Select(module => module.GetType().Assembly).ToArray();
 
-        ((WebApplicationBuilder)builder).Host.UseWolverine(x =>
+        builder.UseWolverine(x =>
         {
             x.Policies.MessageExecutionLogLevel(LogLevel.None);
             x.Policies.MessageSuccessLogLevel(LogLevel.None);

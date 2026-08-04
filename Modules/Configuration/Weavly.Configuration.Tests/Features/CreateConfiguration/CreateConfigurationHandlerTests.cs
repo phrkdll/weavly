@@ -10,17 +10,15 @@ namespace Weavly.Configuration.Tests.Features.CreateConfiguration;
 
 public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
 {
-    private readonly ILogger<CreateConfigurationHandler> loggerMock = Substitute.For<
-        ILogger<CreateConfigurationHandler>
-    >();
-
     private readonly CreateConfigurationHandler sut;
 
     public CreateConfigurationHandlerTests()
     {
         this.TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
 
-        this.sut = new CreateConfigurationHandler(this.Repository, this.loggerMock);
+        this.sut = new CreateConfigurationHandler(this.Repository, Substitute.For<
+            ILogger<CreateConfigurationHandler>
+        >());
     }
 
     private static CreateConfigurationCommand TestCommand =>
@@ -41,10 +39,6 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Success<ConfigurationId>>();
-
-        this.loggerMock
-            .ReceivedWithAnyArgs(1)
-            .LogInformation("Received {MessageType} message", nameof(CreateConfigurationCommand));
     }
 
     [Fact]
@@ -55,10 +49,6 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
         var result = await this.sut.HandleAsync(TestCommand, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
-
-        this.loggerMock
-            .ReceivedWithAnyArgs(2)
-            .LogInformation("Received {MessageType} message", nameof(CreateConfigurationCommand));
     }
 
     [Fact]

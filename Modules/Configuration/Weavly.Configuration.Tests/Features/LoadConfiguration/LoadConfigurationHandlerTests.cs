@@ -73,8 +73,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
     {
         var result = await this.sut.HandleAsync(null!, CancellationToken.None);
 
-        result.ShouldBeOfType<Failure>();
-        result.Message.ShouldBe("Value cannot be null. (Parameter 'command')");
+        result.ShouldBeOfType<Failure>().Message.ShouldBe("Value cannot be null. (Parameter 'command')");
     }
 
     [Fact]
@@ -84,8 +83,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
 
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
-        result.ShouldBeOfType<Failure>();
-        result.Message.ShouldBe("Could not find configuration");
+        result.ShouldBeOfType<Failure>().Message.ShouldBe("Could not find configuration");
     }
 
     [Fact]
