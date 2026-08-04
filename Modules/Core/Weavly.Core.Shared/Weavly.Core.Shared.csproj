@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Mapster"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="MongoDb.Driver"/>
+        <PackageReference Include="Scalar.AspNetCore"/>
+        <PackageReference Include="Testably.Abstractions"/>
+        <PackageReference Include="WolverineFx"/>
+        <PackageReference Include="WolverineFx.RuntimeCompilation"/>
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Weavly.Core.Tests"/>
+    </ItemGroup>
+</Project>

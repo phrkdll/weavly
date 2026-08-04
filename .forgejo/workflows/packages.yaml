@@ -1,0 +1,25 @@
+name: Publish packages
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  packages:
+    runs-on: codeberg-small
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Pack projects
+        run: dotnet pack -p:PackageVersion=${{ github.ref_name }}
+
+      - name: Publish packages
+        run: dotnet nuget push "**/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_TOKEN }} --skip-duplicate --no-symbols

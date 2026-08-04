@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Serilog.AspNetCore"/>
+        <PackageReference Include="Serilog.Sinks.OpenTelemetry"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../../Core/Weavly.Core/Weavly.Core.csproj"/>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,29 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Wolverine;
+
+namespace Weavly.Core.Shared.Contracts;
+
+public interface IWeavlyModule
+{
+    /// <summary>
+    ///     Perform any tasks regarding setup here (i.e. service registration)
+    /// </summary>
+    /// <param name="builder">
+    ///     <see cref="IHostApplicationBuilder" />
+    /// </param>
+    void Configure(IHostApplicationBuilder builder);
+
+    /// <summary>
+    ///     Perform any tasks regarding app start here (i.e. endpoint activation)
+    /// </summary>
+    /// <param name="app">
+    ///     <see cref="WebApplication" />
+    /// </param>
+    void Use(WebApplication app);
+
+    /// <summary>
+    ///     Perform any tasks regarding first time module initialization here
+    /// </summary>
+    Task InitializeAsync(IMessageBus bus);
+}
