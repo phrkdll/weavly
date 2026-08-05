@@ -16,8 +16,7 @@ public sealed class CreateConfigurationHandler(ConfigurationRepository repo, ILo
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            using var session = await repo.StartSessionAsync(ct);
-            session.StartTransaction();
+            using var session = await repo.StartTransactionAsync(ct);
 
             logger.LogDebug("Received {Command}", command);
 

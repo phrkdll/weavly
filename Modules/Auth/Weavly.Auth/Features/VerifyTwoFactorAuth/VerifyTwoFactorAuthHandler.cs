@@ -17,8 +17,7 @@ public sealed class VerifyTwoFactorAuthHandler(
 {
     public async Task<Result> HandleAsync(VerifyTwoFactorAuthCommand command, CancellationToken ct = default)
     {
-        using var session = await repo.StartSessionAsync(ct);
-        session.StartTransaction();
+        using var session = await repo.StartTransactionAsync(ct);
 
         var user = await repo.Users.FindAsync(x => x.Email == command.Email, ct);
 

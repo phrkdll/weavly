@@ -15,8 +15,7 @@ public sealed class CreateAppUserHandler(AuthRepository repo, ILogger<CreateAppU
 
         try
         {
-            using var session = await repo.StartSessionAsync(ct);
-            session.StartTransaction();
+            using var session = await repo.StartTransactionAsync(ct);
 
             if (await IsEmailAddressAvailable(command) is Failure emailInUseFailure)
             {

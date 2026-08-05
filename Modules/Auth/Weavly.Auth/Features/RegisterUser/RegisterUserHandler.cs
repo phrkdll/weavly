@@ -23,7 +23,7 @@ public sealed class RegisterUserHandler(
     {
         try
         {
-            using var session = await repo.StartSessionAsync(ct);
+            using var session = await repo.StartTransactionAsync(ct);
             var config = await bus.LoadConfigurationAsync<AuthModule>(ct);
             var settings = GeneralSettings.FromConfigurationResponse(config);
 
@@ -36,8 +36,6 @@ public sealed class RegisterUserHandler(
             {
                 return validationFailure;
             }
-
-            session.StartTransaction();
 
             if (await IsEmailAddressAvailable(command) is Failure emailNotAvailable)
             {

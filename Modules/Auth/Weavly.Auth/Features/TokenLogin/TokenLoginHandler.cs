@@ -10,8 +10,7 @@ public sealed class TokenLoginHandler(AuthRepository repo, IJwtProvider jwtProvi
 {
     public async Task<Result> HandleAsync(TokenLoginCommand command, CancellationToken ct = default)
     {
-        using var session = await repo.StartSessionAsync(ct);
-        session.StartTransaction();
+        using var session = await repo.StartTransactionAsync(ct);
 
         var user = await repo.Users.FindAsync(u => u.Tokens.Any(t => t.Value == command.Token), ct);
 
