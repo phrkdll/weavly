@@ -5,4 +5,5 @@ namespace Weavly.Auth.Tests.Features.Verification;
 
 public sealed class VerificationEndpointTests()
     : AuthEndpointTests<VerificationEndpoint, VerificationCommand, VerificationResponse>(
-        new VerificationCommand(Guid.Empty));
+        new VerificationCommand(Guid.Empty)
+    );

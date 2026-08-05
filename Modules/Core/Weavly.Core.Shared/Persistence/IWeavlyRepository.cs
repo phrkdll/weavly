@@ -4,6 +4,7 @@ using Weavly.Core.Shared.Models;
 
 namespace Weavly.Core.Shared.Persistence;
 
+// ReSharper disable once UnusedTypeParameter
 public interface IWeavlyRepository<TModule>
     where TModule : IWeavlyModule
 {

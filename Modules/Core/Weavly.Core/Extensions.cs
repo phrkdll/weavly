@@ -38,8 +38,8 @@ public static class Extensions
     public static void UseWeavly(this WebApplication app)
     {
         var modules =
-            _weavlyApplicationBuilder?.Modules ??
-            throw new InvalidOperationException("Weavly has not been initialized");
+            _weavlyApplicationBuilder?.Modules
+            ?? throw new InvalidOperationException("Weavly has not been initialized");
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 

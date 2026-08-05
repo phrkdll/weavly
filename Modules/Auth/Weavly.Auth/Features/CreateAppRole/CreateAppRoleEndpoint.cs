@@ -4,7 +4,7 @@ using Wolverine;
 
 namespace Weavly.Auth.Features.CreateAppRole;
 
-public sealed class CreateAppRoleEndpoint : PostEndpoint<CreateAppRoleCommand, object, AuthModule>
+public sealed class CreateAppRoleEndpoint : PostEndpoint<CreateAppRoleCommand, CreateAppRoleResponse, AuthModule>
 {
     public CreateAppRoleEndpoint(IMessageBus bus)
         : base("role", bus)

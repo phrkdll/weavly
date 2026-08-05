@@ -1,31 +1,28 @@
-using System.Text.Json.Serialization;
+using Weavly.Configuration.Shared.Models;
 using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Shared.Features.CreateConfiguration;
 
-public sealed record CreateConfigurationCommand : ConfigurationResponse, IWeavlyCommand
+public sealed record CreateConfigurationCommand(string Module, string Name, string Category) : IWeavlyCommand
 {
-    [JsonConstructor]
-    private CreateConfigurationCommand()
-    {
-    }
+    public string? StringValue { get; init; }
+    public bool? BoolValue { get; set; }
+    public int? IntValue { get; init; }
+    public double? DoubleValue { get; init; }
+
+    public ConfigurationValueType ValueType { get; init; }
 
     public static CreateConfigurationCommand Create<TModule>(string name, object value, string category)
     {
-        var command = new CreateConfigurationCommand
-        {
-            Module = typeof(TModule).Name,
-            Name = name,
-            Category = category
-        };
+        var command = new CreateConfigurationCommand(typeof(TModule).Name, name, category);
 
         return value switch
         {
-            string s => command with { StringValue = s },
-            int i => command with { IntValue = i },
-            bool b => command with { BoolValue = b },
-            double d => command with { DoubleValue = d },
-            _ => throw new InvalidOperationException("Unsupported configuration value type")
+            string s => command with { StringValue = s, ValueType = ConfigurationValueType.String },
+            int i => command with { IntValue = i, ValueType = ConfigurationValueType.Int },
+            bool b => command with { BoolValue = b, ValueType = ConfigurationValueType.Bool },
+            double d => command with { DoubleValue = d, ValueType = ConfigurationValueType.Double },
+            _ => throw new InvalidOperationException("Unsupported configuration value type"),
         };
     }
 }

@@ -12,47 +12,43 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
 
     public ListConfigurationModulesHandlerTests()
     {
-        this.Repository
-            .Configurations.InsertAsync(
+        this.Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
                     Category = "Default",
                     Name = "FeatureEnabled",
-                    BoolValue = true
+                    BoolValue = true,
                 }
             )
             .Wait();
-        this.Repository
-            .Configurations.InsertAsync(
+        this.Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
                     Category = "Default",
                     Name = "Endpoint",
-                    StringValue = "TestValue"
+                    StringValue = "TestValue",
                 }
             )
             .Wait();
-        this.Repository
-            .Configurations.InsertAsync(
+        this.Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",
                     Category = "Default",
                     Name = "MaxItems",
-                    IntValue = 42
+                    IntValue = 42,
                 }
             )
             .Wait();
-        this.Repository
-            .Configurations.InsertAsync(
+        this.Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",
                     Category = "Default",
                     Name = "PiValue",
-                    DoubleValue = 3.14
+                    DoubleValue = 3.14,
                 }
             )
             .Wait();

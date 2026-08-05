@@ -67,7 +67,7 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
                 .AddChoices(await SearchWeavlyPackagesAsync(workingDir, ct: ct))
-                .ShowAsync(AnsiConsole.Console, ct)
+                .ShowAsync(AnsiConsole.Console, ct),
         ];
 
         await Runner

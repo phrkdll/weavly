@@ -8,7 +8,7 @@ using Weavly.Core.Shared.Contracts;
 namespace Weavly.Configuration.Features.LoadConfiguration;
 
 public sealed class LoadConfigurationHandler(ConfigurationRepository repo, ILogger<LoadConfigurationHandler> logger)
-    : IWeavlyHandler<LoadConfigurationCommand, Result>
+    : IWeavlyHandler<LoadConfigurationCommand>
 {
     public async Task<Result> HandleAsync(LoadConfigurationCommand command, CancellationToken ct = default)
     {
@@ -25,7 +25,7 @@ public sealed class LoadConfigurationHandler(ConfigurationRepository repo, ILogg
                 return Result.Failure("Could not find configuration");
             }
 
-            var converted = configurations.Select(x => x.Adapt<ConfigurationResponse>());
+            var converted = configurations.Select(x => x.Adapt<ConfigurationItem>());
 
             return Result.Success(new LoadConfigurationResponse(command.Module, converted));
         }

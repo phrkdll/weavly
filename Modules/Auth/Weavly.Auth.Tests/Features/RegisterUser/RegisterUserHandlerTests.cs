@@ -21,8 +21,12 @@ public sealed class RegisterUserHandlerTests : AuthHandlerTests
     {
         this.TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
 
-        this.sut = new RegisterUserHandler(this.Repository, new PasswordHasher<AppUser>(),
-            this.validator, this.MessageBusMock);
+        this.sut = new RegisterUserHandler(
+            this.Repository,
+            new PasswordHasher<AppUser>(),
+            this.validator,
+            this.MessageBusMock
+        );
     }
 
     [Fact]
@@ -37,7 +41,6 @@ public sealed class RegisterUserHandlerTests : AuthHandlerTests
         message.ShouldBeNull();
 
         data.ShouldNotBeNull();
-        data.Id.ShouldNotBeNull();
 
         var user = await this.Repository.Users.FindAsync(x => true, CancellationToken.None);
         user.ShouldNotBeNull();

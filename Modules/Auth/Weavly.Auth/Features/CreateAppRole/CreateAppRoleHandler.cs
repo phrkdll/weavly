@@ -7,7 +7,7 @@ using Weavly.Core.Shared.Contracts;
 namespace Weavly.Auth.Features.CreateAppRole;
 
 public sealed class CreateAppRoleHandler(AuthRepository repo, ILogger<CreateAppRoleHandler> logger)
-    : IWeavlyHandler<CreateAppRoleCommand, Result>
+    : IWeavlyHandler<CreateAppRoleCommand>
 {
     public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct = default)
     {
@@ -27,7 +27,7 @@ public sealed class CreateAppRoleHandler(AuthRepository repo, ILogger<CreateAppR
             await repo.Roles.InsertAsync(role, ct);
             await session.CommitTransactionAsync(ct);
 
-            return Result.Success(role.Id);
+            return Result.Success(new CreateAppRoleResponse(role.Id));
         }
         catch (Exception e)
         {

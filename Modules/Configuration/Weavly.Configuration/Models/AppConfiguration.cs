@@ -1,25 +1,32 @@
 using System.ComponentModel.DataAnnotations;
 using Weavly.Auth.Shared.Identifiers;
 using Weavly.Configuration.Shared.Identifiers;
+using Weavly.Configuration.Shared.Models;
 using Weavly.Core.Shared.Models;
 
 namespace Weavly.Configuration.Models;
 
 public sealed record AppConfiguration : UserDocument<ConfigurationId, AppUserId>
 {
-    [MaxLength(32)] public string Category { get; init; } = string.Empty;
+    [MaxLength(32)]
+    public string Category { get; init; } = string.Empty;
 
-    [MaxLength(64)] public string Name { get; init; } = string.Empty;
+    [MaxLength(64)]
+    public string Name { get; init; } = string.Empty;
 
-    [MaxLength(64)] public string Module { get; init; } = string.Empty;
+    [MaxLength(64)]
+    public string Module { get; init; } = string.Empty;
 
-    [MaxLength(256)] public string? StringValue { get; init; }
+    [MaxLength(256)]
+    public string? StringValue { get; init; }
 
     public double? DoubleValue { get; init; }
 
     public int? IntValue { get; init; }
 
     public bool? BoolValue { get; init; }
+
+    public ConfigurationValueType ValueType { get; init; }
 
     public int Hash { get; init; }
 }

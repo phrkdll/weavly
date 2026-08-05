@@ -15,8 +15,7 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
     {
         this.Repository = new AuthRepository(new WeavlyRepositoryMock<AuthModule>(this.TimeProviderMock));
 
-        this.MessageBusMock
-            .InvokeAsync<Result>(
+        this.MessageBusMock.InvokeAsync<Result>(
                 Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
                 Arg.Any<CancellationToken>()
             )
@@ -25,21 +24,21 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
                     new LoadConfigurationResponse(
                         "AuthModule",
                         [
-                            ConfigurationResponse.Create("Secret") with
+                            ConfigurationItem.Create("Secret") with
                             {
                                 StringValue = AuthModule.GenerateEncryptionKey(256),
-                                Category = AuthModule.ConfigCategory.JsonWebToken
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
                             },
-                            ConfigurationResponse.Create("Issuer") with
+                            ConfigurationItem.Create("Issuer") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
                             },
-                            ConfigurationResponse.Create("Audience") with
+                            ConfigurationItem.Create("Audience") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken
-                            }
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
+                            },
                         ]
                     )
                 )

@@ -8,9 +8,7 @@ namespace Weavly.Core.Shared.Implementation;
 
 public abstract class WeavlyModule : IWeavlyModule
 {
-    public virtual void Configure(IHostApplicationBuilder builder)
-    {
-    }
+    public virtual void Configure(IHostApplicationBuilder builder) { }
 
     public virtual void Use(WebApplication app)
     {

@@ -33,9 +33,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
             // Set the parameters from the provider
             parameters.ValidIssuer = options.Issuer;
             parameters.ValidAudience = options.Audience;
-            parameters.IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(options.Secret)
-            );
+            parameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Secret));
         };
     }
 }

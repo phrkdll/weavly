@@ -10,7 +10,7 @@ using Weavly.Core.Shared.Contracts;
 namespace Weavly.Auth.Features.EnableTwoFactorAuth;
 
 public sealed class EnableTwoFactorAuthHandler(AuthRepository repo, IUserContext<AppUserId> userContext)
-    : IWeavlyHandler<EnableTwoFactorAuthCommand, Result>
+    : IWeavlyHandler<EnableTwoFactorAuthCommand>
 {
     public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct = default)
     {

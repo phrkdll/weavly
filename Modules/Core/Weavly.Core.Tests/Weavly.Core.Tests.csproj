@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject>
-    </PropertyGroup>
-    <ItemGroup>
-        <Using Include="Xunit"/>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj"/>
-        <ProjectReference Include="..\..\Auth\Weavly.Auth\Weavly.Auth.csproj"/>
-        <ProjectReference Include="..\Weavly.Core\Weavly.Core.csproj"/>
-        <ProjectReference Include="..\Weavly.Core.Tests.Shared\Weavly.Core.Tests.Shared.csproj"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
+    <ProjectReference Include="..\..\Auth\Weavly.Auth\Weavly.Auth.csproj" />
+    <ProjectReference Include="..\Weavly.Core\Weavly.Core.csproj" />
+    <ProjectReference Include="..\Weavly.Core.Tests.Shared\Weavly.Core.Tests.Shared.csproj" />
+  </ItemGroup>
 </Project>

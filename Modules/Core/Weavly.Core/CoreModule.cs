@@ -34,7 +34,7 @@ public sealed class CoreModule : WeavlyModule
                 new WeavlyIdConvention(),
                 new EnumRepresentationConvention(BsonType.String),
                 new CamelCaseElementNameConvention(),
-                new IgnoreIfNullConvention(true)
+                new IgnoreIfNullConvention(true),
             },
             _ => true
         );

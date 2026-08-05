@@ -39,7 +39,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
                 .PageSize(5)
                 .MoreChoicesText("[grey](Move up and down to reveal more modules)[/]")
                 .AddChoices(await SearchWeavlyPackagesAsync(workingDir, installedPackages, ct))
-                .ShowAsync(AnsiConsole.Console, ct)
+                .ShowAsync(AnsiConsole.Console, ct),
         ];
 
         foreach (var module in selectedModules)

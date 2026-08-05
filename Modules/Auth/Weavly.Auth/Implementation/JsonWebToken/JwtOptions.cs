@@ -15,14 +15,15 @@ public sealed class JwtOptions
     {
         var issuer = config.GetString(nameof(Issuer), ConfigCategory.JsonWebToken) ?? string.Empty;
         var audience = config.GetString(nameof(Audience), ConfigCategory.JsonWebToken) ?? string.Empty;
-        var secret = config.GetString(nameof(Secret), ConfigCategory.JsonWebToken) ??
-                     throw new ApplicationException("Missing secret key.");
+        var secret =
+            config.GetString(nameof(Secret), ConfigCategory.JsonWebToken)
+            ?? throw new ApplicationException("Missing secret key.");
 
         return new JwtOptions
         {
             Issuer = issuer,
             Audience = audience,
-            Secret = secret
+            Secret = secret,
         };
     }
 }

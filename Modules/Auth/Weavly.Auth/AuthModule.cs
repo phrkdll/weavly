@@ -44,7 +44,7 @@ public sealed class AuthModule : WeavlyModule
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero,
                 };
 
                 // Configure the JwtBearerEvents
@@ -87,22 +87,34 @@ public sealed class AuthModule : WeavlyModule
 
         CreateConfigurationCommand[] configItems =
         [
-            CreateConfigurationCommand.Create<AuthModule>("Secret", GenerateEncryptionKey(256),
-                ConfigCategory.JsonWebToken),
+            CreateConfigurationCommand.Create<AuthModule>(
+                "Secret",
+                GenerateEncryptionKey(256),
+                ConfigCategory.JsonWebToken
+            ),
             CreateConfigurationCommand.Create<AuthModule>("Issuer", "https://weavly.api", ConfigCategory.JsonWebToken),
-            CreateConfigurationCommand.Create<AuthModule>("Audience", "https://weavly.api",
-                ConfigCategory.JsonWebToken),
-            CreateConfigurationCommand.Create<AuthModule>("DisableEmailVerification", false,
-                ConfigCategory.GeneralSettings),
-            CreateConfigurationCommand.Create<AuthModule>("DisableUserRegistration", false,
-                ConfigCategory.GeneralSettings),
+            CreateConfigurationCommand.Create<AuthModule>(
+                "Audience",
+                "https://weavly.api",
+                ConfigCategory.JsonWebToken
+            ),
+            CreateConfigurationCommand.Create<AuthModule>(
+                "DisableEmailVerification",
+                false,
+                ConfigCategory.GeneralSettings
+            ),
+            CreateConfigurationCommand.Create<AuthModule>(
+                "DisableUserRegistration",
+                false,
+                ConfigCategory.GeneralSettings
+            ),
             CreateConfigurationCommand.Create<AuthModule>("ForceTwoFactorAuth", false, ConfigCategory.GeneralSettings),
             CreateConfigurationCommand.Create<AuthModule>("MinimumLength", 8, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("MaximumLength", 32, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("RequireUppercase", true, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("RequireLowercase", true, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("RequireDigit", true, ConfigCategory.PasswordRules),
-            CreateConfigurationCommand.Create<AuthModule>("RequireNonAlphanumeric", true, ConfigCategory.PasswordRules)
+            CreateConfigurationCommand.Create<AuthModule>("RequireNonAlphanumeric", true, ConfigCategory.PasswordRules),
         ];
 
         foreach (var configItem in configItems)

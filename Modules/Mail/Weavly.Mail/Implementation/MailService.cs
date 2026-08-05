@@ -15,7 +15,7 @@ public sealed class MailService(IConfiguration configuration, ILogger<MailServic
     {
         var options =
             await bus.InvokeAsync<Result>(LoadConfigurationCommand.Create<MailModule>(), ct)
-                as Success<LoadConfigurationResponse>;
+            as Success<LoadConfigurationResponse>;
 
         ArgumentNullException.ThrowIfNull(options);
 

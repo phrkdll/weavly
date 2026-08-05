@@ -24,7 +24,7 @@ public static class AppUserFactory
             {
                 Email = email,
                 UserName = userName,
-                Roles = [initialRole.Id]
+                Roles = [initialRole.Id],
             };
         }
     }

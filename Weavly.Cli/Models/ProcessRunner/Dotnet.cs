@@ -5,9 +5,7 @@ namespace Weavly.Cli.Models.ProcessRunner;
 public class Dotnet : ProcessRunnerCommand
 {
     private Dotnet(string arguments)
-        : base("dotnet", arguments)
-    {
-    }
+        : base("dotnet", arguments) { }
 
     public static Dotnet AddPackage(WeavlyProject to, string package)
     {

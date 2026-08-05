@@ -11,8 +11,7 @@ public sealed class WeavlyIdConvention : IMemberMapConvention
 
     public void Apply(BsonMemberMap memberMap)
     {
-        if (!typeof(IWeavlyId).IsAssignableFrom(memberMap.MemberType) ||
-            memberMap.MemberName != nameof(Document<>.Id))
+        if (!typeof(IWeavlyId).IsAssignableFrom(memberMap.MemberType) || memberMap.MemberName != nameof(Document<>.Id))
         {
             return;
         }

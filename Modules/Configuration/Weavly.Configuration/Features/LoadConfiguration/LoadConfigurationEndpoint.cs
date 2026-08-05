@@ -4,10 +4,11 @@ using Wolverine;
 
 namespace Weavly.Configuration.Features.LoadConfiguration;
 
-public class
-    LoadConfigurationEndpoint : GetEndpoint<LoadConfigurationCommand, LoadConfigurationResponse, ConfigurationModule>
+public class LoadConfigurationEndpoint
+    : GetEndpoint<LoadConfigurationCommand, LoadConfigurationResponse, ConfigurationModule>
 {
-    public LoadConfigurationEndpoint(IMessageBus bus) : base("configuration", bus)
+    public LoadConfigurationEndpoint(IMessageBus bus)
+        : base("configuration", bus)
     {
         Authorize();
     }

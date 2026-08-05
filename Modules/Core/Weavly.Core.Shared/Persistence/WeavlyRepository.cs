@@ -26,7 +26,7 @@ public class WeavlyRepository<TModule>(IMongoClient client, ITimeProvider timePr
                 DefaultTransactionOptions = new TransactionOptions(
                     ReadConcern.Available,
                     writeConcern: WriteConcern.Acknowledged
-                )
+                ),
             },
             ct
         );

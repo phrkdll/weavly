@@ -13,7 +13,7 @@ public class ProcessRunner
     {
         UnmappedMemberHandling = JsonUnmappedMemberHandling.Skip,
         AllowTrailingCommas = true,
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
     };
 
     private IRenderable? renderableMessage;
@@ -39,12 +39,12 @@ public class ProcessRunner
     private Process CreateProcess(string fileName, string arguments, bool redirectOutput = false)
     {
         return Process.Start(
-            new ProcessStartInfo(fileName, arguments)
-            {
-                WorkingDirectory = this.workingDirectory ?? Directory.GetCurrentDirectory(),
-                RedirectStandardOutput = redirectOutput
-            }
-        ) ?? throw new InvalidOperationException("Failed to start process");
+                new ProcessStartInfo(fileName, arguments)
+                {
+                    WorkingDirectory = this.workingDirectory ?? Directory.GetCurrentDirectory(),
+                    RedirectStandardOutput = redirectOutput,
+                }
+            ) ?? throw new InvalidOperationException("Failed to start process");
     }
 
     public async Task<string> RunAsync(ProcessRunnerCommand command, CancellationToken ct = default)

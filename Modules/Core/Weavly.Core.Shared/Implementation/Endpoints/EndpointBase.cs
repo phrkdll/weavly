@@ -22,8 +22,9 @@ public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeav
             return result.Success ? Results.Ok(result) : Results.BadRequest(result);
         }
 
-        var errors = validationFailure.Results.OfType<ValidationResult>().ToDictionary(
-            x => x.ErrorMessage!, x => x.MemberNames.ToArray());
+        var errors = validationFailure
+            .Results.OfType<ValidationResult>()
+            .ToDictionary(x => x.ErrorMessage!, x => x.MemberNames.ToArray());
 
         return Results.ValidationProblem(errors);
     }

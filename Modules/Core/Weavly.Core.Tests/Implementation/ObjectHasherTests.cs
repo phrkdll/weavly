@@ -50,7 +50,7 @@ public class ObjectHasherTests
             {
                 new MongoDbOptions { ConnectionString = "mongodb://localhost:27017" },
                 new TestDocument("mongodb://localhost:27018")
-            }
+            },
         };
     }
 }

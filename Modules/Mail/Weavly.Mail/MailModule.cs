@@ -20,13 +20,16 @@ public class MailModule : WeavlyModule
     {
         CreateConfigurationCommand[] configurationItems =
         [
-            CreateConfigurationCommand.Create<MailModule>("DefaultSender", "no-reply@weavly.com",
-                ConfigCategory.Default),
+            CreateConfigurationCommand.Create<MailModule>(
+                "DefaultSender",
+                "no-reply@weavly.com",
+                ConfigCategory.Default
+            ),
             CreateConfigurationCommand.Create<MailModule>("SmtpHost", "localhost", ConfigCategory.Default),
             CreateConfigurationCommand.Create<MailModule>("SmtpPort", 1025, ConfigCategory.Default),
             CreateConfigurationCommand.Create<MailModule>("EnableSsl", false, ConfigCategory.Default),
             CreateConfigurationCommand.Create<MailModule>("SmtpUser", string.Empty, ConfigCategory.Default),
-            CreateConfigurationCommand.Create<MailModule>("SmtpPassword", string.Empty, ConfigCategory.Default)
+            CreateConfigurationCommand.Create<MailModule>("SmtpPassword", string.Empty, ConfigCategory.Default),
         ];
 
         foreach (var item in configurationItems)

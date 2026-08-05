@@ -11,7 +11,7 @@ using Wolverine;
 namespace Weavly.Mail.Features.SendMail;
 
 public sealed class SendMailHandler(IMailService mailService, ILogger<SendMailHandler> logger, IMessageBus bus)
-    : IWeavlyHandler<SendMailCommand, Result>
+    : IWeavlyHandler<SendMailCommand>
 {
     public async Task<Result> HandleAsync(SendMailCommand command, CancellationToken ct = default)
     {
