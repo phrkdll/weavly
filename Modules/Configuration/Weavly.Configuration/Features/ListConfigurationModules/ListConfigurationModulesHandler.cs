@@ -1,7 +1,7 @@
-using MongoDB.Driver.Linq;
 using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Features.ListConfigurationModules;
 using Weavly.Core.Shared.Contracts;
+using Weavly.Core.Shared.Persistence;
 
 namespace Weavly.Configuration.Features.ListConfigurationModules;
 
@@ -11,6 +11,8 @@ public class ListConfigurationModulesHandler(ConfigurationRepository repo)
     public async Task<Result> HandleAsync(ListConfigurationModulesCommand command,
         CancellationToken ct = default)
     {
+        await Task.CompletedTask;
+
         try
         {
             var modules = await repo.Configurations.Query().Select(x => x.Module).Distinct().ToListAsync(ct);

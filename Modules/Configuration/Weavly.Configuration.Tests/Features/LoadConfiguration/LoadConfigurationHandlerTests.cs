@@ -11,8 +11,6 @@ namespace Weavly.Configuration.Tests.Features.LoadConfiguration;
 
 public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
 {
-    private readonly ILogger<LoadConfigurationHandler> loggerMock = Substitute.For<ILogger<LoadConfigurationHandler>>();
-
     private readonly LoadConfigurationHandler sut;
 
     public LoadConfigurationHandlerTests()
@@ -32,7 +30,6 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             .Configurations.InsertAsync(
                 new AppConfiguration
                 {
-                    Id = new ConfigurationId(),
                     Module = "ExistingModule",
                     Category = "Default",
                     Name = "Endpoint",
@@ -44,7 +41,6 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             .Configurations.InsertAsync(
                 new AppConfiguration
                 {
-                    Id = new ConfigurationId(),
                     Module = "ExistingModule",
                     Category = "Default",
                     Name = "MaxItems",
@@ -56,7 +52,6 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             .Configurations.InsertAsync(
                 new AppConfiguration
                 {
-                    Id = new ConfigurationId(),
                     Module = "ExistingModule",
                     Category = "Default",
                     Name = "PiValue",
@@ -65,7 +60,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             )
             .Wait();
 
-        this.sut = new LoadConfigurationHandler(this.Repository, this.loggerMock);
+        this.sut = new LoadConfigurationHandler(this.Repository, Substitute.For<ILogger<LoadConfigurationHandler>>());
     }
 
     [Fact]

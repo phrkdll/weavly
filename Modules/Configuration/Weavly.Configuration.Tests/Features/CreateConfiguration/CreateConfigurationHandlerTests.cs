@@ -16,9 +16,8 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
     {
         this.TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
 
-        this.sut = new CreateConfigurationHandler(this.Repository, Substitute.For<
-            ILogger<CreateConfigurationHandler>
-        >());
+        this.sut = new CreateConfigurationHandler(this.Repository,
+            Substitute.For<ILogger<CreateConfigurationHandler>>());
     }
 
     private static CreateConfigurationCommand TestCommand =>
