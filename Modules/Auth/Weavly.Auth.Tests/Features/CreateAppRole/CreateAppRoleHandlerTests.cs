@@ -11,13 +11,11 @@ namespace Weavly.Auth.Tests.Features.CreateAppRole;
 
 public sealed class CreateAppRoleHandlerTests : AuthHandlerTests
 {
-    private readonly ILogger<CreateAppRoleHandler> loggerMock = Substitute.For<ILogger<CreateAppRoleHandler>>();
-
     private readonly CreateAppRoleHandler sut;
 
     public CreateAppRoleHandlerTests()
     {
-        this.sut = new CreateAppRoleHandler(this.Repository, this.loggerMock);
+        this.sut = new CreateAppRoleHandler(this.Repository, Substitute.For<ILogger<CreateAppRoleHandler>>());
     }
 
     [Fact]

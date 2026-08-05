@@ -9,8 +9,8 @@ namespace Weavly.Configuration.Features.UpdateConfiguration;
 public sealed class UpdateConfigurationHandler(
     ConfigurationRepository repo,
     IValidator<UpdateConfigurationCommand> validator,
-    ILogger<UpdateConfigurationHandler> logger)
-    : IWeavlyHandler<UpdateConfigurationCommand, Result>
+    ILogger<UpdateConfigurationHandler> logger
+) : IWeavlyHandler<UpdateConfigurationCommand>
 {
     public async Task<Result> HandleAsync(UpdateConfigurationCommand command, CancellationToken ct = default)
     {
@@ -31,22 +31,24 @@ public sealed class UpdateConfigurationHandler(
 
         var hasValueTypeMismatch = configuration.ValueType switch
         {
-            ConfigurationValueType.String when command is
-                { StringValue: not null, BoolValue: null, DoubleValue: null, IntValue: null } => false,
-            ConfigurationValueType.Bool when command is
-                { StringValue: null, BoolValue: not null, DoubleValue: null, IntValue: null } => false,
-            ConfigurationValueType.Int when command is
-                { StringValue: null, BoolValue: null, DoubleValue: null, IntValue: not null } => false,
-            ConfigurationValueType.Double when command is
-                { StringValue: null, BoolValue: null, DoubleValue: not null, IntValue: null } => false,
-            _ => true
+            ConfigurationValueType.String
+                when command is { StringValue: not null, BoolValue: null, DoubleValue: null, IntValue: null } => false,
+            ConfigurationValueType.Bool
+                when command is { StringValue: null, BoolValue: not null, DoubleValue: null, IntValue: null } => false,
+            ConfigurationValueType.Int
+                when command is { StringValue: null, BoolValue: null, DoubleValue: null, IntValue: not null } => false,
+            ConfigurationValueType.Double
+                when command is { StringValue: null, BoolValue: null, DoubleValue: not null, IntValue: null } => false,
+            _ => true,
         };
 
         if (hasValueTypeMismatch)
         {
-            logger.LogError("Configuration value type ({OriginalType}) may not be changed. {Command}",
+            logger.LogError(
+                "Configuration value type ({OriginalType}) may not be changed. {Command}",
                 configuration.ValueType,
-                command);
+                command
+            );
 
             return Result.Failure("Configuration value type may not be changed");
         }
@@ -56,7 +58,7 @@ public sealed class UpdateConfigurationHandler(
             StringValue = command.StringValue,
             IntValue = command.IntValue,
             BoolValue = command.BoolValue,
-            DoubleValue = command.DoubleValue
+            DoubleValue = command.DoubleValue,
         };
 
         await repo.Configurations.UpdateAsync(updatedConfiguration, ct);

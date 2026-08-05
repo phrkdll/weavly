@@ -19,7 +19,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         "Microsoft.NET.Test.Sdk",
         "NUnit",
         "NUnit.Analyzers",
-        "NUnit3TestAdapter"
+        "NUnit3TestAdapter",
     ];
 
     private readonly IEnumerable<string> xunitPackages =
@@ -27,7 +27,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         "coverlet.collector",
         "Microsoft.NET.Test.Sdk",
         "xunit",
-        "xunit.runner.visualstudio"
+        "xunit.runner.visualstudio",
     ];
 
     public override async Task HandleAsync(
@@ -103,8 +103,10 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         var parser = new FluidParser();
         if (parser.TryParse(EmbeddedResources.GetTemplate("Module.cs.template"), out var template))
         {
-            await using var writer =
-                new StreamWriter(Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"), false);
+            await using var writer = new StreamWriter(
+                Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"),
+                false
+            );
 
             var context = new TemplateContext(module);
             await template.RenderAsync(writer, context);

@@ -7,10 +7,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Features.CreateConfiguration;
 
-public sealed class CreateConfigurationHandler(
-    ConfigurationRepository repo,
-    ILogger<CreateConfigurationHandler> logger)
-    : IWeavlyHandler<CreateConfigurationCommand, Result>
+public sealed class CreateConfigurationHandler(ConfigurationRepository repo, ILogger<CreateConfigurationHandler> logger)
+    : IWeavlyHandler<CreateConfigurationCommand>
 {
     public async Task<Result> HandleAsync(CreateConfigurationCommand command, CancellationToken ct = default)
     {

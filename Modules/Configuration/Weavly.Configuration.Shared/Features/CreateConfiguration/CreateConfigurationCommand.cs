@@ -22,7 +22,7 @@ public sealed record CreateConfigurationCommand(string Module, string Name, stri
             int i => command with { IntValue = i, ValueType = ConfigurationValueType.Int },
             bool b => command with { BoolValue = b, ValueType = ConfigurationValueType.Bool },
             double d => command with { DoubleValue = d, ValueType = ConfigurationValueType.Double },
-            _ => throw new InvalidOperationException("Unsupported configuration value type")
+            _ => throw new InvalidOperationException("Unsupported configuration value type"),
         };
     }
 }

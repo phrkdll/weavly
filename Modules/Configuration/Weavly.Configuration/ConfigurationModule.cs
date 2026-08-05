@@ -14,7 +14,7 @@ public sealed class ConfigurationModule : WeavlyModule
     public override void Configure(IHostApplicationBuilder builder)
     {
         builder.Services.AddScoped<ConfigurationRepository>();
-        
+
         builder.Services.AddScoped<IValidator<UpdateConfigurationCommand>, UpdateConfigurationCommandValidator>();
 
         base.Configure(builder);

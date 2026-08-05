@@ -8,4 +8,5 @@ public sealed record UpdateConfigurationCommand(
     bool? BoolValue,
     int? IntValue,
     string? StringValue,
-    double? DoubleValue) : IWeavlyCommand;
+    double? DoubleValue
+) : IWeavlyCommand;

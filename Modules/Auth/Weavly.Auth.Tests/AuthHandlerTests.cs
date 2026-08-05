@@ -15,8 +15,7 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
     {
         this.Repository = new AuthRepository(new WeavlyRepositoryMock<AuthModule>(this.TimeProviderMock));
 
-        this.MessageBusMock
-            .InvokeAsync<Result>(
+        this.MessageBusMock.InvokeAsync<Result>(
                 Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
                 Arg.Any<CancellationToken>()
             )
@@ -28,18 +27,18 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
                             ConfigurationItem.Create("Secret") with
                             {
                                 StringValue = AuthModule.GenerateEncryptionKey(256),
-                                Category = AuthModule.ConfigCategory.JsonWebToken
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
                             },
                             ConfigurationItem.Create("Issuer") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
                             },
                             ConfigurationItem.Create("Audience") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken
-                            }
+                                Category = AuthModule.ConfigCategory.JsonWebToken,
+                            },
                         ]
                     )
                 )

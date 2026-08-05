@@ -1,15 +1,15 @@
 <Project>
-    <Target Name="CustomClean" AfterTargets="Clean">
-        <RemoveDir Directories="$(ProjectDir)data"/>
-        <RemoveDir Directories="$(ProjectDir)nupkg"/>
-    </Target>
-    <Target Name="FullClean">
-        <RemoveDir Directories="$(ProjectDir)bin"/>
-        <RemoveDir Directories="$(ProjectDir)obj"/>
-        <RemoveDir Directories="$(ProjectDir)TestResults"/>
-    </Target>
-    <PropertyGroup>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    </PropertyGroup>
+  <Target Name="CustomClean" AfterTargets="Clean">
+    <RemoveDir Directories="$(ProjectDir)data" />
+    <RemoveDir Directories="$(ProjectDir)nupkg" />
+  </Target>
+  <Target Name="FullClean">
+    <RemoveDir Directories="$(ProjectDir)bin" />
+    <RemoveDir Directories="$(ProjectDir)obj" />
+    <RemoveDir Directories="$(ProjectDir)TestResults" />
+  </Target>
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
 </Project>

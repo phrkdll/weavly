@@ -17,7 +17,7 @@ public sealed class JwtProvider(IMessageBus bus) : IJwtProvider
         var claims = new Claim[]
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.Value),
-            new(JwtRegisteredClaimNames.Email, user.Email)
+            new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
         var signingCredentials = new SigningCredentials(
@@ -25,14 +25,7 @@ public sealed class JwtProvider(IMessageBus bus) : IJwtProvider
             SecurityAlgorithms.HmacSha256
         );
 
-        var token = new JwtSecurityToken(
-            options.Issuer,
-            options.Audience,
-            claims,
-            null,
-            expires,
-            signingCredentials
-        );
+        var token = new JwtSecurityToken(options.Issuer, options.Audience, claims, null, expires, signingCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

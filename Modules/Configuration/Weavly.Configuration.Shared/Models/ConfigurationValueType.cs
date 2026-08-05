@@ -5,5 +5,5 @@ public enum ConfigurationValueType
     String,
     Int,
     Bool,
-    Double
+    Double,
 }

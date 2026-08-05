@@ -7,7 +7,8 @@ namespace Weavly.Configuration.Features.ListConfigurationModules;
 public sealed class ListConfigurationModulesEndpoint
     : GetEndpoint<ListConfigurationModulesCommand, ListConfigurationModulesResponse, ConfigurationModule>
 {
-    public ListConfigurationModulesEndpoint(IMessageBus bus) : base("configuration/modules", bus)
+    public ListConfigurationModulesEndpoint(IMessageBus bus)
+        : base("configuration/modules", bus)
     {
         Authorize();
     }

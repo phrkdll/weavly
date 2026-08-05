@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj"/>
-        <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj"/>
-        <ProjectReference Include="..\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj"/>
-        <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="JetBrains.Annotations">
-            <HintPath>..\..\..\..\..\.nuget\packages\jetbrains.annotations\2026.2.0\lib\netstandard2.0\JetBrains.Annotations.dll</HintPath>
-        </Reference>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
+    <ProjectReference Include="..\..\Auth\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
+    <ProjectReference Include="..\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\..\..\..\..\.nuget\packages\jetbrains.annotations\2026.2.0\lib\netstandard2.0\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

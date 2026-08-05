@@ -7,7 +7,7 @@ using Weavly.Core.Shared.Contracts;
 namespace Weavly.Auth.Features.CreateAppUser;
 
 public sealed class CreateAppUserHandler(AuthRepository repo, ILogger<CreateAppUserHandler> logger)
-    : IWeavlyHandler<CreateAppUserCommand, Result>
+    : IWeavlyHandler<CreateAppUserCommand>
 {
     public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
     {

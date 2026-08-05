@@ -13,7 +13,7 @@ public sealed class VerifyTwoFactorAuthHandler(
     AuthRepository repo,
     IJwtProvider jwtProvider,
     ITimeProvider timeProvider
-) : IWeavlyHandler<VerifyTwoFactorAuthCommand, Result>
+) : IWeavlyHandler<VerifyTwoFactorAuthCommand>
 {
     public async Task<Result> HandleAsync(VerifyTwoFactorAuthCommand command, CancellationToken ct = default)
     {

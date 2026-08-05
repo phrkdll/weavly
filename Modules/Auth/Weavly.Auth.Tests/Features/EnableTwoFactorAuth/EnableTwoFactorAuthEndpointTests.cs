@@ -5,4 +5,5 @@ namespace Weavly.Auth.Tests.Features.EnableTwoFactorAuth;
 
 public sealed class EnableTwoFactorAuthEndpointTests()
     : AuthEndpointTests<EnableTwoFactorAuthEndpoint, EnableTwoFactorAuthCommand, EnableTwoFactorAuthResponse>(
-        new EnableTwoFactorAuthCommand());
+        new EnableTwoFactorAuthCommand()
+    );

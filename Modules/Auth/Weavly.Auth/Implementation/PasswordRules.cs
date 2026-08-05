@@ -29,7 +29,7 @@ public sealed class PasswordRules
             RequireDigit = requireDigit,
             RequireLowercase = requireLowercase,
             RequireUppercase = requireUppercase,
-            RequireNonAlphanumeric = requireNonAlphanumeric
+            RequireNonAlphanumeric = requireNonAlphanumeric,
         };
     }
 }

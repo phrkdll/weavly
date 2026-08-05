@@ -16,8 +16,8 @@ public sealed class RegisterUserHandler(
     AuthRepository repo,
     IPasswordHasher<AppUser> hasher,
     IValidator<RegisterUserCommand> validator,
-    IMessageBus bus)
-    : IWeavlyHandler<RegisterUserCommand, Result>
+    IMessageBus bus
+) : IWeavlyHandler<RegisterUserCommand>
 {
     public async Task<Result> HandleAsync(RegisterUserCommand command, CancellationToken ct = default)
     {
@@ -44,8 +44,10 @@ public sealed class RegisterUserHandler(
                 return emailNotAvailable;
             }
 
-            var user = AppUser.Create(command.Email,
-                settings.DisableEmailVerification ? [] : [AppUserToken.CreateEmailValidationToken()]);
+            var user = AppUser.Create(
+                command.Email,
+                settings.DisableEmailVerification ? [] : [AppUserToken.CreateEmailValidationToken()]
+            );
             user.PasswordHash = hasher.HashPassword(user, command.Password);
 
             await repo.Users.InsertAsync(user, ct);
@@ -80,10 +82,10 @@ public sealed class RegisterUserHandler(
 
         const string subject = "Weavly verification mail";
         var body = $"""
-                    <p>Hi!</p>
-                    <p>Please verify your email address by clicking the link below:</p>
-                    <p><a href='http://localhost:5000/user/verify?token={token}'>Verify</a></p>
-                    """;
+            <p>Hi!</p>
+            <p>Please verify your email address by clicking the link below:</p>
+            <p><a href='http://localhost:5000/user/verify?token={token}'>Verify</a></p>
+            """;
 
         return new SendMailCommand(user.Email, subject, body);
     }

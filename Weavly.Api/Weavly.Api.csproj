@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <IsPackable>false</IsPackable>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="DotNetEnv"/>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Modules\Auth\Weavly.Auth\Weavly.Auth.csproj"/>
-        <ProjectReference Include="..\Modules\Configuration\Weavly.Configuration\Weavly.Configuration.csproj"/>
-        <ProjectReference Include="..\Modules\Core\Weavly.Core\Weavly.Core.csproj"/>
-        <ProjectReference Include="..\Modules\Mail\Weavly.Mail\Weavly.Mail.csproj"/>
-        <ProjectReference Include="..\Modules\Messages\Weavly.Messages\Weavly.Messages.csproj"/>
-        <ProjectReference Include="..\Modules\Logging\Weavly.Logging.Serilog\Weavly.Logging.Serilog.csproj"/>
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\Auth\Weavly.Auth\Weavly.Auth.csproj" />
+    <ProjectReference Include="..\Modules\Configuration\Weavly.Configuration\Weavly.Configuration.csproj" />
+    <ProjectReference Include="..\Modules\Core\Weavly.Core\Weavly.Core.csproj" />
+    <ProjectReference Include="..\Modules\Mail\Weavly.Mail\Weavly.Mail.csproj" />
+    <ProjectReference Include="..\Modules\Messages\Weavly.Messages\Weavly.Messages.csproj" />
+    <ProjectReference Include="..\Modules\Logging\Weavly.Logging.Serilog\Weavly.Logging.Serilog.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
 </Project>

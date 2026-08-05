@@ -4,9 +4,11 @@ namespace Weavly.Cli.Models.Dotnet.Package.List;
 
 public sealed class Framework
 {
-    [JsonPropertyName("framework")] public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("framework")]
+    public string Name { get; set; } = string.Empty;
 
-    [JsonPropertyName("topLevelPackages")] public IEnumerable<ListPackage> Packages { get; } = [];
+    [JsonPropertyName("topLevelPackages")]
+    public IEnumerable<ListPackage> Packages { get; } = [];
 }
 
 public sealed class ListPackage

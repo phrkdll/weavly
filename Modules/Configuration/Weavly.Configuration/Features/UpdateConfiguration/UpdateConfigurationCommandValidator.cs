@@ -12,14 +12,9 @@ public sealed class UpdateConfigurationCommandValidator(ILogger<UpdateConfigurat
     {
         await Task.CompletedTask;
 
-        IList<ValidationResult?> results =
-        [
-            ValidateValueScalarity(command)
-        ];
+        IList<ValidationResult?> results = [ValidateValueScalarity(command)];
 
-        return results.Any(x => x != null)
-            ? Result.ValidationFailure(results.Where(x => x != null))
-            : Result.Success();
+        return results.Any(x => x != null) ? Result.ValidationFailure(results.Where(x => x != null)) : Result.Success();
     }
 
     private ValidationResult? ValidateValueScalarity(UpdateConfigurationCommand command)

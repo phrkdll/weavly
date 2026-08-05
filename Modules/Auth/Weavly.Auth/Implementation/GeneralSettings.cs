@@ -21,7 +21,7 @@ public sealed class GeneralSettings
         {
             DisableEmailVerification = disableEmailVerification,
             DisableUserRegistration = disableUserRegistration,
-            ForceTwoFactorAuth = forceTwoFactorAuth
+            ForceTwoFactorAuth = forceTwoFactorAuth,
         };
     }
 }

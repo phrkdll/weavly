@@ -4,5 +4,5 @@ public enum AppUserTokenPurpose
 {
     EmailValidation,
     TokenLogin,
-    TwoFactorAuthentication
+    TwoFactorAuthentication,
 }

@@ -2,10 +2,6 @@ namespace Weavly.Core.Shared.Implementation;
 
 public record Result
 {
-    protected Result()
-    {
-    }
-
     protected Result(bool success, string? message)
     {
         Success = success;

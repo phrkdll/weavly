@@ -6,10 +6,9 @@ using Weavly.Core.Shared.Persistence;
 namespace Weavly.Configuration.Features.ListConfigurationModules;
 
 public class ListConfigurationModulesHandler(ConfigurationRepository repo)
-    : IWeavlyHandler<ListConfigurationModulesCommand, Result>
+    : IWeavlyHandler<ListConfigurationModulesCommand>
 {
-    public async Task<Result> HandleAsync(ListConfigurationModulesCommand command,
-        CancellationToken ct = default)
+    public async Task<Result> HandleAsync(ListConfigurationModulesCommand command, CancellationToken ct = default)
     {
         await Task.CompletedTask;
 

@@ -6,7 +6,8 @@ namespace Weavly.Configuration.Features.UpdateConfiguration;
 
 public sealed class UpdateConfigurationEndpoint : PutEndpoint<UpdateConfigurationCommand, object, ConfigurationModule>
 {
-    public UpdateConfigurationEndpoint(IMessageBus bus) : base("configuration", bus)
+    public UpdateConfigurationEndpoint(IMessageBus bus)
+        : base("configuration", bus)
     {
         Authorize();
     }

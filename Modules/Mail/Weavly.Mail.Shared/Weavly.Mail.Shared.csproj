@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj"/>
-        <PackageReference Include="MailKit"/>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Weavly.Core.Shared\Weavly.Core.Shared.csproj" />
+    <PackageReference Include="MailKit" />
+  </ItemGroup>
 </Project>

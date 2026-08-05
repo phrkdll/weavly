@@ -13,8 +13,9 @@ public sealed class WeavlyCollectionTests
     private readonly CancellationToken cancellationToken = CancellationToken.None;
     private readonly DateTime createTime = new(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-    private readonly IMongoCollection<TestDocument> mongoCollectionMock =
-        Substitute.For<IMongoCollection<TestDocument>>();
+    private readonly IMongoCollection<TestDocument> mongoCollectionMock = Substitute.For<
+        IMongoCollection<TestDocument>
+    >();
 
     private readonly WeavlyCollection<TestDocument, TestId> sut;
     private readonly TestId testId = new(ObjectId.GenerateNewId().ToString());
@@ -23,9 +24,11 @@ public sealed class WeavlyCollectionTests
 
     public WeavlyCollectionTests()
     {
-        this.mongoCollectionMock
-            .FindAsync(Arg.Any<FilterDefinition<TestDocument>>(),
-                Arg.Any<FindOptions<TestDocument, TestDocument>>(), Arg.Any<CancellationToken>())
+        this.mongoCollectionMock.FindAsync(
+                Arg.Any<FilterDefinition<TestDocument>>(),
+                Arg.Any<FindOptions<TestDocument, TestDocument>>(),
+                Arg.Any<CancellationToken>()
+            )
             .Returns(this.asyncCursorMock);
 
         this.sut = new WeavlyCollection<TestDocument, TestId>(this.mongoCollectionMock, this.timeProviderMock);
@@ -44,7 +47,8 @@ public sealed class WeavlyCollectionTests
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this.mongoCollectionMock.Received(1)
+        await this
+            .mongoCollectionMock.Received(1)
             .InsertOneAsync(document, Arg.Any<InsertOneOptions>(), Arg.Any<CancellationToken>());
     }
 
@@ -55,16 +59,25 @@ public sealed class WeavlyCollectionTests
         this.timeProviderMock.UtcNow.Returns(testTime);
 
         var document = new TestDocument("Test")
-            { Id = this.testId, CreatedAt = this.createTime, TouchedAt = this.createTime };
+        {
+            Id = this.testId,
+            CreatedAt = this.createTime,
+            TouchedAt = this.createTime,
+        };
         await this.sut.UpdateAsync(document, this.cancellationToken);
 
         document.CreatedAt.ShouldBe(this.createTime);
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this.mongoCollectionMock.Received(1)
-            .ReplaceOneAsync(Arg.Any<FilterDefinition<TestDocument>>(), document,
-                null as ReplaceOptions, this.cancellationToken);
+        await this
+            .mongoCollectionMock.Received(1)
+            .ReplaceOneAsync(
+                Arg.Any<FilterDefinition<TestDocument>>(),
+                document,
+                null as ReplaceOptions,
+                this.cancellationToken
+            );
     }
 
     [Fact]
@@ -74,7 +87,11 @@ public sealed class WeavlyCollectionTests
         this.timeProviderMock.UtcNow.Returns(testTime);
 
         var document = new TestDocument("Test")
-            { Id = this.testId, CreatedAt = this.createTime, TouchedAt = this.createTime };
+        {
+            Id = this.testId,
+            CreatedAt = this.createTime,
+            TouchedAt = this.createTime,
+        };
 
         this.asyncCursorMock.MoveNextAsync(Arg.Any<CancellationToken>()).Returns(true);
         this.asyncCursorMock.Current.Returns([document]);
@@ -86,8 +103,13 @@ public sealed class WeavlyCollectionTests
         document.DeletedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this.mongoCollectionMock.Received(1)
-            .ReplaceOneAsync(Arg.Any<FilterDefinition<TestDocument>>(), document,
-                null as ReplaceOptions, this.cancellationToken);
+        await this
+            .mongoCollectionMock.Received(1)
+            .ReplaceOneAsync(
+                Arg.Any<FilterDefinition<TestDocument>>(),
+                document,
+                null as ReplaceOptions,
+                this.cancellationToken
+            );
     }
 }

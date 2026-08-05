@@ -17,6 +17,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+          
+      - name: Install csharpier
+        run: dotnet tool install csharpier
+        
+      - name: Check formatting
+        run: csharpier check .
 
       - name: Build solution
         run: dotnet build

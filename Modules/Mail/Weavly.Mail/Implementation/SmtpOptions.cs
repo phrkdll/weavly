@@ -33,7 +33,7 @@ public sealed class SmtpOptions
             SmtpPort = smtpPort,
             SmtpUser = smtpUser,
             SmtpPassword = smtpPassword,
-            DefaultSender = defaultSender
+            DefaultSender = defaultSender,
         };
     }
 }

@@ -11,7 +11,8 @@ public sealed class LoggingModule : WeavlyModule
 {
     public override void Configure(IHostApplicationBuilder builder)
     {
-        ((WebApplicationBuilder)builder).Host.UseSerilog((context, services, configuration) =>
+        ((WebApplicationBuilder)builder).Host.UseSerilog(
+            (context, services, configuration) =>
             {
                 configuration
                     .ReadFrom.Configuration(context.Configuration)

@@ -6,7 +6,8 @@ namespace Weavly.Core.Shared.Models;
 public abstract record Document<TDocumentId>
     where TDocumentId : struct, IWeavlyId
 {
-    [BsonId] public TDocumentId Id { get; set; }
+    [BsonId]
+    public TDocumentId Id { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

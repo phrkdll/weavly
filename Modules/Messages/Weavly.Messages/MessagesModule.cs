@@ -3,6 +3,4 @@
 namespace Weavly.Messages;
 
 [ExcludeFromCodeCoverage]
-public sealed class MessagesModule : WeavlyModule
-{
-}
+public sealed class MessagesModule : WeavlyModule { }

@@ -3,17 +3,11 @@ namespace Weavly.Core.Shared.Persistence;
 [Serializable]
 internal class DocumentNotFoundException : Exception
 {
-    public DocumentNotFoundException()
-    {
-    }
+    public DocumentNotFoundException() { }
 
     public DocumentNotFoundException(string? message)
-        : base(message)
-    {
-    }
+        : base(message) { }
 
     public DocumentNotFoundException(string? message, Exception? innerException)
-        : base(message, innerException)
-    {
-    }
+        : base(message, innerException) { }
 }

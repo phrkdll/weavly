@@ -19,12 +19,10 @@ public partial class RegisterUserCommandValidator(IMessageBus bus) : IValidator<
         [
             ValidateEmail(command),
             .. ValidateLength(command, options),
-            .. ValidateContains(command, options)
+            .. ValidateContains(command, options),
         ];
 
-        return results.Any(x => x != null)
-            ? Result.ValidationFailure(results.Where(x => x != null))
-            : Result.Success();
+        return results.Any(x => x != null) ? Result.ValidationFailure(results.Where(x => x != null)) : Result.Success();
     }
 
     [GeneratedRegex("(?=.*[A-Z])")]
@@ -72,8 +70,7 @@ public partial class RegisterUserCommandValidator(IMessageBus bus) : IValidator<
             : ValidationResult.Success;
     }
 
-    private static IEnumerable<ValidationResult?> ValidateLength(RegisterUserCommand command,
-        PasswordRules rules)
+    private static IEnumerable<ValidationResult?> ValidateLength(RegisterUserCommand command, PasswordRules rules)
     {
         yield return command.Password.Length < rules.MinimumLength
             ? new ValidationResult($"Password length must not be less than {rules.MinimumLength} characters.")

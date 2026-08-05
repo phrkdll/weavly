@@ -13,7 +13,7 @@ public sealed class LoginUserHandler(
     IPasswordHasher<AppUser> hasher,
     IJwtProvider jwtProvider,
     ITimeProvider timeProvider
-) : IWeavlyHandler<LoginUserCommand, Result>
+) : IWeavlyHandler<LoginUserCommand>
 {
     public async Task<Result> HandleAsync(LoginUserCommand command, CancellationToken ct = default)
     {
