@@ -19,7 +19,7 @@ jobs:
           dotnet-version: 10.0.x
           
       - name: Install csharpier
-        run: dotnet tool install csharpier
+        run: dotnet tool install -g csharpier
         
       - name: Check formatting
         run: csharpier check .
