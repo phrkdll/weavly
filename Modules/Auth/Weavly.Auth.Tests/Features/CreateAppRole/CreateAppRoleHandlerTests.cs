@@ -23,9 +23,9 @@ public sealed class CreateAppRoleHandlerTests : AuthHandlerTests
     {
         var command = new CreateAppRoleCommand("TestRole");
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
-        var data = result.ShouldBeOfType<Success<AppRoleId>>().Data.ShouldBeOfType<AppRoleId>();
+        var data = result.ShouldBeOfType<Success<CreateAppRoleResponse>>().Data;
 
-        data.Value.ShouldNotBeEmpty();
+        data.Id.Value.ShouldNotBeNull();
     }
 
     [Fact]

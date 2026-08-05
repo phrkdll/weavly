@@ -18,17 +18,16 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Add .NET tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-          
-      - name: Install csharpier
-        run: dotnet tool install -g csharpier
-        
+      - name: Install tools
+        run: |
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          dotnet tool install -g csharpier
+
       - name: Check formatting
         run: csharpier check .
 
       - name: Build solution
         run: dotnet build
-        
+
       - name: Run tests
         run: dotnet test
