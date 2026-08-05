@@ -134,7 +134,7 @@ public class RegisterUserCommandValidatorTests
 
     private static Result MakeConfiguration(string name, object value)
     {
-        var config = ConfigurationResponse.Create(name);
+        var config = ConfigurationItem.Create(name);
         var configWithValue = value switch
         {
             string s => config with { StringValue = s, Category = ConfigCategory.PasswordRules },

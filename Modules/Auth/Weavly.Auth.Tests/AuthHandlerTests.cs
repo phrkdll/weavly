@@ -25,17 +25,17 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
                     new LoadConfigurationResponse(
                         "AuthModule",
                         [
-                            ConfigurationResponse.Create("Secret") with
+                            ConfigurationItem.Create("Secret") with
                             {
                                 StringValue = AuthModule.GenerateEncryptionKey(256),
                                 Category = AuthModule.ConfigCategory.JsonWebToken
                             },
-                            ConfigurationResponse.Create("Issuer") with
+                            ConfigurationItem.Create("Issuer") with
                             {
                                 StringValue = "Weavly",
                                 Category = AuthModule.ConfigCategory.JsonWebToken
                             },
-                            ConfigurationResponse.Create("Audience") with
+                            ConfigurationItem.Create("Audience") with
                             {
                                 StringValue = "Weavly",
                                 Category = AuthModule.ConfigCategory.JsonWebToken

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Weavly.Auth.Shared.Identifiers;
 using Weavly.Configuration.Shared.Identifiers;
+using Weavly.Configuration.Shared.Models;
 using Weavly.Core.Shared.Models;
 
 namespace Weavly.Configuration.Models;
@@ -21,5 +22,7 @@ public sealed record AppConfiguration : UserDocument<ConfigurationId, AppUserId>
 
     public bool? BoolValue { get; init; }
 
+    public ConfigurationValueType ValueType { get; init; }
+    
     public int Hash { get; init; }
 }

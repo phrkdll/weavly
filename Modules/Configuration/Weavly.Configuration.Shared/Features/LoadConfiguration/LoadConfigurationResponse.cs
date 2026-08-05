@@ -1,8 +1,8 @@
 namespace Weavly.Configuration.Shared.Features.LoadConfiguration;
 
-public sealed record LoadConfigurationResponse(string Module, IEnumerable<ConfigurationResponse> Items)
+public sealed record LoadConfigurationResponse(string Module, IEnumerable<ConfigurationItem> Items)
 {
-    private ConfigurationResponse? Get(string name, string category)
+    private ConfigurationItem? Get(string name, string category)
     {
         return Items.SingleOrDefault(i => i.Name == name && i.Category == category);
     }

@@ -2,9 +2,9 @@ using Weavly.Configuration.Shared.Identifiers;
 
 namespace Weavly.Configuration.Shared;
 
-public record ConfigurationResponse
+public record ConfigurationItem
 {
-    public ConfigurationId? Id { get; init; }
+    public ConfigurationId Id { get; init; }
 
     public string Module { get; init; } = string.Empty;
 
@@ -40,8 +40,8 @@ public record ConfigurationResponse
         return BoolValue ?? false;
     }
 
-    public static ConfigurationResponse Create(string name)
+    public static ConfigurationItem Create(string name)
     {
-        return new ConfigurationResponse { Name = name };
+        return new ConfigurationItem { Name = name };
     }
 }

@@ -25,7 +25,7 @@ public sealed class LoadConfigurationHandler(ConfigurationRepository repo, ILogg
                 return Result.Failure("Could not find configuration");
             }
 
-            var converted = configurations.Select(x => x.Adapt<ConfigurationResponse>());
+            var converted = configurations.Select(x => x.Adapt<ConfigurationItem>());
 
             return Result.Success(new LoadConfigurationResponse(command.Module, converted));
         }

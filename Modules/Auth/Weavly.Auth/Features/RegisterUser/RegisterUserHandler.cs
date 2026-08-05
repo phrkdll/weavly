@@ -32,8 +32,7 @@ public sealed class RegisterUserHandler(
                 return Result.Failure("User registration is disabled.");
             }
 
-            var result = await validator.ValidateAsync(command, ct);
-            if (result is ValidationFailure validationFailure)
+            if (await validator.ValidateAsync(command, ct) is ValidationFailure validationFailure)
             {
                 return validationFailure;
             }
