@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Scalar.AspNetCore;
 using Weavly.Core.Implementation;
 using Weavly.Core.Shared.Contracts;
 using Wolverine;
@@ -43,10 +42,9 @@ public static class Extensions
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
-        app.MapOpenApi();
         if (app.Environment.IsDevelopment())
         {
-            app.MapScalarApiReference();
+            app.MapOpenApi();
         }
 
         foreach (var module in modules)
