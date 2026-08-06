@@ -16,7 +16,6 @@ public sealed class CreateAppRoleHandler(AuthRepository repo, ILogger<CreateAppR
         try
         {
             using var session = await repo.StartSessionAsync(ct);
-            session.StartTransaction();
 
             var role = AppRole.Create(command.Name);
             if (await IsRoleNameAvailable(role) is Failure f)

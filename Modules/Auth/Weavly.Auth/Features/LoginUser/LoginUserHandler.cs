@@ -17,8 +17,7 @@ public sealed class LoginUserHandler(
 {
     public async Task<Result> HandleAsync(LoginUserCommand command, CancellationToken ct = default)
     {
-        using var session = await repo.StartSessionAsync(ct);
-        session.StartTransaction();
+        using var session = await repo.StartTransactionAsync(ct);
 
         var user = await repo.Users.FindAsync(u => u.Email == command.Email, ct);
 

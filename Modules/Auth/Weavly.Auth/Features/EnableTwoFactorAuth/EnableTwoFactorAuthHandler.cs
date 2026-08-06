@@ -14,8 +14,7 @@ public sealed class EnableTwoFactorAuthHandler(AuthRepository repo, IUserContext
 {
     public async Task<Result> HandleAsync(EnableTwoFactorAuthCommand command, CancellationToken ct = default)
     {
-        using var session = await repo.StartSessionAsync(ct);
-        session.StartTransaction();
+        using var session = await repo.StartTransactionAsync(ct);
 
         var user = await repo.Users.FindAsync(x => x.Id == userContext.UserId, ct);
 

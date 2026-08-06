@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using NSubstitute;
 using Shouldly;
 using Weavly.Auth.Features.RegisterUser;
@@ -27,10 +28,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Passw0rd", true)]
     public async Task RequireDigitTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("RequireDigit", true));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
@@ -42,10 +40,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Password", true)]
     public async Task RequireUppercaseTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("RequireUppercase", true));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
@@ -57,10 +52,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Password", true)]
     public async Task RequireLowercaseTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("RequireLowercase", true));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
@@ -83,10 +75,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Password.", true)]
     public async Task RequireNonAlphanumericTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("RequireNonAlphanumeric", true));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
@@ -100,15 +89,15 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Beanie", true)]
     public async Task MinimumLengthTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("MinimumLength", 6));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
         result.Success.ShouldBe(expectSuccess);
     }
+
+    private static Expression<Predicate<LoadConfigurationCommand?>> LoadConfigurationCommandPredicate =>
+        x => x!.Module == "AuthModule";
 
     [Theory]
     [InlineData("Crabs", true)]
@@ -117,10 +106,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("Beanie", true)]
     public async Task MaximumLengthTest(string password, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("MaximumLength", 6));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Password = password });
@@ -136,10 +122,7 @@ public class RegisterUserCommandValidatorTests
     [InlineData("no", false)]
     public async Task EmailTest(string email, bool expectSuccess)
     {
-        this.messageBusMock.InvokeAsync<Result>(
-                Arg.Is<LoadConfigurationCommand>(x => x.Module == "AuthModule"),
-                Arg.Any<CancellationToken>()
-            )
+        this.messageBusMock.InvokeAsync<Result>(Arg.Is(LoadConfigurationCommandPredicate), Arg.Any<CancellationToken>())
             .Returns(MakeConfiguration("NothingSpecial", false));
 
         var result = await this.sut.ValidateAsync(this.baseCommand with { Email = email });

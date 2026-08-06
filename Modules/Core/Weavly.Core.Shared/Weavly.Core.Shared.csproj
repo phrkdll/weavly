@@ -3,8 +3,8 @@
     <PackageReference Include="Mapster" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.OpenApi" />
     <PackageReference Include="MongoDb.Driver" />
-    <PackageReference Include="Scalar.AspNetCore" />
     <PackageReference Include="Testably.Abstractions" />
     <PackageReference Include="WolverineFx" />
     <PackageReference Include="WolverineFx.RuntimeCompilation" />
