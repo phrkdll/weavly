@@ -23,13 +23,13 @@ public class MailModule : WeavlyModule
             CreateConfigurationCommand.Create<MailModule>(
                 "DefaultSender",
                 "no-reply@weavly.com",
-                ConfigCategory.Default
+                ConfigCategory.General
             ),
-            CreateConfigurationCommand.Create<MailModule>("SmtpHost", "localhost", ConfigCategory.Default),
-            CreateConfigurationCommand.Create<MailModule>("SmtpPort", 1025, ConfigCategory.Default),
-            CreateConfigurationCommand.Create<MailModule>("EnableSsl", false, ConfigCategory.Default),
-            CreateConfigurationCommand.Create<MailModule>("SmtpUser", string.Empty, ConfigCategory.Default),
-            CreateConfigurationCommand.Create<MailModule>("SmtpPassword", string.Empty, ConfigCategory.Default),
+            CreateConfigurationCommand.Create<MailModule>("SmtpHost", "localhost", ConfigCategory.General),
+            CreateConfigurationCommand.Create<MailModule>("SmtpPort", 1025, ConfigCategory.General),
+            CreateConfigurationCommand.Create<MailModule>("EnableSsl", false, ConfigCategory.General),
+            CreateConfigurationCommand.Create<MailModule>("SmtpUser", string.Empty, ConfigCategory.General),
+            CreateConfigurationCommand.Create<MailModule>("SmtpPassword", string.Empty, ConfigCategory.General),
         ];
 
         foreach (var item in configurationItems)
@@ -42,6 +42,6 @@ public class MailModule : WeavlyModule
 
     public static class ConfigCategory
     {
-        public const string Default = "Default";
+        public const string General = "General";
     }
 }

@@ -7,6 +7,7 @@ using Weavly.Auth.Shared.Identifiers;
 using Weavly.Core.Implementation;
 using Weavly.Core.Shared.Contracts;
 using Weavly.Core.Shared.Implementation;
+using Weavly.Core.Shared.Models;
 
 namespace Weavly.Auth.Tests.Features.Verification;
 
@@ -52,7 +53,7 @@ public sealed class VerificationHandlerTests : AuthHandlerTests
 
         var result = await this.sut.HandleAsync(new VerificationCommand(token.Value));
 
-        result.ShouldBeOfType<Success<VerificationResponse>>();
+        result.ShouldBeOfType<Success<EmptyResponse>>();
 
         var user = await this.Repository.Users.FindAsync(x => x.Email == "admin@test.local");
 

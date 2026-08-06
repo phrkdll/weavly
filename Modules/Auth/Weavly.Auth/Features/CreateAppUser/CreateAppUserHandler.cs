@@ -34,7 +34,7 @@ public sealed class CreateAppUserHandler(AuthRepository repo, ILogger<CreateAppU
 
             await session.CommitTransactionAsync(ct);
 
-            return Result.Success(user.Id);
+            return Result.Success(new CreateAppUserResponse(user.Id));
         }
         catch (Exception e)
         {

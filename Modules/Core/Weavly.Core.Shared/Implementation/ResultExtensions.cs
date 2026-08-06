@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Weavly.Core.Shared.Models;
 
 namespace Weavly.Core.Shared.Implementation;
 
@@ -11,9 +12,9 @@ public static class ResultExtensions
             return new Success<T>(data, message);
         }
 
-        public static Success<object> Success(string? message = null)
+        public static Success<EmptyResponse> Success(string? message = null)
         {
-            return new Success<object>(null!, message);
+            return new Success<EmptyResponse>(null!, message);
         }
 
         public static Failure Failure(string message)

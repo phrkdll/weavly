@@ -32,7 +32,7 @@ public sealed class CreateConfigurationHandler(ConfigurationRepository repo, ILo
 
             await session.CommitTransactionAsync(ct);
 
-            return Result.Success(configuration.Id);
+            return Result.Success(new CreateConfigurationResponse(configuration.Id));
         }
         catch (Exception e)
         {

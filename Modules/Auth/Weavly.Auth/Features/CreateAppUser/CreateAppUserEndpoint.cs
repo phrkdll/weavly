@@ -6,4 +6,4 @@ using Wolverine;
 namespace Weavly.Auth.Features.CreateAppUser;
 
 public sealed class CreateAppUserEndpoint(IMessageBus bus)
-    : PostEndpoint<CreateAppUserCommand, EmptyResponse, AuthModule>("user", bus);
+    : PostEndpoint<CreateAppUserCommand, CreateAppUserResponse, AuthModule>("user", bus);
