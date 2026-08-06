@@ -25,7 +25,7 @@ public sealed class CreateAppUserHandlerTests : AuthHandlerTests
     {
         var command = new CreateAppUserCommand("admin@test.local", "Admin", "Admin", "P@ssw0rd!");
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
-        var data = result.ShouldBeOfType<Success<AppUserId>>().Data.ShouldBeOfType<AppUserId>();
+        var data = result.ShouldBeOfType<Success<CreateAppUserResponse>>().Data.UserId.ShouldBeOfType<AppUserId>();
 
         data.Value.ShouldNotBeEmpty();
     }

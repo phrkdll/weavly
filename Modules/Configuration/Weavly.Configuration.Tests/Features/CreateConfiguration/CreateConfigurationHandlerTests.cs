@@ -39,7 +39,7 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
         );
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
 
-        result.ShouldBeOfType<Success<ConfigurationId>>();
+        result.ShouldBeOfType<Success<CreateConfigurationResponse>>();
     }
 
     [Fact]
