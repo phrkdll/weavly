@@ -2,12 +2,12 @@ using System.Linq.Expressions;
 using NSubstitute;
 using Shouldly;
 using Weavly.Auth.Features.RegisterUser;
+using Weavly.Auth.Seeding;
 using Weavly.Auth.Shared.Features.RegisterUser;
 using Weavly.Configuration.Shared;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Shared.Implementation;
 using Wolverine;
-using static Weavly.Auth.AuthModule;
 
 namespace Weavly.Auth.Tests.Features.RegisterUser;
 

@@ -1,5 +1,5 @@
+using Weavly.Auth.Seeding;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
-using static Weavly.Auth.AuthModule;
 
 namespace Weavly.Auth.Implementation;
 
@@ -8,9 +8,9 @@ public sealed record GeneralSettings(bool DisableEmailVerification, bool Disable
     public static GeneralSettings FromConfigurationResponse(LoadConfigurationResponse config)
     {
         var disableEmailVerification =
-            config.GetBool(nameof(DisableEmailVerification), ConfigCategory.GeneralSettings) ?? false;
+            config.GetBool(nameof(DisableEmailVerification), ConfigCategory.General) ?? false;
         var disableUserRegistration =
-            config.GetBool(nameof(DisableUserRegistration), ConfigCategory.GeneralSettings) ?? false;
+            config.GetBool(nameof(DisableUserRegistration), ConfigCategory.General) ?? false;
 
         return new GeneralSettings(disableEmailVerification, disableUserRegistration);
     }

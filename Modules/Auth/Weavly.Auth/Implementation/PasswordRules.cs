@@ -1,5 +1,5 @@
+using Weavly.Auth.Seeding;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
-using static Weavly.Auth.AuthModule;
 
 namespace Weavly.Auth.Implementation;
 

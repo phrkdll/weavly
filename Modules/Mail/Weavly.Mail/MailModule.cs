@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Mail.Implementation;
+using Weavly.Mail.Persistence;
 using Weavly.Mail.Shared.Contracts;
 using Wolverine;
 
@@ -12,6 +13,7 @@ public class MailModule : WeavlyModule
     public override void Configure(IHostApplicationBuilder builder)
     {
         builder.Services.AddScoped<IMailService, MailService>();
+        builder.Services.AddScoped<MailRepository>();
 
         base.Configure(builder);
     }
