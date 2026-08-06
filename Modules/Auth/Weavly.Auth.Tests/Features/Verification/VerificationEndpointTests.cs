@@ -5,6 +5,4 @@ using Weavly.Core.Shared.Models;
 namespace Weavly.Auth.Tests.Features.Verification;
 
 public sealed class VerificationEndpointTests()
-    : AuthEndpointTests<VerificationEndpoint, VerificationCommand, EmptyResponse>(
-        new VerificationCommand(Guid.Empty)
-    );
+    : AuthEndpointTests<VerificationEndpoint, VerificationCommand, EmptyResponse>(new VerificationCommand(Guid.Empty));

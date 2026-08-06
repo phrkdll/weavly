@@ -70,7 +70,7 @@ public sealed class UpdateConfigurationHandler(
 
         logger.LogDebug("Configuration updated: {Id}", command.Id);
         await bus.PublishAsync(updatedConfiguration.Adapt<ConfigurationChangedEvent>());
-        
+
         return Result.Success();
     }
 }
