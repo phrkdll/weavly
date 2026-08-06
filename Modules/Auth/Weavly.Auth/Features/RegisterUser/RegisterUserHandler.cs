@@ -47,6 +47,11 @@ public sealed class RegisterUserHandler(
                 settings.DisableEmailVerification ? [] : [AppUserToken.CreateEmailValidationToken()]
             );
             user.PasswordHash = hasher.HashPassword(user, command.Password);
+            
+            if(await repo.Roles.FindAsync(x => x.Name == "User", ct) is { } role)
+            {
+                user.Roles.Add(role.Id);
+            }
 
             await repo.Users.InsertAsync(user, ct);
 

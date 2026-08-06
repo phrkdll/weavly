@@ -1,15 +1,19 @@
+using Mapster;
 using Microsoft.Extensions.Logging;
 using Weavly.Configuration.Persistence;
+using Weavly.Configuration.Shared.Events;
 using Weavly.Configuration.Shared.Features.UpdateConfiguration;
 using Weavly.Configuration.Shared.Models;
 using Weavly.Core.Shared.Contracts;
+using Wolverine;
 
 namespace Weavly.Configuration.Features.UpdateConfiguration;
 
 public sealed class UpdateConfigurationHandler(
     ConfigurationRepository repo,
     IValidator<UpdateConfigurationCommand> validator,
-    ILogger<UpdateConfigurationHandler> logger
+    ILogger<UpdateConfigurationHandler> logger,
+    IMessageBus bus
 ) : IWeavlyHandler<UpdateConfigurationCommand>
 {
     public async Task<Result> HandleAsync(UpdateConfigurationCommand command, CancellationToken ct = default)
@@ -62,11 +66,11 @@ public sealed class UpdateConfigurationHandler(
         };
 
         await repo.Configurations.UpdateAsync(updatedConfiguration, ct);
-
-        logger.LogDebug("Configuration updated: {Id}", command.Id);
-
         await session.CommitTransactionAsync(ct);
 
+        logger.LogDebug("Configuration updated: {Id}", command.Id);
+        await bus.PublishAsync(updatedConfiguration.Adapt<ConfigurationChangedEvent>());
+        
         return Result.Success();
     }
 }

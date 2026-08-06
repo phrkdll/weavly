@@ -108,7 +108,6 @@ public sealed class AuthModule : WeavlyModule
                 false,
                 ConfigCategory.GeneralSettings
             ),
-            CreateConfigurationCommand.Create<AuthModule>("ForceTwoFactorAuth", false, ConfigCategory.GeneralSettings),
             CreateConfigurationCommand.Create<AuthModule>("MinimumLength", 8, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("MaximumLength", 32, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("RequireUppercase", true, ConfigCategory.PasswordRules),

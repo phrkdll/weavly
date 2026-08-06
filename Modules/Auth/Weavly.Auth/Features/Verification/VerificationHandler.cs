@@ -32,7 +32,7 @@ public sealed class VerificationHandler(AuthRepository repo, ITimeProvider timeP
         await session.CommitTransactionAsync(ct);
         await bus.InvokeAsync<Result>(VerificationSuccessMail(user), ct);
 
-        return Result.Success(new VerificationResponse());
+        return Result.Success();
     }
 
     private static SendMailCommand VerificationSuccessMail(AppUser user)
