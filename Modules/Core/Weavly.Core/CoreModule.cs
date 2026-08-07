@@ -47,6 +47,7 @@ public sealed class CoreModule : WeavlyModule
         builder.Services.AddScoped(typeof(IWeavlyRepository<>), typeof(WeavlyRepository<>));
 
         builder.Services.AddSingleton<IObjectHasher, ObjectHasher>();
+        builder.Services.AddScoped<ITemplateService, TemplateService>();
 
         base.Configure(builder);
     }
