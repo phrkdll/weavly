@@ -16,11 +16,11 @@ public sealed class LoadConfigurationHandler(ConfigurationRepository repo, ILogg
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            logger.LogInformation("Received {MessageType} message", nameof(LoadConfigurationCommand));
+            var configurations = await repo
+                .Configurations.FilterAsync(x => x.Module == command.Module, ct)
+                .ContinueWith(x => x.Result.ToArray(), ct);
 
-            var configurations = await repo.Configurations.FilterAsync(x => x.Module == command.Module, ct);
-
-            if (!configurations.Any())
+            if (configurations.Length == 0)
             {
                 return Result.Failure("Could not find configuration");
             }

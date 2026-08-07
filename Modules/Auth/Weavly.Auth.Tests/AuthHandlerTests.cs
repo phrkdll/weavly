@@ -1,5 +1,7 @@
 using NSubstitute;
+using Weavly.Auth.Implementation;
 using Weavly.Auth.Persistence;
+using Weavly.Auth.Seeding;
 using Weavly.Configuration.Shared;
 using Weavly.Configuration.Shared.Features.LoadConfiguration;
 using Weavly.Core.Shared.Implementation;
@@ -26,18 +28,18 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
                         [
                             ConfigurationItem.Create("Secret") with
                             {
-                                StringValue = AuthModule.GenerateEncryptionKey(256),
-                                Category = AuthModule.ConfigCategory.JsonWebToken,
+                                StringValue = EncryptionKeyGenerator.GenerateAesKey(256),
+                                Category = ConfigCategory.JsonWebToken,
                             },
                             ConfigurationItem.Create("Issuer") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken,
+                                Category = ConfigCategory.JsonWebToken,
                             },
                             ConfigurationItem.Create("Audience") with
                             {
                                 StringValue = "Weavly",
-                                Category = AuthModule.ConfigCategory.JsonWebToken,
+                                Category = ConfigCategory.JsonWebToken,
                             },
                         ]
                     )

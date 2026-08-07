@@ -3,7 +3,7 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Core.Implementation;
 
-internal sealed class TemplateService : ITemplateService
+public sealed class TemplateService : ITemplateService
 {
     private readonly FluidParser parser = new();
 

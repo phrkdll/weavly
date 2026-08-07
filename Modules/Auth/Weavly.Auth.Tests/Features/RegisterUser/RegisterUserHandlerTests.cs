@@ -57,7 +57,7 @@ public sealed class RegisterUserHandlerTests : AuthHandlerTests
 
         var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
-        var (message, _) = result.ShouldBeOfType<ValidationFailure>();
+        var (message, _, _) = result.ShouldBeOfType<ValidationFailure>();
 
         message.ShouldBe("Validation failed");
 

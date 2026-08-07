@@ -8,4 +8,7 @@
   <ItemGroup>
     <PackageReference Include="GoogleAuthenticator" />
   </ItemGroup>
+  <!--    <ItemGroup>-->
+  <!--        <InternalsVisibleTo Include="Weavly.Auth.Tests" />-->
+  <!--    </ItemGroup>-->
 </Project>

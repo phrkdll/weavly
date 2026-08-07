@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Weavly.Core.Shared.Contracts;
+using Weavly.Core.Shared.Seeding;
 using Wolverine;
 
 namespace Weavly.Core.Shared.Implementation;
@@ -21,8 +22,16 @@ public abstract class WeavlyModule : IWeavlyModule
         );
     }
 
-    public virtual Task InitializeAsync(IMessageBus bus)
+    public virtual async Task InitializeAsync(IMessageBus bus)
     {
-        return Task.CompletedTask;
+        var instances = this.GetType().Assembly.DefinedTypes.Where(x => typeof(IWeavlySeed).IsAssignableFrom(x));
+
+        foreach (var instance in instances.Select(t => Activator.CreateInstance(t, true) as IWeavlySeed).ToArray())
+        {
+            if (instance is not null)
+            {
+                await instance.SeedAsync(bus);
+            }
+        }
     }
 }

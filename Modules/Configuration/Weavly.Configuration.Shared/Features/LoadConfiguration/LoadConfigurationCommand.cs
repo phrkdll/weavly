@@ -2,7 +2,7 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Shared.Features.LoadConfiguration;
 
-public sealed record LoadConfigurationCommand(string? Module) : IWeavlyCommand
+public sealed record LoadConfigurationCommand(string Module) : IWeavlyCommand
 {
     public static LoadConfigurationCommand Create<TModule>()
     {

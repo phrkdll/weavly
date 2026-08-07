@@ -17,14 +17,14 @@ public static class ResultExtensions
             return new Success<EmptyResponse>(new EmptyResponse());
         }
 
-        public static Failure Failure(string message)
+        public static Failure Failure(string message, Failure? innerFailure = null)
         {
-            return new Failure(message);
+            return new Failure(message, innerFailure);
         }
 
         public static Failure Failure(Exception exception, string? message = null)
         {
-            return new Failure(message ?? exception.Message, exception);
+            return new Failure(message ?? exception.Message, null, exception);
         }
 
         public static Failure ValidationFailure(IEnumerable<ValidationResult?> validationResults)
