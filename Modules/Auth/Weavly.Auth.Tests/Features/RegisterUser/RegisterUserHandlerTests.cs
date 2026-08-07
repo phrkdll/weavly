@@ -36,9 +36,7 @@ public sealed class RegisterUserHandlerTests : AuthHandlerTests
 
         var command = new RegisterUserCommand("admin@test.local", "P@ssw0rd!");
         var result = await this.sut.HandleAsync(command, CancellationToken.None);
-        var (data, message) = result.ShouldBeOfType<Success<RegisterUserResponse>>();
-
-        message.ShouldBeNull();
+        var data = result.ShouldBeOfType<Success<RegisterUserResponse>>().Data;
 
         data.ShouldNotBeNull();
 

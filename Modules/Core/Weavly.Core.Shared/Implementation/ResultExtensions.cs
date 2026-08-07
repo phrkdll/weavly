@@ -7,14 +7,14 @@ public static class ResultExtensions
 {
     extension(Result)
     {
-        public static Success<T> Success<T>(T data, string? message = null)
+        public static Success<T> Success<T>(T data)
         {
-            return new Success<T>(data, message);
+            return new Success<T>(data);
         }
 
-        public static Success<EmptyResponse> Success(string? message = null)
+        public static Success<EmptyResponse> Success()
         {
-            return new Success<EmptyResponse>(null!, message);
+            return new Success<EmptyResponse>(new EmptyResponse());
         }
 
         public static Failure Failure(string message, Failure? innerFailure = null)
