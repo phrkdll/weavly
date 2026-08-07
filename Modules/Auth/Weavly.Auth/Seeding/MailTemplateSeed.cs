@@ -4,7 +4,7 @@ using Weavly.Mail.Shared.Features.CreateMailTemplate;
 
 namespace Weavly.Auth.Seeding;
 
-internal sealed class MailTemplateSeed : WeavlySeed
+public sealed class MailTemplateSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [

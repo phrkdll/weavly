@@ -5,7 +5,7 @@ using Weavly.Core.Shared.Seeding;
 
 namespace Weavly.Auth.Seeding;
 
-internal sealed class AuthSeed : WeavlySeed
+public sealed class AuthSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [

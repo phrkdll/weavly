@@ -1,4 +1,3 @@
-using Fluid;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
@@ -47,7 +46,7 @@ public sealed class SendMailHandler(
             return Result.Failure("Could not find mail template");
         }
 
-        var rendered = await templateService.RenderAsync(template.Text, new { BaseUrl = "", Token = "T" });
+        var rendered = await templateService.RenderAsync(template.Text, command.Model);
         if (rendered is not Success<string> body)
         {
             logger.LogWarning("Could not find mail template {Name} for {Module}", command.Name, command.Module);

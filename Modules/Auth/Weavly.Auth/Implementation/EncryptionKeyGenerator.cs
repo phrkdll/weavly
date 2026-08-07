@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 
 namespace Weavly.Auth.Implementation;
 
-internal static class EncryptionKeyGenerator
+public static class EncryptionKeyGenerator
 {
     public static string GenerateAesKey(int keySize)
     {

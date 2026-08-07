@@ -49,7 +49,7 @@ public sealed class ResultTests
         result.Message.ShouldBe(ex.Message);
     }
 
-    internal class SuccessFactoryTestData : TheoryData<string>
+    public class SuccessFactoryTestData : TheoryData<string>
     {
         public SuccessFactoryTestData()
         {
@@ -58,7 +58,7 @@ public sealed class ResultTests
         }
     }
 
-    internal class FailureFactoryTestData : TheoryData<string>
+    public class FailureFactoryTestData : TheoryData<string>
     {
         public FailureFactoryTestData()
         {
@@ -67,7 +67,7 @@ public sealed class ResultTests
         }
     }
 
-    internal class FailureFactoryExceptionTestData : TheoryData<Exception>
+    public class FailureFactoryExceptionTestData : TheoryData<Exception>
     {
         public FailureFactoryExceptionTestData()
         {
