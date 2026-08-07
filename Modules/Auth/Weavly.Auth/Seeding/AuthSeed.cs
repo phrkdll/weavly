@@ -5,12 +5,12 @@ using Weavly.Core.Shared.Seeding;
 
 namespace Weavly.Auth.Seeding;
 
-internal class AuthSeed : WeavlySeed
+internal sealed class AuthSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [
             new CreateAppUserCommand("system@weavly.local", "system", "System"),
             new CreateAppRoleCommand("Administrator"),
-            new CreateAppRoleCommand("User"),
+            new CreateAppRoleCommand("User")
         ];
 }

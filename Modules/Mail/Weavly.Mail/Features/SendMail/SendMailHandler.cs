@@ -1,3 +1,4 @@
+using Fluid;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
@@ -23,9 +24,23 @@ public sealed class SendMailHandler(IMailService mailService, ILogger<SendMailHa
         {
             return Result.Failure("Could not load configuration");
         }
-
+        
         var smtpOptions = SmtpOptions.FromConfigurationResponse(success.Data);
 
+        // TODO: Load and parse template
+        // TODO: Update SendMailCommand
+        // var parser = new FluidParser();
+        // if (parser.TryParse(EmbeddedResources.GetTemplate("Module.cs.template"), out var template))
+        // {
+        //     await using var writer = new StreamWriter(
+        //         Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"),
+        //         false
+        //     );
+        //
+        //     var context = new TemplateContext(module);
+        //     await template.RenderAsync(writer, context);
+        // }
+        
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("Weavly", smtpOptions.DefaultSender));
         message.To.Add(new MailboxAddress(command.To, command.To));

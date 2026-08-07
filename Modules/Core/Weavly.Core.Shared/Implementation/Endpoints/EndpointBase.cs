@@ -6,7 +6,7 @@ using Wolverine;
 
 namespace Weavly.Core.Shared.Implementation.Endpoints;
 
-public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeavlyEndpoint<TRequest>
+public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeavlyEndpoint
     where TRequest : IWeavlyCommand
     where TResponse : class
 {

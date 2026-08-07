@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using Org.BouncyCastle.Crypto.Agreement.Kdf;
 using Weavly.Auth.Implementation;
 using Weavly.Configuration.Shared.Features.CreateConfiguration;
 using Weavly.Core.Shared.Contracts;
@@ -7,7 +5,7 @@ using Weavly.Core.Shared.Seeding;
 
 namespace Weavly.Auth.Seeding;
 
-internal class ConfigSeed : WeavlySeed
+internal sealed class ConfigSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [
@@ -31,5 +29,4 @@ internal class ConfigSeed : WeavlySeed
             CreateConfigurationCommand.Create<AuthModule>("RequireDigit", true, ConfigCategory.PasswordRules),
             CreateConfigurationCommand.Create<AuthModule>("RequireNonAlphanumeric", true, ConfigCategory.PasswordRules),
         ];
-
 }
