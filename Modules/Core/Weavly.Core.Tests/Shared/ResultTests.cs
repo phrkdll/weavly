@@ -7,9 +7,9 @@ public sealed class ResultTests
 {
     [Theory]
     [ClassData(typeof(SuccessFactoryTestData))]
-    public void SuccessFactory_ShouldReturn_SuccessInstance(string data, string? message)
+    public void SuccessFactory_ShouldReturn_SuccessInstance(string data)
     {
-        var result = Result.Success(data, message);
+        var result = Result.Success(data);
 
         result.ShouldNotBeNull();
 
@@ -18,7 +18,7 @@ public sealed class ResultTests
         result.Data.ShouldNotBeNull();
         result.Data.ShouldBe(data);
 
-        result.Message.ShouldBe(message);
+        result.Message.ShouldBeNull();
     }
 
     [Theory]
@@ -49,12 +49,12 @@ public sealed class ResultTests
         result.Message.ShouldBe(ex.Message);
     }
 
-    internal class SuccessFactoryTestData : TheoryData<string, string>
+    internal class SuccessFactoryTestData : TheoryData<string>
     {
         public SuccessFactoryTestData()
         {
-            Add("Data", "Message");
-            Add("test.txt", "File found");
+            Add("Data");
+            Add("test.txt");
         }
     }
 

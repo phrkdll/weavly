@@ -1,3 +1,3 @@
 namespace Weavly.Core.Shared.Models;
 
-public abstract record EmptyResponse;
+public record EmptyResponse;
