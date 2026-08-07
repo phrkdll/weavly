@@ -9,8 +9,7 @@ public sealed record GeneralSettings(bool DisableEmailVerification, bool Disable
     {
         var disableEmailVerification =
             config.GetBool(nameof(DisableEmailVerification), ConfigCategory.General) ?? false;
-        var disableUserRegistration =
-            config.GetBool(nameof(DisableUserRegistration), ConfigCategory.General) ?? false;
+        var disableUserRegistration = config.GetBool(nameof(DisableUserRegistration), ConfigCategory.General) ?? false;
 
         return new GeneralSettings(disableEmailVerification, disableUserRegistration);
     }

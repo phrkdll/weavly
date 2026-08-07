@@ -11,16 +11,15 @@ public sealed class CreateAppRoleHandler(AuthRepository repo, ILogger<CreateAppR
 {
     public async Task<Result> HandleAsync(CreateAppRoleCommand command, CancellationToken ct = default)
     {
-        logger.LogDebug("Received {Command}", command);
-
         try
         {
             using var session = await repo.StartTransactionAsync(ct);
 
             var role = AppRole.Create(command.Name);
-            if (await IsRoleNameAvailable(role) is Failure f)
+            if (await IsRoleNameAvailable(role) is Failure failure)
             {
-                return f;
+                logger.LogInformation("Role {Name} already exists.", role.Name);
+                return failure;
             }
 
             await repo.Roles.InsertAsync(role, ct);
@@ -38,6 +37,6 @@ public sealed class CreateAppRoleHandler(AuthRepository repo, ILogger<CreateAppR
     {
         var roles = await repo.Roles.FilterAsync(x => x.Name == role.Name);
 
-        return !roles.Any() ? Result.Success() : Result.Failure("Role name is not available.");
+        return !roles.Any() ? Result.Success() : Result.Failure("Role already exists.");
     }
 }

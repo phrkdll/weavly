@@ -20,7 +20,8 @@ public static class WebApplicationExtensions
             var instances = moduleType
                 .GetType()
                 .Assembly.DefinedTypes.Where(x => typeof(IWeavlyEndpoint).IsAssignableFrom(x))
-                .Select(t => Activator.CreateInstance(t, bus) as IWeavlyEndpoint).ToArray();
+                .Select(t => Activator.CreateInstance(t, bus) as IWeavlyEndpoint)
+                .ToArray();
 
             foreach (var instance in instances)
             {

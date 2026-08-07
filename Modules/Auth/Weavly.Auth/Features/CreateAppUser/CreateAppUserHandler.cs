@@ -11,14 +11,13 @@ public sealed class CreateAppUserHandler(AuthRepository repo, ILogger<CreateAppU
 {
     public async Task<Result> HandleAsync(CreateAppUserCommand command, CancellationToken ct = default)
     {
-        logger.LogDebug("Received {Command}", command);
-
         try
         {
             using var session = await repo.StartTransactionAsync(ct);
 
             if (await IsEmailAddressAvailable(command) is Failure emailInUseFailure)
             {
+                logger.LogDebug("Email ({Email}) is already in use.", command.Email);
                 return emailInUseFailure;
             }
 

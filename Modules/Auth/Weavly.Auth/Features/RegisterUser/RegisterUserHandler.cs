@@ -59,7 +59,13 @@ public sealed class RegisterUserHandler(
 
             if (!settings.DisableEmailVerification)
             {
-                await bus.PublishAsync(VerificationMail(user));
+                var model = new
+                {
+                    BaseUrl = "http://localhost:5119",
+                    Token = user.Tokens.Single(x => x.Purpose == AppUserTokenPurpose.EmailValidation).Value,
+                };
+
+                await bus.PublishAsync(SendMailCommand.Create<AuthModule>("RegisterUser", model, user.Email));
             }
 
             await bus.PublishAsync(AppUserRegisteredEvent.Create(user.Id, user.Email));
@@ -77,19 +83,5 @@ public sealed class RegisterUserHandler(
         var users = await repo.Users.FilterAsync(x => x.Email == request.Email);
 
         return users.Any() ? Result.Failure("Email is already in use.") : Result.Success();
-    }
-
-    private static SendMailCommand VerificationMail(AppUser user)
-    {
-        var token = user.Tokens.Single(x => x.Purpose == AppUserTokenPurpose.EmailValidation).Value;
-
-        const string subject = "Weavly verification mail";
-        var body = $"""
-            <p>Hi!</p>
-            <p>Please verify your email address by clicking the link below:</p>
-            <p><a href='http://localhost:5000/user/verify?token={token}'>Verify</a></p>
-            """;
-
-        return new SendMailCommand(user.Email, subject, body);
     }
 }

@@ -11,6 +11,6 @@ internal sealed class AuthSeed : WeavlySeed
         [
             new CreateAppUserCommand("system@weavly.local", "system", "System"),
             new CreateAppRoleCommand("Administrator"),
-            new CreateAppRoleCommand("User")
+            new CreateAppRoleCommand("User"),
         ];
 }

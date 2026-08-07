@@ -17,5 +17,18 @@ internal sealed class MailTemplateSeed : WeavlySeed
                 <p><a href='{{BaseUrl}}/user/verify?token={{Token}}'>Verify</a></p>
                 """
             ),
+            CreateMailTemplateCommand.Create<AuthModule>(
+                "VerifyUser",
+                "Weavly verification successful",
+                """
+                <p>Hi!</p>
+                <p>Your email address has been verified.</p>
+                <p>You can login directly by following this link:
+                    <a href='{{BaseUrl}}/user/login?token={{Token}}'>Login</a>
+                </p>
+                <p>You can also login via email and password later.</p>
+                <p>Have a great time!</p>
+                """
+            ),
         ];
 }

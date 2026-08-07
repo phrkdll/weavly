@@ -9,9 +9,7 @@ namespace Weavly.Core.Shared.Implementation;
 
 public abstract class WeavlyModule : IWeavlyModule
 {
-    public virtual void Configure(IHostApplicationBuilder builder)
-    {
-    }
+    public virtual void Configure(IHostApplicationBuilder builder) { }
 
     public virtual void Use(WebApplication app)
     {
@@ -26,12 +24,9 @@ public abstract class WeavlyModule : IWeavlyModule
 
     public virtual async Task InitializeAsync(IMessageBus bus)
     {
-        var instances = this.GetType()
-            .Assembly.DefinedTypes.Where(x => typeof(IWeavlySeed).IsAssignableFrom(x));
+        var instances = this.GetType().Assembly.DefinedTypes.Where(x => typeof(IWeavlySeed).IsAssignableFrom(x));
 
-        foreach (var instance in instances
-                     .Select(t => Activator.CreateInstance(t, true) as IWeavlySeed)
-                     .ToArray())
+        foreach (var instance in instances.Select(t => Activator.CreateInstance(t, true) as IWeavlySeed).ToArray())
         {
             if (instance is not null)
             {

@@ -18,15 +18,13 @@ public sealed class CreateConfigurationHandler(ConfigurationRepository repo, ILo
 
             using var session = await repo.StartTransactionAsync(ct);
 
-            logger.LogDebug("Received {Command}", command);
-
             if (await IsModuleConfigurationNameAvailable(command) is Failure notAvailableFailure)
             {
-                logger.LogDebug("Configuration entry {Name} for {Module} already exists", command.Name, command.Module);
+                logger.LogDebug("Configuration entry {Module} -> {Name} already exists", command.Module, command.Name);
                 return notAvailableFailure;
             }
 
-            logger.LogDebug("Configuration entry {Name} for {Module} created", command.Name, command.Module);
+            logger.LogDebug("Configuration entry {Module} -> {Name} created", command.Module, command.Name);
             var configuration = command.Adapt<AppConfiguration>();
             await repo.Configurations.InsertAsync(configuration, ct);
 

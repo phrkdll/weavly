@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <ProjectReference Include="..\..\Configuration\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj" />
-        <ProjectReference Include="..\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
-        <ProjectReference Include="..\..\Mail\Weavly.Mail.Shared\Weavly.Mail.Shared.csproj" />
-        <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="GoogleAuthenticator" />
-    </ItemGroup>
-<!--    <ItemGroup>-->
-<!--        <InternalsVisibleTo Include="Weavly.Auth.Tests" />-->
-<!--    </ItemGroup>-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Configuration\Weavly.Configuration.Shared\Weavly.Configuration.Shared.csproj" />
+    <ProjectReference Include="..\Weavly.Auth.Shared\Weavly.Auth.Shared.csproj" />
+    <ProjectReference Include="..\..\Mail\Weavly.Mail.Shared\Weavly.Mail.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Weavly.Core\Weavly.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GoogleAuthenticator" />
+  </ItemGroup>
+  <!--    <ItemGroup>-->
+  <!--        <InternalsVisibleTo Include="Weavly.Auth.Tests" />-->
+  <!--    </ItemGroup>-->
 </Project>
