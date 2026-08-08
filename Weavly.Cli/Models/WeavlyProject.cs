@@ -19,13 +19,7 @@ public sealed class WeavlyProject
 
     public string File { get; }
 
-    public static WeavlyProject New(string name, string fullName, string? suffix = null)
-    {
-        return new WeavlyProject(name, fullName, suffix);
-    }
+    public static WeavlyProject New(string name, string fullName, string? suffix = null) => new(name, fullName, suffix);
 
-    public override string ToString()
-    {
-        return Folder;
-    }
+    public override string ToString() => Folder;
 }

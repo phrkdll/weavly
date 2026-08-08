@@ -22,8 +22,5 @@ public sealed class WeavlyModule
 
     public WeavlyProject Tests => WeavlyProject.New(Name, FullName, nameof(Tests));
 
-    public static WeavlyModule New(string name, string solution)
-    {
-        return new WeavlyModule(name, solution);
-    }
+    public static WeavlyModule New(string name, string solution) => new(name, solution);
 }

@@ -1,7 +1,7 @@
-using {{Name}}.Persistence;
+using {{FullName}}.Persistence;
 using Weavly.Core.Tests.Shared;
 
-namespace {{Name}}.Tests;
+namespace {{FullName}}.Tests;
 
 public abstract class {{Name}}HandlerTests : WeavlyHandlerTests
 {

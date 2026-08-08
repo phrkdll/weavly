@@ -9,18 +9,9 @@ using Weavly.Cli.Utils;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Initializes a new custom module project for the current solution")]
-public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
+public class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
 {
     private readonly WeavlyModule coreModule = WeavlyModule.New("Core", "Weavly");
-
-    private readonly IEnumerable<string> nunitPackages =
-    [
-        "coverlet.collector",
-        "Microsoft.NET.Test.Sdk",
-        "NUnit",
-        "NUnit.Analyzers",
-        "NUnit3TestAdapter",
-    ];
 
     private readonly IEnumerable<string> xunitPackages =
     [
@@ -64,24 +55,9 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
             .RunAsync(Dotnet.AddReference(module.Main, module.Shared.Folder), ct);
         await Runner.RunAsync(Dotnet.AddReference(module.Tests, module.Main.Folder, module.Shared.Folder), ct);
 
-        switch (settings.TestingFramework.ToLowerInvariant().Trim())
+        foreach (var pkg in this.xunitPackages)
         {
-            case "xunit":
-                foreach (var pkg in this.xunitPackages)
-                {
-                    await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
-                }
-
-                break;
-            case "nunit":
-                foreach (var pkg in this.nunitPackages)
-                {
-                    await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
-                }
-
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported testing framework: {settings.TestingFramework}");
+            await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
         }
 
         if (solutionName == this.coreModule.Solution)
@@ -134,15 +110,11 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         }
     }
 
+    [Serializable]
     public class Settings : CommandSettings
     {
         [CommandOption("-n|--name <name>")]
         [Description("Module name")]
-        public string? ModuleName { get; set; }
-
-        [CommandOption("-t|--testing-framework <name>")]
-        [Description("Testing framework (as listed in 'dotnet new list')")]
-        [DefaultValue("xunit")]
-        public string TestingFramework { get; set; } = "xunit";
+        public string? ModuleName { get; init; }
     }
 }

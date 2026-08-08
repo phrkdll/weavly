@@ -87,10 +87,11 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         await File.WriteAllTextAsync(programFilePath, file, ct);
     }
 
+    [Serializable]
     public class Settings : CommandSettings
     {
         [CommandOption("-p|--project <name>")]
         [Description("Project name")]
-        public string? ProjectName { get; set; }
+        public string? ProjectName { get; init; }
     }
 }

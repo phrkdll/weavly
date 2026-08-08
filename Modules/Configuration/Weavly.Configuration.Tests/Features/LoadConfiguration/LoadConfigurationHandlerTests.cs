@@ -56,7 +56,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             )
             .Wait();
 
-        this.sut = new LoadConfigurationHandler(this.Repository, Substitute.For<ILogger<LoadConfigurationHandler>>());
+        this.sut = new LoadConfigurationHandler(this.Repository);
     }
 
     [Fact]

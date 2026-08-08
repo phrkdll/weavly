@@ -1,6 +1,6 @@
 using Weavly.Core.Shared.Persistence;
 
-namespace {{Name}}.Persistence;
+namespace {{FullName}}.Persistence;
 
 public sealed class {{Name}}Repository(IWeavlyRepository<{{Name}}Module> repository)
     : ModuleRepository<{{Name}}Module>(repository)

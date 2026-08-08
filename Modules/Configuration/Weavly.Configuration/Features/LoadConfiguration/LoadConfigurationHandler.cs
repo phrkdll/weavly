@@ -7,8 +7,7 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Features.LoadConfiguration;
 
-public sealed class LoadConfigurationHandler(ConfigurationRepository repo, ILogger<LoadConfigurationHandler> logger)
-    : IWeavlyHandler<LoadConfigurationCommand>
+public sealed class LoadConfigurationHandler(ConfigurationRepository repo) : IWeavlyHandler<LoadConfigurationCommand>
 {
     public async Task<Result> HandleAsync(LoadConfigurationCommand command, CancellationToken ct = default)
     {
