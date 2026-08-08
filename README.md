@@ -39,6 +39,8 @@ Whether you’re building **microservices** or a **modular monolith** – Weavly
 ## 🛠️ Getting Started
 
 ```shell
+dotnet nuget add source --name weavly https://codeberg.org/api/packages/phreakadelle/nuget/index.json
+
 dotnet tool install -g weavly.cli
 wv init
 ```
