@@ -100,21 +100,33 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         File.Delete(Path.Combine(module.Shared.Folder, defaultClassFile));
         File.Delete(Path.Combine(module.Tests.Folder, defaultClassFile));
 
+        await RenderTemplateToFileAsync("Module", module, module.Main);
+        await RenderTemplateToFileAsync("Repository", module, module.Main, "Persistence");
+        await RenderTemplateToFileAsync("HandlerTests", module, module.Tests);
+
+        await Runner
+            .WithMessage("Adding projects to solution...\n")
+            .RunAsync(Dotnet.AddToSolution(module.Main, module.Shared, module.Tests), ct);
+    }
+
+    private static async Task RenderTemplateToFileAsync(
+        string templateName,
+        WeavlyModule module,
+        WeavlyProject project,
+        string subPath = ""
+    )
+    {
         var parser = new FluidParser();
-        if (parser.TryParse(EmbeddedResources.GetTemplate("Module.cs.template"), out var template))
+        if (parser.TryParse(EmbeddedResources.GetTemplate(templateName + ".cs.template"), out var template))
         {
             await using var writer = new StreamWriter(
-                Path.Combine(module.Main.Folder, $"{module.Name}Module.cs"),
+                Path.Combine(project.Folder, subPath, $"{module.Name}{templateName}.cs"),
                 false
             );
 
             var context = new TemplateContext(module);
             await template.RenderAsync(writer, context);
         }
-
-        await Runner
-            .WithMessage("Adding projects to solution...\n")
-            .RunAsync(Dotnet.AddToSolution(module.Main, module.Shared, module.Tests), ct);
     }
 
     public class Settings : CommandSettings

@@ -1,0 +1,16 @@
+using {{Name}}.Persistence;
+using Weavly.Core.Tests.Shared;
+
+namespace {{Name}}.Tests;
+
+public abstract class {{Name}}HandlerTests : WeavlyHandlerTests
+{
+    protected readonly {{Name}}Repository Repository;
+
+    protected {{Name}}HandlerTests()
+    {
+        this.Repository = new {{Name}}Repository(
+            new WeavlyRepositoryMock<{{Name}}Module>(this.TimeProviderMock)
+        );
+    }
+}

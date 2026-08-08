@@ -12,17 +12,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="!$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.EndsWith('.Api'))">
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Tests'))">
-    <None Include="$(SolutionDir)LICENSE.md" Pack="true" PackagePath="">
-      <Visible>false</Visible>
-    </None>
-    <None Include="$(SolutionDir)README.md" Pack="true" PackagePath="">
-      <Visible>false</Visible>
-    </None>
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
   <ItemGroup Condition="!$(AssemblyName.EndsWith('.Cli')) AND !$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.StartsWith('Weavly.Api'))">

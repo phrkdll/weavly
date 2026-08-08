@@ -1,0 +1,12 @@
+using Weavly.Core.Shared.Persistence;
+
+namespace {{Name}}.Persistence;
+
+public sealed class {{Name}}Repository(IWeavlyRepository<{{Name}}Module> repository)
+    : ModuleRepository<{{Name}}Module>(repository)
+{
+    // Add your modules data collections for persistence here
+    // Example:
+    // public IWeavlyCollection<Document, DocumentId> Documents =>
+    //    this.Repository.GetCollectionFor<Document, DocumentId>();
+}
