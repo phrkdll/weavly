@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using System.Diagnostics.CodeAnalysis;
-using {{Name}}.Persistence;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Weavly.Core.Shared.Implementation;
+using Wolverine;
+using {{FullName}}.Persistence;
 
-namespace {{Solution}}.{{Name}};
+namespace {{FullName}};
 
 [ExcludeFromCodeCoverage]
 public class {{Name}}Module : WeavlyModule
 {
-    public override void Configure(WebApplicationBuilder builder)
+    public override void Configure(IHostApplicationBuilder builder)
     {
         // Custom configuration can be added here
         // Example:
@@ -24,12 +28,12 @@ public class {{Name}}Module : WeavlyModule
         base.Use(app);
     }
 
-    public override Task InitializeAsync()
+    public override Task InitializeAsync(IMessageBus bus)
     {
         // Custom initialization logic can be added here
         // Example:
         // - Data seeding (in module or via command in other modules like Configuration)
 
-        return base.InitializeAsync();
+        return base.InitializeAsync(bus);
     }
 }

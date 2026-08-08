@@ -4,14 +4,14 @@ using Spectre.Console.Cli;
 using Weavly.Cli.Models.ProcessRunner;
 using Weavly.Cli.Utils;
 
-namespace Weavly.Cli.Commands.Init;
+namespace Weavly.Cli.Commands.Core;
 
 [Description("Initialize a new Weavly solution")]
-public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
+public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
 {
     private const string DefaultSolutionName = ".";
 
-    public override async Task HandleAsync(
+    protected override async Task HandleAsync(
         CommandContext commandContext,
         Settings settings,
         CancellationToken ct = default
@@ -118,18 +118,19 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
         await File.WriteAllTextAsync(programFilePath, file, ct);
     }
 
-    public class Settings : CommandSettings
+    [Serializable]
+    public sealed class Settings : CommandSettings
     {
         [CommandArgument(0, "[name]")]
         [Description("Solution name")]
-        public string? SolutionName { get; set; }
+        public string? SolutionName { get; init; }
 
         [CommandOption("-x|--slnx")]
         [Description("Use new solution (.slnx) format")]
-        public bool NewSolutionFormat { get; set; }
+        public bool NewSolutionFormat { get; init; }
 
         [CommandOption("-p|--project <name>")]
-        [Description("Project name (for the initial project)")]
-        public string? ProjectName { get; set; }
+        [Description("Project name (for the initial API project)")]
+        public string? ProjectName { get; init; }
     }
 }

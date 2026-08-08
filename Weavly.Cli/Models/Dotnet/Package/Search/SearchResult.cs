@@ -1,8 +1,9 @@
 namespace Weavly.Cli.Models.Dotnet.Package.Search;
 
+[Serializable]
 public class SearchResult
 {
-    public string SourceName { get; set; } = string.Empty;
+    public string SourceName { get; init; } = string.Empty;
 
-    public IEnumerable<SearchPackage> Packages { get; } = [];
+    public IEnumerable<SearchPackage> Packages { get; init; } = [];
 }
