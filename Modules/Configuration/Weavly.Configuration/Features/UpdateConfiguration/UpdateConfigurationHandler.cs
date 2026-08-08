@@ -1,5 +1,6 @@
 using Mapster;
 using Microsoft.Extensions.Logging;
+using Weavly.Configuration.Models;
 using Weavly.Configuration.Persistence;
 using Weavly.Configuration.Shared.Events;
 using Weavly.Configuration.Shared.Features.UpdateConfiguration;
@@ -33,20 +34,7 @@ public sealed class UpdateConfigurationHandler(
             return Result.Failure("Configuration not found");
         }
 
-        var hasValueTypeMismatch = configuration.ValueType switch
-        {
-            ConfigurationValueType.String
-                when command is { StringValue: not null, BoolValue: null, DoubleValue: null, IntValue: null } => false,
-            ConfigurationValueType.Bool
-                when command is { StringValue: null, BoolValue: not null, DoubleValue: null, IntValue: null } => false,
-            ConfigurationValueType.Int
-                when command is { StringValue: null, BoolValue: null, DoubleValue: null, IntValue: not null } => false,
-            ConfigurationValueType.Double
-                when command is { StringValue: null, BoolValue: null, DoubleValue: not null, IntValue: null } => false,
-            _ => true,
-        };
-
-        if (hasValueTypeMismatch)
+        if (HasValueTypeMismatch(command, configuration))
         {
             logger.LogError(
                 "Configuration value type ({OriginalType}) may not be changed. {Command}",
@@ -72,5 +60,21 @@ public sealed class UpdateConfigurationHandler(
         await bus.PublishAsync(updatedConfiguration.Adapt<ConfigurationChangedEvent>());
 
         return Result.Success();
+    }
+
+    private static bool HasValueTypeMismatch(UpdateConfigurationCommand command, AppConfiguration configuration)
+    {
+        return configuration.ValueType switch
+        {
+            ConfigurationValueType.String
+                when command is { StringValue: not null, BoolValue: null, DoubleValue: null, IntValue: null } => false,
+            ConfigurationValueType.Bool
+                when command is { StringValue: null, BoolValue: not null, DoubleValue: null, IntValue: null } => false,
+            ConfigurationValueType.Int
+                when command is { StringValue: null, BoolValue: null, DoubleValue: null, IntValue: not null } => false,
+            ConfigurationValueType.Double
+                when command is { StringValue: null, BoolValue: null, DoubleValue: not null, IntValue: null } => false,
+            _ => true,
+        };
     }
 }
