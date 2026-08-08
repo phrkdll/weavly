@@ -9,7 +9,7 @@ namespace Weavly.Cli.Commands.Module;
 [Description("Adds an existing Weavly module to the solution")]
 public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
 {
-    public override async Task HandleAsync(
+    protected override async Task HandleAsync(
         CommandContext commandContext,
         Settings settings,
         CancellationToken ct = default

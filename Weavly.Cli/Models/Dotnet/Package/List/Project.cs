@@ -1,8 +1,9 @@
 namespace Weavly.Cli.Models.Dotnet.Package.List;
 
+[Serializable]
 public sealed class Project
 {
-    public string Path { get; set; } = string.Empty;
+    public string Path { get; init; } = string.Empty;
 
-    public IEnumerable<Framework> Frameworks { get; } = [];
+    public IEnumerable<Framework> Frameworks { get; init; } = [];
 }

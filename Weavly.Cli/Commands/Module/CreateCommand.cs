@@ -30,7 +30,7 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         "xunit.runner.visualstudio",
     ];
 
-    public override async Task HandleAsync(
+    protected override async Task HandleAsync(
         CommandContext commandContext,
         Settings settings,
         CancellationToken ct = default
@@ -119,6 +119,11 @@ public class CreateCommand : InterruptibleAsyncCommand<CreateCommand.Settings>
         var parser = new FluidParser();
         if (parser.TryParse(EmbeddedResources.GetTemplate(templateName + ".cs.template"), out var template))
         {
+            if (!Directory.Exists(Path.Combine(project.Folder, subPath)))
+            {
+                Directory.CreateDirectory(Path.Combine(project.Folder, subPath));
+            }
+
             await using var writer = new StreamWriter(
                 Path.Combine(project.Folder, subPath, $"{module.Name}{templateName}.cs"),
                 false

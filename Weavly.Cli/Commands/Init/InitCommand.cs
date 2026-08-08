@@ -11,7 +11,7 @@ public class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings>
 {
     private const string DefaultSolutionName = ".";
 
-    public override async Task HandleAsync(
+    protected override async Task HandleAsync(
         CommandContext commandContext,
         Settings settings,
         CancellationToken ct = default

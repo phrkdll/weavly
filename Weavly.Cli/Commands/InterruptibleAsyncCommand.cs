@@ -11,7 +11,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 {
     protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
-    public ProcessRunner Runner => ProcessRunner.Instance();
+    protected ProcessRunner Runner => ProcessRunner.Instance();
 
     public override async Task<int> ExecuteAsync(CommandContext context, T settings, CancellationToken ct)
     {
@@ -36,7 +36,7 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
         }
     }
 
-    public abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct = default);
+    protected abstract Task HandleAsync(CommandContext commandContext, T settings, CancellationToken ct = default);
 
     protected async Task<IEnumerable<string>> SearchWeavlyPackagesAsync(
         string workingDir,

@@ -1,12 +1,9 @@
 namespace Weavly.Cli.Models.Dotnet.Package.Search;
 
+[Serializable]
 public class SearchPackage
 {
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; init; } = string.Empty;
 
-    public string LatestVersion { get; set; } = string.Empty;
-
-    public int TotalDownloads { get; set; }
-
-    public string Owners { get; set; } = string.Empty;
+    public string LatestVersion { get; init; } = string.Empty;
 }
