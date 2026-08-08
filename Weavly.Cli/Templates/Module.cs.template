@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using System.Diagnostics.CodeAnalysis;
+using {{Name}}.Persistence;
 
 namespace {{Solution}}.{{Name}};
 
@@ -11,6 +12,7 @@ public class {{Name}}Module : WeavlyModule
         // Custom configuration can be added here
         // Example:
         // - Service registration for dependency injection
+        builder.Services.AddScoped<{{Name}}Repository>();
 
         base.Configure(builder);
     }
