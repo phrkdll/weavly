@@ -61,7 +61,6 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
         List<string> selectedModules =
         [
             "Weavly.Core",
-            "Weavly.Core.Tests.Shared",
             .. await new MultiSelectionPrompt<string>()
                 .Title("Which [teal]modules[/] do you want to use?")
                 .Required()
