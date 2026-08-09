@@ -11,7 +11,7 @@ public sealed class TemplateService : ITemplateService
     {
         try
         {
-            if (!this.parser.TryParse(template, out var fluidTemplate, out var error))
+            if (!parser.TryParse(template, out var fluidTemplate, out var error))
             {
                 return Result.Failure(error);
             }

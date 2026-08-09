@@ -61,7 +61,6 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
         List<string> selectedModules =
         [
             "Weavly.Core",
-            "Weavly.Core.Tests.Shared",
             .. await new MultiSelectionPrompt<string>()
                 .Title("Which [teal]modules[/] do you want to use?")
                 .Required()
@@ -70,6 +69,8 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
                 .AddChoices(await SearchWeavlyPackagesAsync(workingDir, ct: ct))
                 .ShowAsync(AnsiConsole.Console, ct),
         ];
+
+        List<string> additionalModules = ["Weavly.Core.Tests.Shared"];
 
         await Runner
             .InDirectory(workingDir)
@@ -85,7 +86,18 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
                 .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
         }
 
+        foreach (var module in additionalModules)
+        {
+            await Runner
+                .InDirectory(workingDir)
+                .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
+        }
+
         await UpdateProgramBootstrapperAsync(workingDir, projectName, selectedModules, ct);
+
+        await Runner
+            .WithMessage("Installing tool [teal]CSharpier[/]...\n")
+            .RunAsync(Dotnet.InstallTool("csharpier"), ct);
 
         if (solutionNameInput != DefaultSolutionName)
         {

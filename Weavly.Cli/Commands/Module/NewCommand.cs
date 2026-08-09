@@ -55,20 +55,22 @@ public class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
             .RunAsync(Dotnet.AddReference(module.Main, module.Shared.Folder), ct);
         await Runner.RunAsync(Dotnet.AddReference(module.Tests, module.Main.Folder, module.Shared.Folder), ct);
 
-        foreach (var pkg in this.xunitPackages)
+        foreach (var pkg in xunitPackages)
         {
             await Runner.RunAsync(Dotnet.AddPackage(module.Tests, pkg), ct);
         }
 
-        if (solutionName == this.coreModule.Solution)
+        if (solutionName == coreModule.Solution)
         {
-            await Runner.RunAsync(Dotnet.AddReference(module.Main, this.coreModule.Main.Folder), ct);
-            await Runner.RunAsync(Dotnet.AddReference(module.Shared, this.coreModule.Shared.Folder), ct);
+            await Runner.RunAsync(Dotnet.AddReference(module.Main, coreModule.Main.Folder), ct);
+            await Runner.RunAsync(Dotnet.AddReference(module.Shared, coreModule.Shared.Folder), ct);
+            await Runner.RunAsync(Dotnet.AddReference(module.Shared, coreModule.Tests.Folder + ".Shared"), ct);
         }
         else
         {
-            await Runner.RunAsync(Dotnet.AddPackage(module.Main, this.coreModule.Main.FullName), ct);
-            await Runner.RunAsync(Dotnet.AddPackage(module.Shared, this.coreModule.Shared.FullName), ct);
+            await Runner.RunAsync(Dotnet.AddPackage(module.Main, coreModule.Main.FullName), ct);
+            await Runner.RunAsync(Dotnet.AddPackage(module.Shared, coreModule.Shared.FullName), ct);
+            await Runner.RunAsync(Dotnet.AddPackage(module.Shared, coreModule.Tests.FullName + ".Shared"), ct);
         }
 
         const string defaultClassFile = "Class1.cs";

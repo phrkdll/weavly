@@ -13,7 +13,7 @@ public sealed class AppUserContext(IHttpContextAccessor contextAccessor) : IUser
 
     private bool TryGetUserId(out string id)
     {
-        id = this.claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        id = claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
         return id != string.Empty;
     }

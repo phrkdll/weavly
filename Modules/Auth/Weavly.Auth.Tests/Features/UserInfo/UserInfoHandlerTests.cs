@@ -17,18 +17,18 @@ public sealed class UserInfoHandlerTests : AuthHandlerTests
 
     public UserInfoHandlerTests()
     {
-        this.sut = new UserInfoHandler(this.Repository, this.userContextMock);
+        sut = new UserInfoHandler(Repository, userContextMock);
     }
 
     [Fact]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_ForExistingUser()
     {
         var user = AppUser.Create("admin@test.local", []);
-        await this.Repository.Users.InsertAsync(user);
+        await Repository.Users.InsertAsync(user);
 
-        this.userContextMock.UserId.Returns(user.Id);
+        userContextMock.UserId.Returns(user.Id);
 
-        var result = await this.sut.HandleAsync(new UserInfoCommand(), CancellationToken.None);
+        var result = await sut.HandleAsync(new UserInfoCommand(), CancellationToken.None);
 
         var data = result.ShouldBeOfType<Success<UserInfoResponse>>().Data.ShouldBeOfType<UserInfoResponse>();
         data.Email.ShouldBe(user.Email);
@@ -38,9 +38,9 @@ public sealed class UserInfoHandlerTests : AuthHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_ForNonExistingUser()
     {
-        this.userContextMock.UserId.Returns(new AppUserId());
+        userContextMock.UserId.Returns(new AppUserId());
 
-        var result = await this.sut.HandleAsync(new UserInfoCommand(), CancellationToken.None);
+        var result = await sut.HandleAsync(new UserInfoCommand(), CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }
@@ -48,10 +48,10 @@ public sealed class UserInfoHandlerTests : AuthHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
     {
-        this.TimeProviderMock.UtcNow.Throws(new InvalidOperationException());
+        TimeProviderMock.UtcNow.Throws(new InvalidOperationException());
 
         var command = new UserInfoCommand();
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }

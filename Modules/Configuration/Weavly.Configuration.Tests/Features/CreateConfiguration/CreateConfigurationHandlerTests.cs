@@ -14,10 +14,10 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
 
     public CreateConfigurationHandlerTests()
     {
-        this.TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
+        TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
 
-        this.sut = new CreateConfigurationHandler(
-            this.Repository,
+        sut = new CreateConfigurationHandler(
+            Repository,
             Substitute.For<ILogger<CreateConfigurationHandler>>()
         );
     }
@@ -37,7 +37,7 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
             value,
             "TestCategory"
         );
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Success<CreateConfigurationResponse>>();
     }
@@ -45,9 +45,9 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_ForDuplicateConfigurations()
     {
-        await this.sut.HandleAsync(TestCommand, CancellationToken.None);
+        await sut.HandleAsync(TestCommand, CancellationToken.None);
 
-        var result = await this.sut.HandleAsync(TestCommand, CancellationToken.None);
+        var result = await sut.HandleAsync(TestCommand, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }
@@ -55,7 +55,7 @@ public sealed class CreateConfigurationHandlerTests : ConfigurationHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_ForNullRequest()
     {
-        var result = await this.sut.HandleAsync(null!, CancellationToken.None);
+        var result = await sut.HandleAsync(null!, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }

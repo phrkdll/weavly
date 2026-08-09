@@ -28,7 +28,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
                 return;
             }
 
-            var options = JwtOptions.FromConfigurationResponse(await this.bus.LoadConfigurationAsync<AuthModule>());
+            var options = JwtOptions.FromConfigurationResponse(await bus.LoadConfigurationAsync<AuthModule>());
 
             // Set the parameters from the provider
             parameters.ValidIssuer = options.Issuer;

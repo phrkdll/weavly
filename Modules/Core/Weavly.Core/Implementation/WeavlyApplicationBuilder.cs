@@ -11,14 +11,14 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
 {
     private readonly HashSet<IWeavlyModule> modules = [];
 
-    public IEnumerable<IWeavlyModule> Modules => this.modules;
+    public IEnumerable<IWeavlyModule> Modules => modules;
 
     public IWeavlyApplicationBuilder AddModule<T>()
         where T : IWeavlyModule
     {
         if (Activator.CreateInstance<T>() is IWeavlyModule module)
         {
-            this.modules.Add(module);
+            modules.Add(module);
         }
 
         return this;
@@ -31,7 +31,7 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
             module.Configure(builder);
         }
 
-        var assemblies = this.modules.Select(module => module.GetType().Assembly).ToArray();
+        var assemblies = modules.Select(module => module.GetType().Assembly).ToArray();
 
         builder.UseWolverine(x =>
         {

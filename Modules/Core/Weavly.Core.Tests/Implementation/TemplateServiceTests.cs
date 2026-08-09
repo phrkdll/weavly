@@ -13,7 +13,7 @@ public sealed class TemplateServiceTests
     {
         const string template = "This is {{Word}}!";
 
-        var result = await this.sut.RenderAsync(template, new { Word = "Cheesecake" });
+        var result = await sut.RenderAsync(template, new { Word = "Cheesecake" });
 
         result.ShouldBeOfType<Success<string>>().Data.ShouldBe("This is Cheesecake!");
     }
@@ -23,7 +23,7 @@ public sealed class TemplateServiceTests
     {
         const string template = "This is {{Word}!";
 
-        var result = await this.sut.RenderAsync(template, new { Word = "Cheesecake" });
+        var result = await sut.RenderAsync(template, new { Word = "Cheesecake" });
 
         result.ShouldBeOfType<Failure>();
     }

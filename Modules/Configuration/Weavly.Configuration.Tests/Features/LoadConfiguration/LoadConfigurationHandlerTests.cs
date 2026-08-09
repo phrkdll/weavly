@@ -15,7 +15,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
 
     public LoadConfigurationHandlerTests()
     {
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -25,7 +25,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -35,7 +35,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -45,7 +45,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -56,13 +56,13 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
             )
             .Wait();
 
-        this.sut = new LoadConfigurationHandler(this.Repository);
+        sut = new LoadConfigurationHandler(Repository);
     }
 
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_ForNullRequest()
     {
-        var result = await this.sut.HandleAsync(null!, CancellationToken.None);
+        var result = await sut.HandleAsync(null!, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>().Message.ShouldBe("Value cannot be null. (Parameter 'command')");
     }
@@ -72,7 +72,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
     {
         var command = LoadConfigurationCommand.Create<LoadConfigurationHandlerTests>();
 
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>().Message.ShouldBe("Could not find configuration");
     }
@@ -82,7 +82,7 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
     {
         var command = LoadConfigurationCommand.Create("ExistingModule");
 
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         var data = result
             .ShouldBeOfType<Success<LoadConfigurationResponse>>()

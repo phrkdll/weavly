@@ -12,7 +12,7 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
 
     public ListConfigurationModulesHandlerTests()
     {
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
@@ -22,7 +22,7 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
@@ -32,7 +32,7 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",
@@ -42,7 +42,7 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        this.Repository.Configurations.InsertAsync(
+        Repository.Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",
@@ -53,13 +53,13 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
             )
             .Wait();
 
-        this.sut = new ListConfigurationModulesHandler(this.Repository);
+        sut = new ListConfigurationModulesHandler(Repository);
     }
 
     [Fact]
     public async Task Handler_ShouldReturn_ModuleNames_AsDistinctList()
     {
-        var result = await this.sut.HandleAsync(new ListConfigurationModulesCommand());
+        var result = await sut.HandleAsync(new ListConfigurationModulesCommand());
 
         var data = result.ShouldBeOfType<Success<ListConfigurationModulesResponse>>().Data;
         data.Modules.ShouldNotBeEmpty();

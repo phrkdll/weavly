@@ -8,5 +8,5 @@ public sealed class {{Name}}Repository(IWeavlyRepository<{{Name}}Module> reposit
     // Add your modules data collections for persistence here
     // Example:
     // public IWeavlyCollection<Document, DocumentId> Documents =>
-    //    this.Repository.GetCollectionFor<Document, DocumentId>();
+    //    Repository.GetCollectionFor<Document, DocumentId>();
 }

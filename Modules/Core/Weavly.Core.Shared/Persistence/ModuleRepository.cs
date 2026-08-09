@@ -15,7 +15,7 @@ public abstract class ModuleRepository<TModule>(IWeavlyRepository<TModule> repos
     /// <returns></returns>
     public Task<IClientSessionHandle> StartSessionAsync(CancellationToken ct = default)
     {
-        return this.Repository.StartSessionAsync(ct);
+        return Repository.StartSessionAsync(ct);
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ public abstract class ModuleRepository<TModule>(IWeavlyRepository<TModule> repos
     /// <returns></returns>
     public async Task<IClientSessionHandle> StartTransactionAsync(CancellationToken ct = default)
     {
-        var session = await this.Repository.StartSessionAsync(ct);
+        var session = await Repository.StartSessionAsync(ct);
         session.StartTransaction();
 
         return session;
