@@ -24,7 +24,7 @@ public abstract class WeavlyModule : IWeavlyModule
 
     public virtual async Task InitializeAsync(IMessageBus bus)
     {
-        var instances = this.GetType().Assembly.DefinedTypes.Where(x => typeof(IWeavlySeed).IsAssignableFrom(x));
+        var instances = GetType().Assembly.DefinedTypes.Where(x => typeof(IWeavlySeed).IsAssignableFrom(x));
 
         foreach (var instance in instances.Select(t => Activator.CreateInstance(t, true) as IWeavlySeed).ToArray())
         {

@@ -16,26 +16,26 @@ public abstract class AuthEndpointTests<TEndpoint, TRequest, TResponse>(TRequest
     [Fact]
     public async Task HandleAsync_CallsInvokeAsync_OnMessageBus_AndReturnsOkOnSuccess()
     {
-        this.MessageBusMock.InvokeAsync<Result>(Arg.Any<TRequest>()).Returns(Result.Success());
+        MessageBusMock.InvokeAsync<Result>(Arg.Any<TRequest>()).Returns(Result.Success());
 
-        var sut = Activator.CreateInstance(typeof(TEndpoint), this.MessageBusMock) as TEndpoint;
+        var sut = Activator.CreateInstance(typeof(TEndpoint), MessageBusMock) as TEndpoint;
 
         var response = await sut!.HandleAsync(request, CancellationToken.None);
         response.ShouldBeOfType<Ok<Result>>();
 
-        await this.MessageBusMock.Received().InvokeAsync<Result>(Arg.Any<TRequest>(), Arg.Any<CancellationToken>());
+        await MessageBusMock.Received().InvokeAsync<Result>(Arg.Any<TRequest>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
     public async Task HandleAsync_CallsInvokeAsync_OnMessageBus_AndReturnsBadRequestOnError()
     {
-        this.MessageBusMock.InvokeAsync<Result>(Arg.Any<TRequest>()).Returns(Result.Failure("Error"));
+        MessageBusMock.InvokeAsync<Result>(Arg.Any<TRequest>()).Returns(Result.Failure("Error"));
 
-        var sut = Activator.CreateInstance(typeof(TEndpoint), this.MessageBusMock) as TEndpoint;
+        var sut = Activator.CreateInstance(typeof(TEndpoint), MessageBusMock) as TEndpoint;
 
         var response = await sut!.HandleAsync(request, CancellationToken.None);
         response.ShouldBeOfType<BadRequest<Result>>();
 
-        await this.MessageBusMock.Received().InvokeAsync<Result>(Arg.Any<TRequest>(), Arg.Any<CancellationToken>());
+        await MessageBusMock.Received().InvokeAsync<Result>(Arg.Any<TRequest>(), Arg.Any<CancellationToken>());
     }
 }

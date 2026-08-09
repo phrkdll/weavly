@@ -16,14 +16,14 @@ public sealed class EnableTwoFactorAuthHandlerTests : AuthHandlerTests
 
     public EnableTwoFactorAuthHandlerTests()
     {
-        this.sut = new EnableTwoFactorAuthHandler(this.Repository, this.userContextMock);
+        sut = new EnableTwoFactorAuthHandler(Repository, userContextMock);
     }
 
     [Fact]
     public async Task HandleAsync_ReturnsFailure_WhenUserNotFound()
     {
-        this.userContextMock.UserId.Returns(new AppUserId());
-        var result = await this.sut.HandleAsync(new EnableTwoFactorAuthCommand());
+        userContextMock.UserId.Returns(new AppUserId());
+        var result = await sut.HandleAsync(new EnableTwoFactorAuthCommand());
 
         result.ShouldBeOfType<Failure>();
         result.Message.ShouldBe("User not found");
@@ -33,11 +33,11 @@ public sealed class EnableTwoFactorAuthHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ReturnsFailure_WhenTwoFactorAuth_IsAlreadyEnabled()
     {
         var user = AppUser.Create("admin@test.local", [AppUserToken.CreateTwoFactorAuthenticationToken()]);
-        await this.Repository.Users.InsertAsync(user);
+        await Repository.Users.InsertAsync(user);
 
-        this.userContextMock.UserId.Returns(user.Id);
+        userContextMock.UserId.Returns(user.Id);
 
-        var result = await this.sut.HandleAsync(new EnableTwoFactorAuthCommand());
+        var result = await sut.HandleAsync(new EnableTwoFactorAuthCommand());
 
         result.ShouldBeOfType<Failure>();
         result.Message.ShouldBe("2FA is already enabled");
@@ -47,11 +47,11 @@ public sealed class EnableTwoFactorAuthHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ReturnsSuccess_WhenUserExists_AndTwoFactorAuth_IsNotEnabled()
     {
         var user = AppUser.Create("admin@test.local", []);
-        await this.Repository.Users.InsertAsync(user);
+        await Repository.Users.InsertAsync(user);
 
-        this.userContextMock.UserId.Returns(user.Id);
+        userContextMock.UserId.Returns(user.Id);
 
-        var result = await this.sut.HandleAsync(new EnableTwoFactorAuthCommand());
+        var result = await sut.HandleAsync(new EnableTwoFactorAuthCommand());
 
         var data = result.ShouldBeOfType<Success<EnableTwoFactorAuthResponse>>().Data;
         data.QrCode.ShouldNotBeEmpty();

@@ -18,21 +18,20 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
 
     public LoginUserHandlerTests()
     {
-        this.Repository.Users.InsertAsync(AppUser.Create("admin@test.local", []));
-        this.Repository.Users.InsertAsync(
-            AppUser.Create("pending@test.local", [AppUserToken.CreateEmailValidationToken()])
-        );
-        this.Repository.Users.InsertAsync(
+        Repository.Users.InsertAsync(AppUser.Create("admin@test.local", []));
+        Repository.Users.InsertAsync(AppUser.Create("pending@test.local", [AppUserToken.CreateEmailValidationToken()]));
+        Repository.Users.InsertAsync(
             AppUser.Create("2fa@test.local", [AppUserToken.CreateTwoFactorAuthenticationToken()])
         );
 
-        this.passwordHasherMock.VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
+        passwordHasherMock
+            .VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(PasswordVerificationResult.Success);
 
-        this.sut = new LoginUserHandler(
-            this.Repository,
-            this.passwordHasherMock,
-            new JwtProvider(this.MessageBusMock),
+        sut = new LoginUserHandler(
+            Repository,
+            passwordHasherMock,
+            new JwtProvider(MessageBusMock),
             new DefaultTimeProvider()
         );
     }
@@ -41,7 +40,7 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenLoginWasValid()
     {
         var command = new LoginUserCommand("admin@test.local", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         var data = result.ShouldBeOfType<Success<LoginUserResponse>>().Data;
 
         data.ShouldNotBeNull();
@@ -53,7 +52,7 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenUserNotFound()
     {
         var command = new LoginUserCommand("missing@test.local", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         result.ShouldBeOfType<Failure>();
 
         result.Message.ShouldBe("Email or password is incorrect.");
@@ -63,7 +62,7 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenValidationIsPending()
     {
         var command = new LoginUserCommand("pending@test.local", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         result.ShouldBeOfType<Failure>();
 
         result.Message.ShouldBe("Email verification pending.");
@@ -72,11 +71,12 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenPasswordIsWrong()
     {
-        this.passwordHasherMock.VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
+        passwordHasherMock
+            .VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(PasswordVerificationResult.Failed);
 
         var command = new LoginUserCommand("admin@test.local", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         result.ShouldBeOfType<Failure>();
 
         result.Message.ShouldBe("Email or password is incorrect.");
@@ -86,7 +86,7 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenTwoFactorAuthIsEnabled()
     {
         var command = new LoginUserCommand("2fa@test.local", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         var data = result.ShouldBeOfType<Success<LoginUserResponse>>().Data;
 
         data.ShouldBe(LoginUserResponse.Empty);

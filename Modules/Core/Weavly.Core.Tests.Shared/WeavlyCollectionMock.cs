@@ -15,14 +15,14 @@ public sealed class WeavlyCollectionMock<T, TDocumentId>(ITimeProvider timeProvi
 
     public Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> filter, CancellationToken ct = default)
     {
-        var documents = this.collection.Where(filter.Compile());
+        var documents = collection.Where(filter.Compile());
 
         return Task.FromResult(documents);
     }
 
     public Task<T?> FindAsync(Expression<Func<T, bool>> filter, CancellationToken ct = default)
     {
-        var documents = this.collection.SingleOrDefault(filter.Compile());
+        var documents = collection.SingleOrDefault(filter.Compile());
 
         return Task.FromResult(documents);
     }
@@ -32,25 +32,25 @@ public sealed class WeavlyCollectionMock<T, TDocumentId>(ITimeProvider timeProvi
         document.Id = (TDocumentId)Activator.CreateInstance(typeof(TDocumentId), ObjectId.GenerateNewId().ToString())!;
         document.CreatedAt = document.TouchedAt = timeProvider.UtcNow;
 
-        this.collection.Add(document);
+        collection.Add(document);
 
         return Task.CompletedTask;
     }
 
     public Task UpdateAsync(T document, CancellationToken ct = default)
     {
-        this.collection.RemoveWhere(x => x.Id.Equals(document.Id));
+        collection.RemoveWhere(x => x.Id.Equals(document.Id));
 
         document.TouchedAt = timeProvider.UtcNow;
 
-        this.collection.Add(document);
+        collection.Add(document);
 
         return Task.CompletedTask;
     }
 
     public Task DeleteAsync(TDocumentId id, CancellationToken ct = default)
     {
-        var document = this.collection.SingleOrDefault(x => x.Id.Equals(id));
+        var document = collection.SingleOrDefault(x => x.Id.Equals(id));
 
         document?.DeletedAt = timeProvider.UtcNow;
 
@@ -59,6 +59,6 @@ public sealed class WeavlyCollectionMock<T, TDocumentId>(ITimeProvider timeProvi
 
     public IQueryable<T> Query(AggregateOptions? aggregateOptions = null)
     {
-        return this.collection.AsQueryable();
+        return collection.AsQueryable();
     }
 }

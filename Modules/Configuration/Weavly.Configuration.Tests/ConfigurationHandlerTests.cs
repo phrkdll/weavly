@@ -9,8 +9,6 @@ public abstract class ConfigurationHandlerTests : WeavlyHandlerTests
 
     protected ConfigurationHandlerTests()
     {
-        this.Repository = new ConfigurationRepository(
-            new WeavlyRepositoryMock<ConfigurationModule>(this.TimeProviderMock)
-        );
+        Repository = new ConfigurationRepository(new WeavlyRepositoryMock<ConfigurationModule>(TimeProviderMock));
     }
 }

@@ -15,12 +15,12 @@ public class WeavlyRepositoryMock<TModule>(ITimeProvider timeProvider) : IWeavly
         where T : Document<TDocumentId>
         where TDocumentId : struct, IWeavlyId
     {
-        if (!this.collections.ContainsKey(typeof(T)))
+        if (!collections.ContainsKey(typeof(T)))
         {
-            this.collections.Add(typeof(T), new WeavlyCollectionMock<T, TDocumentId>(timeProvider));
+            collections.Add(typeof(T), new WeavlyCollectionMock<T, TDocumentId>(timeProvider));
         }
 
-        return (IWeavlyCollection<T, TDocumentId>)this.collections[typeof(T)];
+        return (IWeavlyCollection<T, TDocumentId>)collections[typeof(T)];
     }
 
     public Task<IClientSessionHandle> StartSessionAsync(CancellationToken ct = default)

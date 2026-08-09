@@ -33,12 +33,12 @@ public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeav
     {
         var builder = Map(app);
 
-        if (!this.authorize)
+        if (!authorize)
         {
             return;
         }
 
-        builder.RequireAuthorization(this.authorizationPolicies);
+        builder.RequireAuthorization(authorizationPolicies);
         builder.Produces<Success<TResponse>>();
     }
 
@@ -46,7 +46,7 @@ public abstract class EndpointBase<TRequest, TResponse>(IMessageBus bus) : IWeav
 
     protected void Authorize(params string[] policies)
     {
-        this.authorize = true;
-        this.authorizationPolicies = policies;
+        authorize = true;
+        authorizationPolicies = policies;
     }
 }

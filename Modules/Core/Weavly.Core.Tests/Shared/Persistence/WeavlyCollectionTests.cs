@@ -24,31 +24,32 @@ public sealed class WeavlyCollectionTests
 
     public WeavlyCollectionTests()
     {
-        this.mongoCollectionMock.FindAsync(
+        mongoCollectionMock
+            .FindAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 Arg.Any<FindOptions<TestDocument, TestDocument>>(),
                 Arg.Any<CancellationToken>()
             )
-            .Returns(this.asyncCursorMock);
+            .Returns(asyncCursorMock);
 
-        this.sut = new WeavlyCollection<TestDocument, TestId>(this.mongoCollectionMock, this.timeProviderMock);
+        sut = new WeavlyCollection<TestDocument, TestId>(mongoCollectionMock, timeProviderMock);
     }
 
     [Fact]
     public async Task InsertAsync_ShouldSetMetadata_AndCallInsertOneAsync()
     {
         var testTime = DateTime.UtcNow;
-        this.timeProviderMock.UtcNow.Returns(testTime);
+        timeProviderMock.UtcNow.Returns(testTime);
 
         var document = new TestDocument("Test");
-        await this.sut.InsertAsync(document, this.cancellationToken);
+        await sut.InsertAsync(document, cancellationToken);
 
         document.CreatedAt.ShouldBe(testTime);
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this
-            .mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .InsertOneAsync(document, Arg.Any<InsertOneOptions>(), Arg.Any<CancellationToken>());
     }
 
@@ -56,27 +57,27 @@ public sealed class WeavlyCollectionTests
     public async Task UpdateAsync_ShouldSetMetadata_AndCallReplaceOneAsync()
     {
         var testTime = DateTime.UtcNow;
-        this.timeProviderMock.UtcNow.Returns(testTime);
+        timeProviderMock.UtcNow.Returns(testTime);
 
         var document = new TestDocument("Test")
         {
-            Id = this.testId,
-            CreatedAt = this.createTime,
-            TouchedAt = this.createTime,
+            Id = testId,
+            CreatedAt = createTime,
+            TouchedAt = createTime,
         };
-        await this.sut.UpdateAsync(document, this.cancellationToken);
+        await sut.UpdateAsync(document, cancellationToken);
 
-        document.CreatedAt.ShouldBe(this.createTime);
+        document.CreatedAt.ShouldBe(createTime);
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this
-            .mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .ReplaceOneAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 document,
                 null as ReplaceOptions,
-                this.cancellationToken
+                cancellationToken
             );
     }
 
@@ -84,32 +85,32 @@ public sealed class WeavlyCollectionTests
     public async Task DeleteAsync_ShouldSetDeletedAt_AndCallReplaceOneAsync()
     {
         var testTime = DateTime.UtcNow;
-        this.timeProviderMock.UtcNow.Returns(testTime);
+        timeProviderMock.UtcNow.Returns(testTime);
 
         var document = new TestDocument("Test")
         {
-            Id = this.testId,
-            CreatedAt = this.createTime,
-            TouchedAt = this.createTime,
+            Id = testId,
+            CreatedAt = createTime,
+            TouchedAt = createTime,
         };
 
-        this.asyncCursorMock.MoveNextAsync(Arg.Any<CancellationToken>()).Returns(true);
-        this.asyncCursorMock.Current.Returns([document]);
+        asyncCursorMock.MoveNextAsync(Arg.Any<CancellationToken>()).Returns(true);
+        asyncCursorMock.Current.Returns([document]);
 
-        await this.sut.DeleteAsync(this.testId, this.cancellationToken);
+        await sut.DeleteAsync(testId, cancellationToken);
 
-        document.CreatedAt.ShouldBe(this.createTime);
-        document.TouchedAt.ShouldBe(this.createTime);
+        document.CreatedAt.ShouldBe(createTime);
+        document.TouchedAt.ShouldBe(createTime);
         document.DeletedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await this
-            .mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .ReplaceOneAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 document,
                 null as ReplaceOptions,
-                this.cancellationToken
+                cancellationToken
             );
     }
 }

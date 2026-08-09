@@ -26,13 +26,13 @@ public class ProcessRunner
 
     public ProcessRunner WithMessage(string message)
     {
-        this.renderableMessage = new Markup(message);
+        renderableMessage = new Markup(message);
         return this;
     }
 
     public ProcessRunner InDirectory(string directory)
     {
-        this.workingDirectory = directory;
+        workingDirectory = directory;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class ProcessRunner
         return Process.Start(
                 new ProcessStartInfo(fileName, arguments)
                 {
-                    WorkingDirectory = this.workingDirectory ?? Directory.GetCurrentDirectory(),
+                    WorkingDirectory = workingDirectory ?? Directory.GetCurrentDirectory(),
                     RedirectStandardOutput = redirectOutput,
                 }
             ) ?? throw new InvalidOperationException("Failed to start process");
@@ -49,9 +49,9 @@ public class ProcessRunner
 
     public async Task<string> RunAsync(ProcessRunnerCommand command, CancellationToken ct = default)
     {
-        if (this.renderableMessage != null)
+        if (renderableMessage != null)
         {
-            AnsiConsole.Write(this.renderableMessage);
+            AnsiConsole.Write(renderableMessage);
         }
 
         return await CreateProcess(command.Command, command.Arguments, true).StandardOutput.ReadToEndAsync(ct);
@@ -59,15 +59,15 @@ public class ProcessRunner
 
     public async Task<T?> ParseJsonAsync<T>(string fileName, string arguments, CancellationToken ct = default)
     {
-        if (this.renderableMessage != null)
+        if (renderableMessage != null)
         {
-            AnsiConsole.Write(this.renderableMessage);
+            AnsiConsole.Write(renderableMessage);
         }
 
         var process = CreateProcess(fileName, arguments, true);
 
         var output = await process.StandardOutput.ReadToEndAsync(ct);
 
-        return JsonSerializer.Deserialize<T>(output, this.jsonSerializerOptions);
+        return JsonSerializer.Deserialize<T>(output, jsonSerializerOptions);
     }
 }

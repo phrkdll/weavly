@@ -12,6 +12,8 @@ app.Configure(c =>
 
     c.AddCommand<InitCommand>("init");
     c.AddCommand<UpdateCommand>("update");
+    c.AddCommand<InfoCommand>("info");
+    c.AddCommand<FormatCommand>("format");
     c.AddBranch(
         "module",
         m =>

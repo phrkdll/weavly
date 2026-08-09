@@ -16,14 +16,14 @@ public sealed class WeavlyApplicationBuilderTests
 
     public WeavlyApplicationBuilderTests()
     {
-        this.hostApplicationBuilderMock.Services.Returns(this.serviceCollectionMock);
-        this.sut = new WeavlyApplicationBuilder(this.hostApplicationBuilderMock);
+        hostApplicationBuilderMock.Services.Returns(serviceCollectionMock);
+        sut = new WeavlyApplicationBuilder(hostApplicationBuilderMock);
     }
 
     [Fact]
     public void AddModule_ShouldReturn_WithValidModules_AndReturnAnUpdatedInstance()
     {
-        var result = this.sut.AddModule<TestModule>();
+        var result = sut.AddModule<TestModule>();
 
         result.Modules.Count().ShouldBe(1);
 
@@ -33,9 +33,9 @@ public sealed class WeavlyApplicationBuilderTests
     [Fact]
     public void Build_ShouldConfigureModules_AndRegisterEndpoints()
     {
-        this.sut.AddModule<TestModule>().Build();
+        sut.AddModule<TestModule>().Build();
 
-        var module = this.sut.Modules.First().ShouldBeOfType<TestModule>();
+        var module = sut.Modules.First().ShouldBeOfType<TestModule>();
 
         module.ConfigureCalled.ShouldBeTrue();
     }

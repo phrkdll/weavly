@@ -18,7 +18,7 @@ public abstract class WeavlySeed : IWeavlySeed
 
             return results.All(x => x.Success)
                 ? Result.Success()
-                : Result.Failure($"Seeding of {this.GetType().Name} failed.");
+                : Result.Failure($"Seeding of {GetType().Name} failed.");
         }
         catch (Exception e)
         {

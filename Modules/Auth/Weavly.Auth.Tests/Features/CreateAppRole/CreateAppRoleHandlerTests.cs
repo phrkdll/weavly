@@ -15,14 +15,14 @@ public sealed class CreateAppRoleHandlerTests : AuthHandlerTests
 
     public CreateAppRoleHandlerTests()
     {
-        this.sut = new CreateAppRoleHandler(this.Repository, Substitute.For<ILogger<CreateAppRoleHandler>>());
+        sut = new CreateAppRoleHandler(Repository, Substitute.For<ILogger<CreateAppRoleHandler>>());
     }
 
     [Fact]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenNewRoleWasCreated()
     {
         var command = new CreateAppRoleCommand("TestRole");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         var data = result.ShouldBeOfType<Success<CreateAppRoleResponse>>().Data;
 
         data.Id.Value.ShouldNotBeNull();
@@ -32,10 +32,10 @@ public sealed class CreateAppRoleHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenRoleAlreadyExists()
     {
         var existingRole = AppRole.Create("ExistingRole");
-        await this.Repository.Roles.InsertAsync(existingRole);
+        await Repository.Roles.InsertAsync(existingRole);
 
         var command = new CreateAppRoleCommand("ExistingRole");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }
@@ -44,7 +44,7 @@ public sealed class CreateAppRoleHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenExceptionWasThrown()
     {
         var command = new CreateAppRoleCommand("");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }

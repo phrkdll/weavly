@@ -8,5 +8,5 @@ public sealed class ConfigurationRepository(IWeavlyRepository<ConfigurationModul
     : ModuleRepository<ConfigurationModule>(repository)
 {
     public IWeavlyCollection<AppConfiguration, ConfigurationId> Configurations =>
-        this.Repository.GetCollectionFor<AppConfiguration, ConfigurationId>();
+        Repository.GetCollectionFor<AppConfiguration, ConfigurationId>();
 }

@@ -71,6 +71,8 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
                 .ShowAsync(AnsiConsole.Console, ct),
         ];
 
+        List<string> additionalModules = ["Weavly.Core.Tests.Shared"];
+
         await Runner
             .InDirectory(workingDir)
             .WithMessage($"Adding project [teal]{projectName}[/]...\n")
@@ -85,7 +87,18 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
                 .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
         }
 
+        foreach (var module in additionalModules)
+        {
+            await Runner
+                .InDirectory(workingDir)
+                .RunAsync(Dotnet.Custom($"package add {module} --project ./{projectName}/{projectName}.csproj"), ct);
+        }
+
         await UpdateProgramBootstrapperAsync(workingDir, projectName, selectedModules, ct);
+
+        await Runner
+            .WithMessage("Installing tool [teal]CSharpier[/]...\n")
+            .RunAsync(Dotnet.InstallTool("csharpier"), ct);
 
         if (solutionNameInput != DefaultSolutionName)
         {

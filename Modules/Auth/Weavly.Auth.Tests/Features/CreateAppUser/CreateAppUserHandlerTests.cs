@@ -17,14 +17,14 @@ public sealed class CreateAppUserHandlerTests : AuthHandlerTests
 
     public CreateAppUserHandlerTests()
     {
-        this.sut = new CreateAppUserHandler(this.Repository, this.loggerMock);
+        sut = new CreateAppUserHandler(Repository, loggerMock);
     }
 
     [Fact]
     public async Task HandleAsync_ShouldReturn_SuccessInstance_WhenNewRoleWasCreated()
     {
         var command = new CreateAppUserCommand("admin@test.local", "Admin", "Admin", "P@ssw0rd!");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
         var data = result.ShouldBeOfType<Success<CreateAppUserResponse>>().Data.UserId.ShouldBeOfType<AppUserId>();
 
         data.Value.ShouldNotBeEmpty();
@@ -34,10 +34,10 @@ public sealed class CreateAppUserHandlerTests : AuthHandlerTests
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenRoleAlreadyExists()
     {
         var user = AppUser.Create("admin@test.local", [AppUserToken.CreateEmailValidationToken()]);
-        await this.Repository.Users.InsertAsync(user);
+        await Repository.Users.InsertAsync(user);
 
         var command = new CreateAppUserCommand("admin@test.local", "Admin", "Admin");
-        var result = await this.sut.HandleAsync(command, CancellationToken.None);
+        var result = await sut.HandleAsync(command, CancellationToken.None);
 
         result.ShouldBeOfType<Failure>();
     }

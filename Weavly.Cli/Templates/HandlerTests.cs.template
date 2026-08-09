@@ -9,8 +9,8 @@ public abstract class {{Name}}HandlerTests : WeavlyHandlerTests
 
     protected {{Name}}HandlerTests()
     {
-        this.Repository = new {{Name}}Repository(
-            new WeavlyRepositoryMock<{{Name}}Module>(this.TimeProviderMock)
+        Repository = new {{Name}}Repository(
+            new WeavlyRepositoryMock<{{Name}}Module>(TimeProviderMock)
         );
     }
 }

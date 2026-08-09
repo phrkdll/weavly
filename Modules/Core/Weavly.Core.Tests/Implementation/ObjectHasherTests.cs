@@ -11,7 +11,7 @@ public class ObjectHasherTests
     [MemberData(nameof(TestData))]
     public void ComputeHash_ShouldHash_AnyObject(object obj)
     {
-        var hash = this.sut.ComputeHash(obj);
+        var hash = sut.ComputeHash(obj);
 
         hash.ShouldNotBeNullOrWhiteSpace();
     }
@@ -20,8 +20,8 @@ public class ObjectHasherTests
     [MemberData(nameof(TestData))]
     public void ComputeHash_ShouldCreate_ConsistentHashes(object obj)
     {
-        var a = this.sut.ComputeHash(obj);
-        var b = this.sut.ComputeHash(obj);
+        var a = sut.ComputeHash(obj);
+        var b = sut.ComputeHash(obj);
 
         a.ShouldBe(b);
     }
@@ -30,8 +30,8 @@ public class ObjectHasherTests
     [MemberData(nameof(DifferenceTestData))]
     public void ComputeHash_ShouldCreate_DifferentHashes_EvenWithMinimalObjectDifferences(object a, object b)
     {
-        var hashA = this.sut.ComputeHash(a);
-        var hashB = this.sut.ComputeHash(b);
+        var hashA = sut.ComputeHash(a);
+        var hashB = sut.ComputeHash(b);
 
         hashA.ShouldNotBe(hashB);
     }
