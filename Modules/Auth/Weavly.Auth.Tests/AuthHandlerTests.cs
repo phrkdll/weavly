@@ -17,7 +17,8 @@ public abstract class AuthHandlerTests : WeavlyHandlerTests
     {
         Repository = new AuthRepository(new WeavlyRepositoryMock<AuthModule>(TimeProviderMock));
 
-        MessageBusMock.InvokeAsync<Result>(
+        MessageBusMock
+            .InvokeAsync<Result>(
                 Arg.Is<LoadConfigurationCommand>(x => x!.Module == "AuthModule"),
                 Arg.Any<CancellationToken>()
             )

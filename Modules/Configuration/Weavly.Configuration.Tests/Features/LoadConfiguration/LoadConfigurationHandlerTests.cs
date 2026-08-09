@@ -15,7 +15,8 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
 
     public LoadConfigurationHandlerTests()
     {
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -25,7 +26,8 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -35,7 +37,8 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",
@@ -45,7 +48,8 @@ public class LoadConfigurationHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExistingModule",

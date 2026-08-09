@@ -12,7 +12,8 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
 
     public ListConfigurationModulesHandlerTests()
     {
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
@@ -22,7 +23,8 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "ExtraModule",
@@ -32,7 +34,8 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",
@@ -42,7 +45,8 @@ public class ListConfigurationModulesHandlerTests : ConfigurationHandlerTests
                 }
             )
             .Wait();
-        Repository.Configurations.InsertAsync(
+        Repository
+            .Configurations.InsertAsync(
                 new AppConfiguration
                 {
                     Module = "CoreModule",

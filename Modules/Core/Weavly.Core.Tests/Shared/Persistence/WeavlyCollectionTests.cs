@@ -24,7 +24,8 @@ public sealed class WeavlyCollectionTests
 
     public WeavlyCollectionTests()
     {
-        mongoCollectionMock.FindAsync(
+        mongoCollectionMock
+            .FindAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 Arg.Any<FindOptions<TestDocument, TestDocument>>(),
                 Arg.Any<CancellationToken>()
@@ -47,7 +48,8 @@ public sealed class WeavlyCollectionTests
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .InsertOneAsync(document, Arg.Any<InsertOneOptions>(), Arg.Any<CancellationToken>());
     }
 
@@ -69,7 +71,8 @@ public sealed class WeavlyCollectionTests
         document.TouchedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .ReplaceOneAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 document,
@@ -101,7 +104,8 @@ public sealed class WeavlyCollectionTests
         document.DeletedAt.ShouldBe(testTime);
         document.Name.ShouldBe("Test");
 
-        await mongoCollectionMock.Received(1)
+        await mongoCollectionMock
+            .Received(1)
             .ReplaceOneAsync(
                 Arg.Any<FilterDefinition<TestDocument>>(),
                 document,

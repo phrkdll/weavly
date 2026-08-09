@@ -19,14 +19,13 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     public LoginUserHandlerTests()
     {
         Repository.Users.InsertAsync(AppUser.Create("admin@test.local", []));
-        Repository.Users.InsertAsync(
-            AppUser.Create("pending@test.local", [AppUserToken.CreateEmailValidationToken()])
-        );
+        Repository.Users.InsertAsync(AppUser.Create("pending@test.local", [AppUserToken.CreateEmailValidationToken()]));
         Repository.Users.InsertAsync(
             AppUser.Create("2fa@test.local", [AppUserToken.CreateTwoFactorAuthenticationToken()])
         );
 
-        passwordHasherMock.VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
+        passwordHasherMock
+            .VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(PasswordVerificationResult.Success);
 
         sut = new LoginUserHandler(
@@ -72,7 +71,8 @@ public sealed class LoginUserHandlerTests : AuthHandlerTests
     [Fact]
     public async Task HandleAsync_ShouldReturn_FailureInstance_WhenPasswordIsWrong()
     {
-        passwordHasherMock.VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
+        passwordHasherMock
+            .VerifyHashedPassword(Arg.Any<AppUser>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(PasswordVerificationResult.Failed);
 
         var command = new LoginUserCommand("admin@test.local", "P@ssw0rd!");

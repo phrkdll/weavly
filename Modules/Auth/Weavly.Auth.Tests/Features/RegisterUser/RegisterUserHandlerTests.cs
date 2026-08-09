@@ -21,12 +21,7 @@ public sealed class RegisterUserHandlerTests : AuthHandlerTests
     {
         TimeProviderMock.UtcNow.Returns(DateTime.UtcNow);
 
-        sut = new RegisterUserHandler(
-            Repository,
-            new PasswordHasher<AppUser>(),
-            validator,
-            MessageBusMock
-        );
+        sut = new RegisterUserHandler(Repository, new PasswordHasher<AppUser>(), validator, MessageBusMock);
     }
 
     [Fact]
