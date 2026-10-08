@@ -9,14 +9,14 @@ namespace Weavly.Core.Implementation;
 
 public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : IWeavlyApplicationBuilder
 {
-    private readonly HashSet<IWeavlyModule> modules = [];
+    private readonly List<IWeavlyModule> modules = [];
 
     public IEnumerable<IWeavlyModule> Modules => modules;
 
     public IWeavlyApplicationBuilder AddModule<T>()
         where T : IWeavlyModule
     {
-        if (Activator.CreateInstance<T>() is IWeavlyModule module)
+        if (modules.All(x => x.GetType() != typeof(T)) && Activator.CreateInstance<T>() is IWeavlyModule module)
         {
             modules.Add(module);
         }
@@ -26,7 +26,7 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
 
     public void Build()
     {
-        foreach (var module in Modules)
+        foreach (var module in modules)
         {
             module.Configure(builder);
         }
@@ -47,6 +47,11 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
                 x.Discovery.IncludeAssembly(assembly);
             }
         });
+
+        builder.Services.AddSingleton<IHostedService>(serviceProvider => new WeavlyModuleInitializer(
+            modules,
+            serviceProvider.GetRequiredService<IServiceScopeFactory>()
+        ));
 
         if (builder.Environment.IsDevelopment())
         {

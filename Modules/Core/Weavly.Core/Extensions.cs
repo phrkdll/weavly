@@ -36,22 +36,14 @@ public static class Extensions
     /// <exception cref="InvalidOperationException">Will be thrown if no modules have been registered.</exception>
     public static void UseWeavly(this WebApplication app)
     {
-        var modules =
-            _weavlyApplicationBuilder?.Modules
-            ?? throw new InvalidOperationException("Weavly has not been initialized");
-        using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        var bus = scope.ServiceProvider.GetRequiredService<IMessageBus>();
-
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
         }
 
-        foreach (var module in modules)
+        foreach (var module in _weavlyApplicationBuilder?.Modules ?? [])
         {
             module.Use(app);
-
-            app.Lifetime.ApplicationStarted.Register(() => module.InitializeAsync(bus).Wait());
         }
     }
 }

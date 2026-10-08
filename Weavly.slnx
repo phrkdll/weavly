@@ -21,6 +21,7 @@
   </Folder>
   <Folder Name="/Modules/Mail/">
     <Project Path="Modules/Mail/Weavly.Mail.Shared/Weavly.Mail.Shared.csproj" />
+    <Project Path="Modules/Mail/Weavly.Mail.Tests/Weavly.Mail.Tests.csproj" />
     <Project Path="Modules/Mail/Weavly.Mail/Weavly.Mail.csproj" />
   </Folder>
   <Folder Name="/Modules/Messages/">
