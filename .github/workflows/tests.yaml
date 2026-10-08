@@ -3,11 +3,11 @@ name: Tests
 on:
   pull_request:
     branches:
-      - "*"
+      - "**"
 
 jobs:
   tests:
-    runs-on: codeberg-small
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository

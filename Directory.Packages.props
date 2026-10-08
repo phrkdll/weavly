@@ -7,8 +7,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="!$(AssemblyName.EndsWith('.Tests')) AND !$(AssemblyName.EndsWith('.Api'))">
     <Authors>phrkdll</Authors>
-    <PackageProjectUrl>https://codeberg.com/phreakadelle/weavly</PackageProjectUrl>
-    <RepositoryUrl>https://codeberg.com/phreakadelle/weavly</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/phrkdll/weavly</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/phrkdll/weavly</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>

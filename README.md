@@ -39,8 +39,10 @@ Whether you’re building **microservices** or a **modular monolith** – Weavly
 ## 🛠️ Getting Started
 
 ```shell
-dotnet nuget add source --name weavly https://codeberg.org/api/packages/phreakadelle/nuget/index.json
+dotnet nuget add source --name weavly https://nuget.pkg.github.com/phrkdll/index.json
 
 dotnet tool install -g weavly.cli
 wv init
 ```
+
+GitHub Packages requires authentication to restore NuGet packages. Configure the `weavly` source with a GitHub personal access token (classic) that has the `read:packages` scope. Keep the token in your local NuGet credential configuration; do not commit it.
