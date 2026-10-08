@@ -9,16 +9,19 @@ public abstract class WeavlySeed : IWeavlySeed
     {
         try
         {
-            List<Result> results = [];
-
             foreach (var command in ProvideSeedingCommands())
             {
-                results.Add(await bus.InvokeAsync<Result>(command, ct));
+                var result = await bus.InvokeAsync<Result>(command, ct);
+                if (!result.Success)
+                {
+                    return Result.Failure(
+                        $"Seeding of {GetType().Name} failed: {result.Message}",
+                        result as Failure
+                    );
+                }
             }
 
-            return results.All(x => x.Success)
-                ? Result.Success()
-                : Result.Failure($"Seeding of {GetType().Name} failed.");
+            return Result.Success();
         }
         catch (Exception e)
         {

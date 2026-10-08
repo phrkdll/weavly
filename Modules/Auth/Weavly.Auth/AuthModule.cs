@@ -21,6 +21,8 @@ namespace Weavly.Auth;
 [ExcludeFromCodeCoverage]
 public sealed class AuthModule : WeavlyModule
 {
+    public override IReadOnlyCollection<string> InitializationDependencies => ["ConfigurationModule", "MailModule"];
+
     public override void Configure(IHostApplicationBuilder builder)
     {
         builder

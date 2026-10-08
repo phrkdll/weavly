@@ -1,5 +1,5 @@
-using Weavly.Auth.Shared.Features.CreateAppRole;
-using Weavly.Auth.Shared.Features.CreateAppUser;
+using Weavly.Auth.Shared.Features.SeedAppRole;
+using Weavly.Auth.Shared.Features.SeedAppUser;
 using Weavly.Core.Shared.Contracts;
 using Weavly.Core.Shared.Seeding;
 
@@ -9,8 +9,8 @@ public sealed class AuthSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [
-            new CreateAppUserCommand("system@weavly.local", "system", "System"),
-            new CreateAppRoleCommand("Administrator"),
-            new CreateAppRoleCommand("User"),
+            new SeedAppUserCommand("system@weavly.local", "system", "System"),
+            new SeedAppRoleCommand("Administrator"),
+            new SeedAppRoleCommand("User"),
         ];
 }

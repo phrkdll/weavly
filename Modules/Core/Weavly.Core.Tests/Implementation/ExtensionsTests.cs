@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using Shouldly;
 using Weavly.Core.Implementation;
+using Weavly.Core.Shared.Implementation;
 
 namespace Weavly.Core.Tests.Implementation;
 
@@ -36,5 +37,22 @@ public sealed class ExtensionsTests
         app.UseWeavly();
         var module = weavlyBuilder.Modules.First().ShouldBeOfType<TestModule>();
         module.UseCalled.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task UseWeavly_Propagates_ModuleInitializationFailure()
+    {
+        var appBuilder = WebApplication.CreateSlimBuilder();
+        appBuilder.AddWeavly().AddModule<FailingInitializationModule>().Build();
+        var app = appBuilder.Build();
+        app.UseWeavly();
+
+        await Should.ThrowAsync<InvalidOperationException>(() => app.StartAsync());
+    }
+
+    public sealed class FailingInitializationModule : WeavlyModule
+    {
+        public override Task InitializeAsync(Wolverine.IMessageBus bus) =>
+            Task.FromException(new InvalidOperationException("Initialization failed"));
     }
 }

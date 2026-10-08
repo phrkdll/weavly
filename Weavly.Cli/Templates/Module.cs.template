@@ -32,7 +32,7 @@ public class {{Name}}Module : WeavlyModule
     {
         // Custom initialization logic can be added here
         // Example:
-        // - Data seeding (in module or via command in other modules like Configuration)
+        // - Data seeding with seed-specific commands for data owned by this or another module
 
         return base.InitializeAsync(bus);
     }

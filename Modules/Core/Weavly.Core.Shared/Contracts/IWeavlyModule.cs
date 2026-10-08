@@ -7,6 +7,11 @@ namespace Weavly.Core.Shared.Contracts;
 public interface IWeavlyModule
 {
     /// <summary>
+    ///     Names of modules that must initialize before this module.
+    /// </summary>
+    IReadOnlyCollection<string> InitializationDependencies => [];
+
+    /// <summary>
     ///     Perform any tasks regarding setup here (i.e. service registration)
     /// </summary>
     /// <param name="builder">
