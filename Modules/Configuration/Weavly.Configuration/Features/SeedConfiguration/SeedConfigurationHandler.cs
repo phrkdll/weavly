@@ -6,10 +6,8 @@ using Weavly.Core.Shared.Contracts;
 
 namespace Weavly.Configuration.Features.SeedConfiguration;
 
-public sealed class SeedConfigurationHandler(
-    ConfigurationRepository repo,
-    ILogger<SeedConfigurationHandler> logger
-) : IWeavlyHandler<SeedConfigurationCommand>
+public sealed class SeedConfigurationHandler(ConfigurationRepository repo, ILogger<SeedConfigurationHandler> logger)
+    : IWeavlyHandler<SeedConfigurationCommand>
 {
     public async Task<Result> HandleAsync(SeedConfigurationCommand command, CancellationToken ct = default)
     {

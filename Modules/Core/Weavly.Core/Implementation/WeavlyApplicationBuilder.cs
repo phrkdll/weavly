@@ -48,9 +48,10 @@ public sealed class WeavlyApplicationBuilder(IHostApplicationBuilder builder) : 
             }
         });
 
-        builder.Services.AddSingleton<IHostedService>(serviceProvider =>
-            new WeavlyModuleInitializer(modules, serviceProvider.GetRequiredService<IServiceScopeFactory>())
-        );
+        builder.Services.AddSingleton<IHostedService>(serviceProvider => new WeavlyModuleInitializer(
+            modules,
+            serviceProvider.GetRequiredService<IServiceScopeFactory>()
+        ));
 
         if (builder.Environment.IsDevelopment())
         {

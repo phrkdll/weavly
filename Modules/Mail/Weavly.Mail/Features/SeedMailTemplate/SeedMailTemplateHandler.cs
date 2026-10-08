@@ -23,11 +23,7 @@ public sealed class SeedMailTemplateHandler(MailRepository repo, ILogger<SeedMai
             );
             if (existing is not null)
             {
-                logger.LogDebug(
-                    "Seeded mail template {Module} -> {Name} already exists",
-                    command.Module,
-                    command.Name
-                );
+                logger.LogDebug("Seeded mail template {Module} -> {Name} already exists", command.Module, command.Name);
                 return Result.Success(new SeedMailTemplateResponse(existing.Id, false));
             }
 

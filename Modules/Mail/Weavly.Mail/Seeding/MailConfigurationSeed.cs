@@ -13,11 +13,7 @@ public sealed class MailConfigurationSeed : WeavlySeed
                 "no-reply@weavly.com",
                 MailModule.ConfigCategory.General
             ),
-            SeedConfigurationCommand.Create<MailModule>(
-                "SmtpHost",
-                "localhost",
-                MailModule.ConfigCategory.General
-            ),
+            SeedConfigurationCommand.Create<MailModule>("SmtpHost", "localhost", MailModule.ConfigCategory.General),
             SeedConfigurationCommand.Create<MailModule>("SmtpPort", 1025, MailModule.ConfigCategory.General),
             SeedConfigurationCommand.Create<MailModule>("EnableSsl", false, MailModule.ConfigCategory.General),
             SeedConfigurationCommand.Create<MailModule>("SmtpUser", string.Empty, MailModule.ConfigCategory.General),

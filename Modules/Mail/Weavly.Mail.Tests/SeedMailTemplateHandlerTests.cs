@@ -28,9 +28,9 @@ public sealed class SeedMailTemplateHandlerTests
     {
         var command = SeedMailTemplateCommand.Create<SeedMailTemplateHandlerTests>("Name", "original", "original text");
         var created = (await sut.HandleAsync(command)).ShouldBeOfType<Success<SeedMailTemplateResponse>>().Data;
-        var repeated = (
-            await sut.HandleAsync(command with { Subject = "replacement", Text = "replacement text" })
-        ).ShouldBeOfType<Success<SeedMailTemplateResponse>>().Data;
+        var repeated = (await sut.HandleAsync(command with { Subject = "replacement", Text = "replacement text" }))
+            .ShouldBeOfType<Success<SeedMailTemplateResponse>>()
+            .Data;
         var persisted = await repository.MailTemplates.FindAsync(x =>
             x.Module == nameof(SeedMailTemplateHandlerTests) && x.Name == "Name"
         );
