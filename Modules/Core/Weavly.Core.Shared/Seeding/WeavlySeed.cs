@@ -12,9 +12,9 @@ public abstract class WeavlySeed : IWeavlySeed
             foreach (var command in ProvideSeedingCommands())
             {
                 var result = await bus.InvokeAsync<Result>(command, ct);
-                if (!result.Success)
+                if (result is Failure failure)
                 {
-                    return Result.Failure($"Seeding of {GetType().Name} failed: {result.Message}", result as Failure);
+                    return Result.Failure($"Seeding of {GetType().Name} failed: {result.Message}", failure);
                 }
             }
 

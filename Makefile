@@ -18,13 +18,8 @@ check: # Perform "csharpier check ."
 format: # Perform "csharpier format ."
 	@csharpier format .
 	
-keyfile: .gen-kf .chown-kf .chmod-kf # Generate a local keyfile for MongoDB (should be run with sudo)
-.gen-kf:
-	@openssl rand -base64 756 > keyfile
-.chown-kf:
-	@chown 999:999 keyfile
-.chmod-kf:
-	@chmod 400 keyfile
+keyfile: # Add a generated MongoDB keyfile (MONGO_KEYFILE) to .env
+	@grep -q '^MONGO_KEYFILE=' .env 2>/dev/null || echo "MONGO_KEYFILE=$$(openssl rand -base64 756 | tr -d '\n')" >> .env
 
 full-clean: clean .full-clean-internal # Performs a full solution cleanup with bin/obj removal
 clean: # Perform "dotnet clean ."

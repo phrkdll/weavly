@@ -13,7 +13,17 @@
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
   mongo:
     image: mongo
-    command: [ "--replSet", "rs0", "--bind_ip_all", "--port", "27017", "--keyFile", "/etc/mongodb/pki/keyfile" ]
+    entrypoint:
+      - bash
+      - -c
+      - |
+        mkdir -p /etc/mongodb/pki
+        printf '%s' "$$MONGO_KEYFILE" > /etc/mongodb/pki/keyfile
+        chown mongodb:mongodb /etc/mongodb/pki/keyfile
+        chmod 400 /etc/mongodb/pki/keyfile
+        exec docker-entrypoint.sh "$$@"
+      - --
+    command: [ "mongod", "--replSet", "rs0", "--bind_ip_all", "--port", "27017", "--keyFile", "/etc/mongodb/pki/keyfile" ]
     ports:
       - 127.0.0.1:27017:27017
     healthcheck:
@@ -25,8 +35,8 @@
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-root}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-root}
+      - MONGO_KEYFILE=${MONGO_KEYFILE:?Set MONGO_KEYFILE in .env (run 'make keyfile')}
     volumes:
-      - ./keyfile:/etc/mongodb/pki/keyfile
       - mongo_data:/data/db
       - mongo_config:/data/configdb
     restart: unless-stopped
