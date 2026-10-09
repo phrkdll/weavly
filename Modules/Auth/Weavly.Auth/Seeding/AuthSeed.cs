@@ -9,8 +9,9 @@ public sealed class AuthSeed : WeavlySeed
 {
     protected override IEnumerable<IWeavlyCommand> ProvideSeedingCommands() =>
         [
-            new SeedAppUserCommand("system@weavly.local", "system", "System"),
+            new SeedAppRoleCommand("System"),
             new SeedAppRoleCommand("Administrator"),
             new SeedAppRoleCommand("User"),
+            new SeedAppUserCommand("system@weavly.local", "system", "System"),
         ];
 }
