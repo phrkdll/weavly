@@ -7,7 +7,7 @@ using Weavly.Cli.Utils;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Adds an existing Weavly module to the solution")]
-public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
+public sealed class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
 {
     protected override async Task HandleAsync(
         CommandContext commandContext,
@@ -52,7 +52,7 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         await UpdateProgramBootstrapperAsync(projectName, selectedModules, ct);
     }
 
-    private static string ExtractFileNameWithoutExtension(string fileName)
+    private string ExtractFileNameWithoutExtension(string fileName)
     {
         var fileNameWithExtension = fileName.Split(DirectorySeparator).Last();
 
@@ -75,11 +75,6 @@ public class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         var programFilePath = Path.Combine(projectName, "Program.cs");
 
         var file = await File.ReadAllTextAsync(programFilePath, ct);
-
-        if (file == null)
-        {
-            return;
-        }
 
         ModuleManagementHelper.UpdateUsings(selectedModules, ref file);
         ModuleManagementHelper.UpdateBuilderSetup(selectedModules, ref file);

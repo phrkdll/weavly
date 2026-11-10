@@ -60,7 +60,8 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 
         if (installedPackages is not null)
         {
-            return choices.Where(c => !installedPackages.Contains(c, StringComparer.OrdinalIgnoreCase))
+            return choices
+                .Where(c => !installedPackages.Contains(c, StringComparer.OrdinalIgnoreCase))
                 .OrderBy(c => c, StringComparer.InvariantCulture);
         }
 
@@ -77,8 +78,13 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
             .InDirectory(workingDir)
             .ParseJsonAsync<List>("dotnet", $"package list --format json --project {projectName}", ct);
 
-        var choices = result?.Projects.First().Frameworks.First().Packages
-            .OrderBy(p => p.Id, StringComparer.InvariantCulture).Select(p => p.Id) ?? [];
+        var choices =
+            result
+                ?.Projects.First()
+                .Frameworks.First()
+                .Packages.OrderBy(p => p.Id, StringComparer.InvariantCulture)
+                .Select(p => p.Id)
+            ?? [];
 
         return choices;
     }
