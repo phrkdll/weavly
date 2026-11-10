@@ -88,4 +88,34 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
 
         return choices;
     }
+
+    protected string ExtractFileNameWithoutExtension(string fileName)
+    {
+        var fileNameWithExtension = fileName.Split(DirectorySeparator).Last();
+
+        return fileNameWithExtension[..fileNameWithExtension.LastIndexOf('.')];
+    }
+
+    protected static string[] GetRelevantProjects()
+    {
+        return [.. Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories)];
+    }
+
+    protected static async Task UpdateProgramBootstrapperAsync(
+        string projectName,
+        List<string> selectedModules,
+        CancellationToken ct
+    )
+    {
+        AnsiConsole.Write(new Markup($"Updating [teal]{projectName}/Program.cs[/]...\n"));
+
+        var programFilePath = Path.Combine(projectName, "Program.cs");
+
+        var file = await File.ReadAllTextAsync(programFilePath, ct);
+
+        ModuleManagementHelper.UpdateUsings(selectedModules, ref file);
+        ModuleManagementHelper.UpdateBuilderSetup(selectedModules, ref file);
+
+        await File.WriteAllTextAsync(programFilePath, file, ct);
+    }
 }

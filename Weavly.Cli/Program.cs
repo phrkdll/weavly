@@ -19,8 +19,8 @@ app.Configure(c =>
         m =>
         {
             m.SetDescription("Manages modules");
-            m.AddCommand<AddCommand>("add");
-            m.AddCommand<NewCommand>("new");
+            m.AddCommand<AddModuleCommand>("add");
+            m.AddCommand<NewModuleCommand>("new");
         }
     );
 });

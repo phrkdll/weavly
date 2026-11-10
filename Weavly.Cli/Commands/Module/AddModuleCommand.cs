@@ -7,7 +7,7 @@ using Weavly.Cli.Utils;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Adds an existing Weavly module to the solution")]
-public sealed class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
+public sealed class AddModuleCommand : InterruptibleAsyncCommand<AddModuleCommand.Settings>
 {
     protected override async Task HandleAsync(
         CommandContext commandContext,
@@ -16,14 +16,7 @@ public sealed class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
     )
     {
         var projects = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
-        var projectName =
-            settings.ProjectName
-            ?? await new SelectionPrompt<string>()
-                .Title("Where do you want to add the [teal]module[/]?")
-                .PageSize(5)
-                .MoreChoicesText("[grey](Move up and down to reveal more projects)[/]")
-                .AddChoices(projects.Keys)
-                .ShowAsync(AnsiConsole.Console, ct);
+        var projectName = settings.ProjectName ?? await SelectProjectAsync(projects, ct);
 
         AnsiConsole.Write(new Markup($"Adding module to [teal]{projectName}[/]...\n"));
 
@@ -52,34 +45,16 @@ public sealed class AddCommand : InterruptibleAsyncCommand<AddCommand.Settings>
         await UpdateProgramBootstrapperAsync(projectName, selectedModules, ct);
     }
 
-    private string ExtractFileNameWithoutExtension(string fileName)
+    private static async Task<string> SelectProjectAsync(Dictionary<string, string> projects, CancellationToken ct)
     {
-        var fileNameWithExtension = fileName.Split(DirectorySeparator).Last();
-
-        return fileNameWithExtension[..fileNameWithExtension.LastIndexOf('.')];
-    }
-
-    private static string[] GetRelevantProjects()
-    {
-        return [.. Directory.GetFiles(".", "*.csproj", SearchOption.AllDirectories)];
-    }
-
-    private static async Task UpdateProgramBootstrapperAsync(
-        string projectName,
-        List<string> selectedModules,
-        CancellationToken ct
-    )
-    {
-        AnsiConsole.Write(new Markup($"Updating [teal]{projectName}/Program.cs[/]...\n"));
-
-        var programFilePath = Path.Combine(projectName, "Program.cs");
-
-        var file = await File.ReadAllTextAsync(programFilePath, ct);
-
-        ModuleManagementHelper.UpdateUsings(selectedModules, ref file);
-        ModuleManagementHelper.UpdateBuilderSetup(selectedModules, ref file);
-
-        await File.WriteAllTextAsync(programFilePath, file, ct);
+        return projects.Keys.Count == 1
+            ? projects.Keys.First()
+            : await new SelectionPrompt<string>()
+                .Title("Where do you want to add the [teal]module[/]?")
+                .PageSize(5)
+                .MoreChoicesText("[grey](Move up and down to reveal more projects)[/]")
+                .AddChoices(projects.Keys)
+                .ShowAsync(AnsiConsole.Console, ct);
     }
 
     [Serializable]
