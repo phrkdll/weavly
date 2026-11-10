@@ -9,7 +9,7 @@ using Weavly.Cli.Utils;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Initializes a new custom module project for the current solution")]
-public class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
+public sealed class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
 {
     private readonly WeavlyModule coreModule = WeavlyModule.New("Core", "Weavly");
 

@@ -9,7 +9,7 @@ namespace Weavly.Cli.Commands;
 public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
     where T : CommandSettings
 {
-    protected static readonly char DirectorySeparator = Path.DirectorySeparatorChar;
+    protected readonly char DirectorySeparator = Path.DirectorySeparatorChar;
 
     protected ProcessRunner Runner => ProcessRunner.Instance();
 
@@ -46,20 +46,23 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
     {
         var result = await Runner
             .InDirectory(workingDir)
-            .ParseJsonAsync<Search>("dotnet", "package search weavly --format json --verbosity detailed", ct);
+            .ParseJsonAsync<Search>("dotnet", "package search weavly --format json", ct);
 
         var choices =
             result
-                ?.SearchResult.First()
-                .Packages.Where(p => !p.Id.EndsWith(".Cli") && !p.Id.EndsWith(".Shared") && !p.Id.Contains(".Core"))
-                .OrderBy(p => p.Id)
+                ?.SearchResult.SelectMany(source => source.Packages)
+                .Where(p => !p.Id.EndsWith(".Cli") && !p.Id.EndsWith(".Shared") && !p.Id.Contains(".Core"))
+                .OrderBy(p => p.Id, StringComparer.InvariantCulture)
                 .Select(p => p.Id)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList()
             ?? [];
 
         if (installedPackages is not null)
         {
-            return choices.Where(c => !installedPackages.Contains(c)).OrderBy(c => c);
+            return choices
+                .Where(c => !installedPackages.Contains(c, StringComparer.OrdinalIgnoreCase))
+                .OrderBy(c => c, StringComparer.InvariantCulture);
         }
 
         return choices;
@@ -75,7 +78,13 @@ public abstract class InterruptibleAsyncCommand<T> : AsyncCommand<T>
             .InDirectory(workingDir)
             .ParseJsonAsync<List>("dotnet", $"package list --format json --project {projectName}", ct);
 
-        var choices = result?.Projects.First().Frameworks.First().Packages.OrderBy(p => p.Id).Select(p => p.Id) ?? [];
+        var choices =
+            result
+                ?.Projects.First()
+                .Frameworks.First()
+                .Packages.OrderBy(p => p.Id, StringComparer.InvariantCulture)
+                .Select(p => p.Id)
+            ?? [];
 
         return choices;
     }
