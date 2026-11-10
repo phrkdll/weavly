@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Fluid;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Weavly.Cli.Models.ProcessRunner;
@@ -57,6 +58,12 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
             .RunAsync(Dotnet.NewSolution(solutionNameInput, solutionFormat), ct);
 
         await Runner.InDirectory(workingDir).RunAsync(Dotnet.Custom("new packagesprops"), ct);
+
+        var privateFeedKeyInput = await new TextPrompt<string>("Please enter the Weavly package source name:")
+            .DefaultValue("weavly")
+            .ShowAsync(AnsiConsole.Console, ct);
+
+        await RenderNuGetConfigToFileAsync(workingDir, privateFeedKeyInput);
 
         List<string> selectedModules =
         [
@@ -129,6 +136,18 @@ public sealed class InitCommand : InterruptibleAsyncCommand<InitCommand.Settings
         ModuleManagementHelper.RemoveEndpointMappings(ref file);
 
         await File.WriteAllTextAsync(programFilePath, file, ct);
+    }
+
+    private static async Task RenderNuGetConfigToFileAsync(string workingDir, string privateFeedKey)
+    {
+        var parser = new FluidParser();
+        if (parser.TryParse(EmbeddedResources.GetTemplate("NuGet.Config.template"), out var template))
+        {
+            await using var writer = new StreamWriter(Path.Combine(workingDir, "NuGet.Config"), false);
+
+            var context = new TemplateContext(new { PrivateFeedKey = privateFeedKey });
+            await template.RenderAsync(writer, context);
+        }
     }
 
     [Serializable]

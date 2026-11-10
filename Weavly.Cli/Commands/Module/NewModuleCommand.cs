@@ -9,7 +9,7 @@ using Weavly.Cli.Utils;
 namespace Weavly.Cli.Commands.Module;
 
 [Description("Initializes a new custom module project for the current solution")]
-public sealed class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
+public sealed class NewModuleCommand : InterruptibleAsyncCommand<NewModuleCommand.Settings>
 {
     private readonly WeavlyModule coreModule = WeavlyModule.New("Core", "Weavly");
 
@@ -34,6 +34,9 @@ public sealed class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
         var moduleName =
             settings.ModuleName
             ?? await new TextPrompt<string>("Please enter a module name:").ShowAsync(AnsiConsole.Console, ct);
+
+        var projects = GetRelevantProjects().ToDictionary(ExtractFileNameWithoutExtension, f => f);
+        var projectName = settings.ProjectName ?? await SelectProjectAsync(projects, ct);
 
         var module = WeavlyModule.New(moduleName, solutionName);
 
@@ -85,6 +88,13 @@ public sealed class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
         await Runner
             .WithMessage("Adding projects to solution...\n")
             .RunAsync(Dotnet.AddToSolution(module.Main, module.Shared, module.Tests), ct);
+        await Runner
+            .WithMessage($"Adding module [teal]{projectName}[/]...\n")
+            .RunAsync(
+                Dotnet.Custom($"reference add {module.Main.Folder} --project ./{projectName}/{projectName}.csproj"),
+                ct
+            );
+        await UpdateProgramBootstrapperAsync(projectName, [module.Name], ct);
     }
 
     private static async Task RenderTemplateToFileAsync(
@@ -112,11 +122,27 @@ public sealed class NewCommand : InterruptibleAsyncCommand<NewCommand.Settings>
         }
     }
 
+    private static async Task<string> SelectProjectAsync(Dictionary<string, string> projects, CancellationToken ct)
+    {
+        return projects.Keys.Count == 1
+            ? projects.Keys.First()
+            : await new SelectionPrompt<string>()
+                .Title("Where do you want to add the [teal]module[/]?")
+                .PageSize(5)
+                .MoreChoicesText("[grey](Move up and down to reveal more projects)[/]")
+                .AddChoices(projects.Keys)
+                .ShowAsync(AnsiConsole.Console, ct);
+    }
+
     [Serializable]
     public class Settings : CommandSettings
     {
         [CommandOption("-n|--name <name>")]
         [Description("Module name")]
         public string? ModuleName { get; init; }
+
+        [CommandOption("-p|--project <name>")]
+        [Description("Project name")]
+        public string? ProjectName { get; init; }
     }
 }
